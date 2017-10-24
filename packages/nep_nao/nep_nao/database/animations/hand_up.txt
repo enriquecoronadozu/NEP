@@ -1,0 +1,103 @@
+names.append("HeadPitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.0152981, 0.0152981, 0.0152981, 0.0152981])
+
+names.append("HeadYaw")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0, 0, 0, 0])
+
+names.append("LAnklePitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.35593, -0.35593, -0.35593, -0.35593])
+
+names.append("LAnkleRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.00302601, -0.00302601, -0.00302601, -0.00302601])
+
+names.append("LElbowRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.506178, -0.506178, -0.506178, -0.506178])
+
+names.append("LElbowYaw")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-1.36837, -1.36837, -1.36837, -1.36837])
+
+names.append("LHand")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.2608, 0.2608, 0.2608, 0.2608])
+
+names.append("LHipPitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.454022, -0.454022, -0.454022, -0.454022])
+
+names.append("LHipRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.00924587, 0.00924587, 0.00924587, 0.00924587])
+
+names.append("LHipYawPitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.00455999, -0.00455999, -0.00455999, -0.00455999])
+
+names.append("LKneePitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.70253, 0.70253, 0.70253, 0.70253])
+
+names.append("LShoulderPitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([1.54009, 1.54009, 1.54009, 1.54009])
+
+names.append("LShoulderRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.113474, 0.113474, 0.113474, 0.113474])
+
+names.append("LWristYaw")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.0613179, 0.0613179, 0.0613179, 0.0613179])
+
+names.append("RAnklePitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.348176, -0.348176, -0.348176, -0.348176])
+
+names.append("RAnkleRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.0061779, 0.0061779, 0.0061779, 0.0061779])
+
+names.append("RElbowRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.38661, 0.553816, 0.648924, 0.638186])
+
+names.append("RElbowYaw")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([1.36368, 1.36368, 1.36368, 1.36368])
+
+names.append("RHand")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.2748, 0.198, 0.36, 0.36])
+
+names.append("RHipPitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.458708, -0.458708, -0.458708, -0.458708])
+
+names.append("RHipRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.00149202, -0.00149202, -0.00149202, -0.00149202])
+
+names.append("RHipYawPitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.00455999, -0.00455999, -0.00455999, -0.00455999])
+
+names.append("RKneePitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([0.698012, 0.698012, 0.698012, 0.698012])
+
+names.append("RShoulderPitch")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([1.45427, 0.68574, -0.74855, -0.737812])
+
+names.append("RShoulderRoll")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-0.173384, -0.236278, -0.211734, -0.211734])
+
+names.append("RWristYaw")
+times.append([1, 2.12, 3.24, 4.24])
+keys.append([-1.03242, -1.07844, -1.17048, -1.17048])

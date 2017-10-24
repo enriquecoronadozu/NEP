@@ -1,0 +1,2 @@
+include gaussian/*.py
+include *.txt

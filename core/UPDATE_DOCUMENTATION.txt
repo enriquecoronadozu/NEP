@@ -1,0 +1,3 @@
+copy and paste docs and github_pages.bat in the learn-nep repository
+
+execute github_pages.bat (this will delate the docs and github_pages.bat and update the documentation)
