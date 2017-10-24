@@ -11,8 +11,7 @@
 # Autor: Luis Enrique Coronado Zuniga
 
 
-from nep import*
-
+import nep
 import sys
 import zmq
 import time
@@ -59,12 +58,10 @@ class smartwatch_server():
 
 
 
-        def run_server(self,ip_sensing,port_sensing):
+        def run_server(self):
                 """This function is used to run the server and obtain the data from the Nep WearAmi programs.
                 The data is obtained from the port 8080 using a normal socket (please don't use this port in other processes to avoid errors). A client server pattern is used.
                 Then the data is published using a ZeroMQ socket using publisher/subscriber pattern
-                :param ip_sensing: ZeroMQ IP to publish the data
-                :param port_sensing: ZeroMQ port to publish the data
                 """
 
                 signal.signal(signal.SIGINT, self.signal_handler)
@@ -107,7 +104,11 @@ class smartwatch_server():
                 
 
                 #New ZQM soket to publish the datas
-                self.pub = publisher("/smart_accel", True)
+
+                
+                node = nep.node("smartwatch")
+                pub_config = node.config_pub()
+                pub  = node.new_pub("/smart_accel", pub_config)
                 
                 while True:
 
@@ -141,7 +142,7 @@ class smartwatch_server():
                                                         #TODO not implemented
                                                         if(condition == True and option == 1):
                                                                 # Here we publish the gyroscope data in the topic  "/smart_gyro"
-                                                                #self.pub.send_string(message) change topic
+                                                                self.pub.send_string(message) #change topic
 
                                                         message_queues[s].put(data)
                                                         # Add output channel for response
@@ -181,7 +182,7 @@ class smartwatch_server():
 
 
 server = smartwatch_server()
-server.run_server("127.0.0.1",7070)
+server.run_server()
 
 
 

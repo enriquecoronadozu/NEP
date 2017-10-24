@@ -71,6 +71,15 @@ class robot():
         import subprocess as s
         s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
 
+
+
+        
+
+    def setVoice(self, speed , volum , pitch , doubleVoice ):
+        message = {'action': 'setVoice', 'speed':speed, 'volum':volum, 'pitch':pitch, 'doubleVoice':doubleVoice }
+        return self.run_action(message)
+        
+
     def setRobots(self,robots):
         self.with_robots = robots
 
@@ -171,11 +180,6 @@ class robot():
         message = {'action': 'say', 'text': text, 'gesture': gesture, 'to_person': to_person, 'language':language }
         return self.run_action(message)
 
-    
-    def setVoice(self, speed , volum , pitch , doubleVoice ):
-        message = {'action': 'setVoice', 'speed':speed, 'volum':volum, 'pitch':pitch, 'doubleVoice':doubleVoice }
-        return self.run_action(message)
-
 
     def do(self,action):
         """ This function create a python dictionaty with the description of the action to be performed by the robot. This function is to define simple actions that does not needs the especification of some parameters. Can be used for example for send to the robot to the initial position or to end and interaction.
@@ -213,107 +217,8 @@ class robot():
             result : string
                 Execution result, such as "success" or "error".
         """
-        message = {'action': "gesture", 'animation': gesture_name }
+        message = {'action': "expresion", 'gesture': gesture_name }
         return self.run_action(message)
-
-
-    def doImitation(self, imitation_name, with_sound = "default"):
-        """ This function create a python dictionaty with the description of the animation and sound to be performed by the robot.
-
-            Parameters
-            ----------
-            
-            thing2imitate : string
-                Name of the imitation to perform
-
-            Returns
-            -------
-            
-            result : string
-                Execution result, such as "success" or "error".
-        """
-
-        if(imitation_name) == "final":
-             with_movement = "final"
-             with_sound = "final"
-             type_imitation = "final"
-
-        if(imitation_name) == "preparation":
-             with_movement = "preparation"
-             with_sound = "preparation"
-             type_imitation = "preparation"
-
-        if(imitation_name) == "bored":
-             with_movement = "bored"
-             with_sound = "bored"
-             type_imitation = "animals"
-
-        if(imitation_name) == "wait":
-             with_movement  = "wait"
-             with_sound = "wait"
-             type_imitation = "animals"
-
-        if(imitation_name == "elephant"):
-            with_movement = "elephant"
-            with_sound = "elephant"
-            type_imitation = "animals"
-
-        if(imitation_name == "monkey"):
-            with_movement = "monkey"
-            with_sound = "monkey"
-            type_imitation = "animals"
-
-        if(imitation_name == "kenshiro"):
-            with_movement = "kenshiro"
-            with_sound = "hokuto"
-            type_imitation = "animals"
-
-        if(imitation_name== "cat"):
-            with_movement = "cat"
-            with_sound = "nya"
-            type_imitation = "animals"
-
-        if(imitation_name == "crow"):
-            with_movement = "crow"
-            with_sound = "crow"
-            type_imitation = "animals"
-
-        if(imitation_name == "disco"):
-            with_movement = "disco"
-            with_sound = "disco"
-            type_imitation = "music"
-
-        if(imitation_name == "guitar"):
-            with_movement = "guitar"
-            with_sound = "guitar"
-            type_imitation = "music"
-
-        if(imitation_name == "saxophone"):
-            with_movement = "saxophone"
-            with_sound = "saxophone"
-            type_imitation = "music"
-
-        if(imitation_name == "karate"):
-            with_movement = "karate"
-            with_sound = "karate"
-            type_imitation = "music"
-
-        if(imitation_name == "hand_up"):
-            with_movement = "hand_up"
-            with_sound = "hand_up"
-            type_imitation = "music"
-
-
-        if(imitation_name == "bow"):
-            with_movement = "bow"
-            with_sound = "bow"
-            type_imitation = "music"
-
-            
-                
-        message = {'action': "imitation", 'animation': imitation_name, 'sound': with_sound}
-        return self.run_action(message)
-     
 
 # In testing phase ...................................................................................................................  
 
@@ -348,7 +253,103 @@ class robot():
 
 
     #TODO, data base 
-    
+    def imitate(self, thing2imitate):
+        """ This function create a python dictionaty with the description of the animation and sound to be performed by the robot.
+
+            Parameters
+            ----------
+            
+            thing2imitate : string
+                Name of the imitation to perform
+
+            Returns
+            -------
+            
+            result : string
+                Execution result, such as "success" or "error".
+        """
+
+        if(thing2imitate) == "final":
+             with_movement = "final"
+             with_sound = "final"
+             type_imitation = "final"
+
+        if(thing2imitate) == "preparation":
+             with_movement = "preparation"
+             with_sound = "preparation"
+             type_imitation = "preparation"
+
+        if(thing2imitate) == "bored":
+             with_movement = "bored"
+             with_sound = "bored"
+             type_imitation = "animals"
+
+        if(thing2imitate) == "wait":
+             with_movement  = "wait"
+             with_sound = "wait"
+             type_imitation = "animals"
+
+        if(thing2imitate == "elephant"):
+            with_movement = "elephant"
+            with_sound = "elephant"
+            type_imitation = "animals"
+
+        if(thing2imitate == "monkey"):
+            with_movement = "monkey"
+            with_sound = "monkey"
+            type_imitation = "animals"
+
+        if(thing2imitate == "kenshiro"):
+            with_movement = "kenshiro"
+            with_sound = "hokuto"
+            type_imitation = "animals"
+
+        if(thing2imitate == "cat"):
+            with_movement = "cat"
+            with_sound = "nya"
+            type_imitation = "animals"
+
+        if(thing2imitate == "crow"):
+            with_movement = "crow"
+            with_sound = "crow"
+            type_imitation = "animals"
+
+        if(thing2imitate == "disco"):
+            with_movement = "disco"
+            with_sound = "disco"
+            type_imitation = "music"
+
+        if(thing2imitate == "guitar"):
+            with_movement = "guitar"
+            with_sound = "guitar"
+            type_imitation = "music"
+
+        if(thing2imitate == "saxophone"):
+            with_movement = "saxophone"
+            with_sound = "saxophone"
+            type_imitation = "music"
+
+        if(thing2imitate == "karate"):
+            with_movement = "karate"
+            with_sound = "karate"
+            type_imitation = "music"
+
+        if(thing2imitate == "hand_up"):
+            with_movement = "hand_up"
+            with_sound = "hand_up"
+            type_imitation = "music"
+
+
+        if(thing2imitate == "bow"):
+            with_movement = "bow"
+            with_sound = "bow"
+            type_imitation = "music"
+
+            
+                
+        message = {'action': "imitation", 'gesture': with_movement, 'sound': with_sound, 'type_sound':type_imitation}
+        return self.run_action(message)
+     
     
 
     # Robot perception -----------------------

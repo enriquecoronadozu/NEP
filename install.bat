@@ -7,8 +7,8 @@ pip install SpeechRecognition
 pip install simplejson
 python -m pip install pyaudio
 pip install matplotlib
-pip install numpy
-pip install scipy
+pip install -U numpy
+pip install -U scipy
 pip install -U scikit-learn
 pip install sphinx
 pip install sphinxcontrib-napoleon

@@ -15,16 +15,21 @@
 
 from hmpy import*
 import os
-from nep import*
+import nep
 import timeit
 from numpy import*
 import sys
 
 def main(name):
         
-        # Start publisher and sensory subcriber
-        pub = publisher("/human_state", simple = False) #Allow multiple publishers
-        sub =  subscriber("/smart_accel") #Allow multiple subscribers
+        node = nep.node("smartwatch_gesture")
+
+        sub_config = node.config_sub()
+        sub = node.new_sub("/smart_accel", sub_config)
+
+        pub_config = node.config_pub()
+        pub = node.new_pub("/human_state", pub_config)
+        
                 
         path = os.getcwd()
         path_data = path + "/data"
@@ -55,7 +60,7 @@ def main(name):
 
         run = True
         while run:
-                data = sub.listen_string()
+                s, data = sub.listen_string()
                 flag, x,y,z = decode.decode_3axis_info(data)
                 poss =  r.online_recognition(float(x),float(y),float(z))
                 #Send data for plot
@@ -77,7 +82,7 @@ if __name__ == "__main__":
         
         # If not set a default gesture
         except:
-                gesture_name = 'hand_up'
+                gesture_name = 'karate'
         
         #Start the program
         main(gesture_name)

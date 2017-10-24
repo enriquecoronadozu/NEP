@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 # ------------------------ Communication module --------------------------------
-# Description: Set of classes used to abtract the transport layer using ROS, ZeroMQ and nanomsg
+# Description: Set of classes used for simplify the use of ZeroMQ in publisher/subscriber communication pattern.
 # --------------------------------------------------------------------------
 # You are free to use, change, or redistribute the code in any way you wish
 # but please maintain the name of the original author.
@@ -19,19 +19,9 @@ import sys
 
 
 
+
 class node:
     def __init__(self, node_name, useROS = False):
-        """ Class used to create NEP nodes, also abtract the creation of ROS nodes
-
-        Parameters
-        ----------
-        node_name : string 
-            nome of the node
-
-        useROS : bool
-            bool varaible that indicates the use of Ubuntu creation of ROS nodes
-        """
-
         self.node_name = node_name
         self.useROS = useROS
         print ("New NEP node: " + self.node_name)
@@ -53,93 +43,21 @@ class node:
                 sys.exit(1)
 
 
-    def config_pub(self, transport = "ZMQ", network = "P2P", port = 9000, ip = "127.0.0.1", mode = "one2many" ):
-        """ Function used to define the configuration of a publisher.
-
-            Parameters
-            ----------
-            transport : string 
-                middleware used, values can be "ZMQ" to ZeroMQ, "ROS" to use ROS and "NANO" to use nanomsg
-
-            network : string
-                Type to network topology used, values can be "P2P" to use name service masters or "direct" to indicate a specific endpoint 
-
-            port : int
-                specific port used only when network is set to "direct", by default port = 9000
-
-            ip : strint
-                specific ip used only when network is set to "direct", by default ip = "127.0.0.1"
-
-            mode : "string"
-                publisher mode for ZeroMQ, used when transport is set to "ZMQ". It value can be "one2many" or many2one". TODO: explain mode this.
-            
-            return: dictionary
-                dictionary whit the publisher specifications
-        """
-
-        conf = { 'transport': transport, 'network': network, 'port': str(port), 'ip': ip, 'mode':mode}
+    def config_pub(self, msg_type = "dict",transport = "ZMQ", network = "P2P", port = "9000", ip = "127.0.0.1", mode = "one2many" ):
+        conf = { 'msg_type': msg_type, 'transport': transport, 'network': network, 'port': port, 'ip': ip, 'mode':mode}
         return conf
 
-    def config_sub(self, transport = "ZMQ", network = "P2P", port = "9000", ip = "127.0.0.1", mode = "one2many" ):
-        
-         """ Function used to define the configuration of a subscriber.
-
-            Parameters
-            ----------
-            transport : string 
-                middleware used, values can be "ZMQ" to ZeroMQ, "ROS" to use ROS and "NANO" to use nanomsg
-
-            network : string
-                Type to network topology used, values can be "P2P" to use name service masters or "direct" to indicate a specific endpoint 
-
-            port : int
-                specific port used only when network is set to "direct", by default port = 9000
-
-            ip : strint
-                specific ip used only when network is set to "direct", by default ip = "127.0.0.1"
-
-            mode : "string"
-                publisher mode for ZeroMQ, used when transport is set to "ZMQ". It value can be "one2many" or many2one". TODO: explain mode this.
-            
-            return: dictionary
-                dictionary whit the publisher specifications
-        """
-        conf = { 'transport': transport, 'network': network, 'port': port, 'ip': ip, 'mode':mode}
+    def config_sub(self, msg_type = "dict", transport = "ZMQ", network = "P2P", port = "9000", ip = "127.0.0.1", mode = "one2many" ):
+        conf = { 'msg_type': msg_type, 'transport': transport, 'network': network, 'port': port, 'ip': ip, 'mode':mode}
         return conf
 
-    def new_pub(self,topic, configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip': '127.0.0.1' }):
-        
-        """ Function used to create a new publisher
-
-            Parameters
-            ----------
-            topic : "string"
-                Name of the topic to send the messages
-
-            configuration : dictionary
-                dictionary used to specify the configuration of the publisher
-
-             return: publisher
-                publisher object used to send the messages in the defined topic
-        """
-
+    def new_pub(self,topic, configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip': '127.0.0.1', 'msg_type' : 'dict' }):
+        #TODO: launch error if you dont put msg_type or conf
         pub = publisher(topic, self.node_name, configuration)
         return pub
 
-    def new_sub(self,topic, configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip': '127.0.0.1' }):
-            """ Function used to create a new subscriber
-
-            Parameters
-            ----------
-            topic : "string"
-                Name of the topic to receive the messages
-
-            configuration : dictionary
-                dictionary used to specify the configuration of the subscriber
-
-             return: subscriber
-                susbcriber object used to send the messages in the defined topic
-        """
+    def new_sub(self,topic, configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip': '127.0.0.1', 'msg_type' : 'dict' }):
+        #TODO: launch error if you dont put msg_type or conf
         sub = subscriber(topic, self.node_name, configuration)
         return sub
 
@@ -161,40 +79,38 @@ class publisher:
             topic name to publish the messages
 
         node_name : string
-            Name of the node
+            Name of the node 
 
-        msg_type : string
-            Type of the message to be send. It support strings, python dictionaries and ROS geometric types. TODO: add reference page
-
-        configuration : dictionary
+        conf : dictionary
             Configuration of the publisher
 
     """
 
-    def __init__(self, topic, msg_type = "string", node_name = "default", configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip' : '127.0.0.1' }):
+    def __init__(self, topic, node_name = "default", conf =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip' : '127.0.0.1', 'msg_type' : 'dict' }):
 
-        self.conf = configuration
+        self.conf = conf
         self.network = self.conf['network']
         self.transport =  self.conf['transport']
         self.node_name = node_name
         self.topic = topic
-        self.msg_type = msg_type
+        self.msg_type =  self.conf['msg_type']
 
         if self.transport ==  "ZMQ":
+            print ("New publisher using ZMQ")
             try:
                 self.mode = self.conf['mode']
             except:
-                print ("WARNING: publisher mode nod defined, 'one2many' mode is set by default")
+                print ("WARNING: publisher mode not defined, 'one2many' mode is set by default")
                 self.mode = "one2many"
             self.create_ZMQ_publisher()
             
         if self.transport ==  "ROS":
+            print ("New publisher using ZMQ")
             self.create_ROS_publisher()
 
 
     #TODO:also define queue_size
     def create_ROS_publisher(self):
-        """ Function used to create and define a ROS publisher """
         
 		import rospy
 
@@ -228,17 +144,16 @@ class publisher:
 
                 elif self.msg_type == "vector":
 
-                    from geometry_msgs.msg import Vector
-                    self.ros_pub = rospy.Publisher(self.topic, Vector, queue_size=10)
+                    from geometry_msgs.msg import Vector3
+                    self.ros_pub = rospy.Publisher(self.topic, Vector3, queue_size=10)
 
-                elif self.msg_type == "pose:
+                elif self.msg_type == "pose":
 
                     from geometry_msgs.msg import Pose
-                    self.ros_pub = rospy.Publisher(self.topic, Pose queue_size=10)
+                    self.ros_pub = rospy.Publisher(self.topic, Pose, queue_size=10)
         
 
     def create_ZMQ_publisher(self):
-        """ Function used to create and define a ZMQ publisher """
         if self.network == "direct":
             # Set the port selected by the user
             port = set_port
@@ -313,24 +228,6 @@ class publisher:
             
 
     def advertising_zqm(self, node_name, topic, master_ip = '127.0.0.1', master_port = 7000):
-        """ Function used to register a ZMQ topic in the NEP master
-
-
-        Parameters
-        ----------
-
-        node_name : string
-            Name of the node
-
-        topic : string 
-            topic name to publish the messages
-
-        master_ip : string
-            IP adress of the master node, by default is set to '127.0.0.1'
-
-        master_port : int
-            port of the master node,  by default is set to '7000'
-        """
         
         #Use client-server pattern to advertise and register a node and topic to the NEP Master
         context = zmq.Context()
@@ -418,33 +315,82 @@ class publisher:
             self.sock.send(info)
         
         if self.transport == "ROS":
-            #TODO add try and except fot error of data
+        #TODO add try and except fot error of data
 
             if self.msg_type == "string":
-                   
-
-                elif self.msg_type == "velocity":
-
-
-                elif self.msg_type == "point":
-
-
-                elif self.msg_type == "wrench":
-
-                elif self.msg_type == "accel":
-
-
-                elif self.msg_type == "quaternion":
-
-
-                elif self.msg_type == "vector":
-
-
-                elif self.msg_type == "pose:
-
-
+                pub.publish(message)
             
-            self.ros_pub.publish(message)
+            elif self.msg_type == "velocity":
+                from geometry_msgs.msg import Twist
+                twist = Twist()
+                twist.linear.x = message['linear']['x']
+                twist.linear.y = message['linear']['y']
+                twist.linear.z = message['linear']['z']
+                twist.angular.x = message['angular']['x']
+                twist.angular.y = message['angular']['y']
+                twist.angular.z = message['angular']['z']
+                self.ros_pub.publish(twist)
+
+            elif self.msg_type == "point":
+                from geometry_msgs.msg import Point
+                point = Point()
+                point.x = message['x']
+                point.y = message['y']
+                point.z = message['z']
+                self.ros_pub.publish(point)
+
+            elif self.msg_type == "wrench":
+                from geometry_msgs.msg import Wrench
+                wrench = Wrench()
+                wrench.force.x = message['force']['x']
+                wrench.force.y = message['force']['y']
+                wrench.force.z = message['force']['z']
+                wrench.torque.x = message['torque']['x']
+                wrench.torque.y = message['torque']['y']
+                wrench.torque.z = message['torque']['z']
+                self.ros_pub.publish(wrench)
+                
+
+            elif self.msg_type == "accel":
+                from geometry_msgs.msg import Accel
+                accel = Accel()
+                accel.linear.x = message['linear']['x']
+                accel.linear.y = message['linear']['y']
+                accel.linear.z = message['linear']['z']
+                accel.angular.x = message['angular']['x']
+                accel.angular.y = message['angular']['y']
+                accel.angular.z = message['angular']['z']
+                self.ros_pub.publish(accel)
+
+            elif self.msg_type == "quaternion":
+                from geometry_msgs.msg import Quaternion
+                quaternion = Quaternion()
+                quaternion.x = message['x']
+                quaternion.y = message['y']
+                quaternion.z = message['z']
+                quaternion.w = message['w']
+                self.ros_pub.publish(quaternion)
+                pass
+
+            elif self.msg_type == "vector":
+                from geometry_msgs.msg import Vector3
+                vector = Vector3()
+                vector.x = message['x']
+                vector.y = message['y']
+                vector.z = message['z']
+                self.ros_pub.publish(vector)
+
+            elif self.msg_type == "pose":
+                from geometry_msgs.msg import Pose
+                pose = Pose()
+                pose.position.x = message['position']['x']
+                pose.position.y = message['position']['y']
+                pose.position.z = message['position']['z']
+                pose.orientation.x = message['orientation']['x']
+                pose.orientation.y = message['orientation']['y']
+                pose.orientation.z = message['orientation']['z']
+                pose.orientation.w = message['orientation']['w']
+                self.ros_pub.publish(pose)
         
 
     #TODO: does not work, no manda mensajes
@@ -479,13 +425,13 @@ class subscriber:
         node_name : string
             Name of the node 
 
-        configuration : dictionary
+        conf: dictionary
             Configuration of the subscriber
 
     """
-    def __init__(self, topic,node_name = "default", configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip' : '127.0.0.1' }):
+    def __init__(self, topic, node_name = "default", conf =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip' : '127.0.0.1', 'type':'dict' }):
     
-        self.conf = configuration
+        self.conf = conf
         self.network = self.conf['network']
         self.transport =  self.conf['transport']
         self.node_name = node_name
@@ -503,7 +449,6 @@ class subscriber:
             self.create_ROS_subscriber()
 
     def create_ZMQ_subscriber(self):
-        """ Function used to create and define a ZMQ publisher """
         
         if self.network == "direct":
             # Set the port selected by the user
@@ -572,9 +517,6 @@ class subscriber:
 
 
     def advertising_zqm(self, node_name, topic, master_ip = '127.0.0.1', master_port = 7000):
-        
-        """ Function used register a topic """
-
         context = zmq.Context()
         self.master_sock = context.socket(zmq.REQ)
         self.master_sock.connect("tcp://"+ master_ip + ":" + str(master_port))

@@ -25,7 +25,7 @@ class nao_action():
         self.nao_robot_do = nao_do(nao_ip, nao_port)
         self.ip_action = ip_action
 
-        self.pub = publisher("/action_execution", False)
+        self.pub = publisher("/action_execution")
         
         time.sleep(1)
         print " ******** Robot " + robot_name + " ready! ***********"
