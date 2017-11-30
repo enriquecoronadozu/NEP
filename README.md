@@ -13,20 +13,27 @@ This platform have the next main characteristics:
 
 
 ## Main requirements
-Python
-A modern web browser (Chrome, Firefox or Safari)
+- Python
+- A modern web browser sucf as Chrome, Firefox or Safari for End-User programming.
+
+## Optional requiriments for only Windows
+- Visual Studio 2017: C++ and C# programming enviroments
+- Kinect SDK
+
+## Optional requiriments for Windows, Mac and Linux
+- NAO SDK for Python
 
 ## Instalation Windows:
-- Dowloand and install Python 2.7. We recommend the lasted version of Python(x,y), currently denoted by Python(x,y)-2.7.10.0.exe, from:
+Dowloand and install Python 2.7. We recommend the lasted version of Python(x,y), currently denoted by Python(x,y)-2.7.10.0.exe, from:
 
 https://python-xy.github.io/downloads.html
 
 
-- Download the most recent version of the NEP social robot programming platform from:
+Download the most recent version of the NEP social robot programming platform from:
 
 https://github.com/enriquecoronadozu/NEP
 
-- Unzip the folder and run the file install.bat (with double click).
+Unzip the folder and run the file install.bat (with double click).
 
 ## Instalation Linux:
 Download the most recent version of the NEP social robot programming platform from:
@@ -47,14 +54,15 @@ https://github.com/enriquecoronadozu/NEP
 
 Unzip the folder and with Mac Terminal run the install.sh script
 
-## More detailed instalation instructions in: https://enriquecoronadozu.github.io/project/Node%20primitives/
-## Documentation in: https://enriquecoronadozu.github.io/learn-nep/
+## More info:
 
-# News
+More detailed instalation instructions in: https://enriquecoronadozu.github.io/project/Node%20primitives/
 
-## Pre-alpha version ready.
+Documentation in: https://enriquecoronadozu.github.io/learn-nep/
 
-## Alpha version:
+# Latest News
 
-Expected date: 15 of January 2018
+- Pre-alpha version ready.
+
+- Alpha version expected date: 15 of January 2018
 
