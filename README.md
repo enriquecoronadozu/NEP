@@ -1,3 +1,7 @@
+# Important:
+
+This project is still in experimental steps, a first alpha version is expected to be launched next 15 of January of 2018. This new version comes with new interesting features in the end-user interface. Also some aditional features and improvements have been done in the freamework layer.
+
 # NEP: An Open End-user Programming Platform for Social Robots.
 
 Node primitives (NEP) is an open source experimental platform which allows the creation and design of social interactions with robots.
