@@ -3,7 +3,7 @@
 - This project is still in experimental steps, a first alpha version is expected to be launched next 15 of January of 2018.
 - This new version comes with new interesting features in the end-user interface. 
 - Documentation will be updated soon.
-- Some aditional features and improvements have been done in the freamework layer.
+- Some aditional features and improvements have been done in the framework layer.
 
 # NEP: An Open End-user Programming Platform for Social Robots.
 
