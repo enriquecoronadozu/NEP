@@ -1,0 +1,34 @@
+language: node_js
+dist: trusty
+node_js: 8.1
+
+addons:
+  firefox: latest
+  google-chrome: latest
+
+before_script:
+  - gulp
+
+script:
+  # unit tests against dist/sweetalert2.js
+  - xvfb-run testem ci --reporter dot
+
+  # unit tests against dist/sweetalert2.all.min.js
+  - sed -i 's/sweetalert2.js/sweetalert2.all.min.js/g' testem.json
+  - xvfb-run testem ci --reporter dot
+
+  # visual tests (puppeteer)
+  - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+      npm i --no-save puppeteer@0.12.0 looks-same cli-color yargs;
+      node test/puppeteer/visual-tests.js;
+    fi
+
+deploy:
+  api_key:
+    secure: TaF0rF0+n/t3jchds6RSahdIwV+VozFEzGXdnwKzX8TnW2afGU7hh50BJHdQA6/mm0VbgxwAfIDMYU2luLwQn8CJCcJYp7g3+g8xsH15q8ny2AUmIkQQ2sWY43Vk1yMHIwzuAlHy5Pv5qKk8cYRVY5fwaCl/4KfvpIn4F2/DjwU=
+  email: limon.monte@gmail.com
+  provider: npm
+
+notifications:
+  email:
+    on_success: never

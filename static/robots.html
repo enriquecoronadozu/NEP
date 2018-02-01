@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>NepGear</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- ################# Google Blockly realted stuff  ######################## -->
+
+    <!-- In develpment mode use the next line, if not then comment it -->
+    <script src="interface/blockly/blockly_uncompressed.js"></script>
+    <!-- In internet mode better uncomment the next line -->
+    <!-- <script src="interface/blockly/blockly_compressed.js"></script> -->
+
+    <!-- We need to run build.py in order to add our blocks, this are saved in this script -->
+    <script src="interface/blockly/blocks_compressed.js"></script>
+
+    <!-- This define the lenguage, in this case English -->
+    <script src="interface/blockly/msg/js/en.js"></script>
+
+    <!-- Here the code generation scripts are added for each programming lenguage used -->
+    <script src="interface/blockly/python_compressed.js"></script>
+
+    <!--  ************************ CSS files **************************** -->
+    <!-- Link the CSS boostap library -->
+    <link rel="stylesheet" type="text/css" href="interface/bootstrap-3.3.7/css/bootstrap.min.css" />
+    <!-- Link the interface css description -->
+    <link rel="stylesheet" type="text/css" href="interface/interface.css" />
+    <link rel="stylesheet" type="text/css" href="interface/ballon.css" />
+
+    <!--  ************************ Javascript files **************************** -->
+    <!-- Link the JQuery library -->
+    <script type="text/javascript" src="interface/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="interface/json2html/json2html.js"></script>
+    <script type="text/javascript" src="interface/json2html/jquery.json2html.js"></script>
+
+    
+    <!-- Link the JS boostrap library -->
+    <script type="text/javascript" src="interface/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="interface/js-interpreter/acorn_interpreter.js"></script>
+
+    <!-- Link programs in data folder -->
+    <script type="text/javascript" src="data/examples/examples.js"></script>
+
+
+    <!-- nice allert library -->
+    <script src="interface/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="interface/sweetalert/dist/sweetalert.css">
+
+    <!-- Cicle Buttons CSS -->
+    <link href="interface/startbootstrap/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet"/>
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="assets/css/demo.css" rel="stylesheet" />
+
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar" data-color="orange" data-image="assets/img/sidebar-5.jpg">
+
+    <!--
+
+        Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+        Tip 2: you can also add an image using data-image tag
+
+    -->
+
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="http://www.creative-tim.com" class="simple-text">
+                    NEP Gear
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li>
+                    <a href="index.html">
+                        <i class="fa fa-code"></i>
+                        <p>Code</p>
+                    </a>
+                </li>
+                <li  class="active">
+                    <a href="robots.html">
+                        <i class="fa fa-wifi"></i>
+                        <p>Robots</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="nodes.html">
+                        <i class="fa fa-rocket"></i>
+                        <p>Nodes</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
+    </div>
+
+    <div class="main-panel">
+        <nav class="navbar navbar-default navbar-fixed">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    
+                            <!-- space -->
+                            &nbsp; &nbsp; &nbsp; 
+                            <!-- **************** BUTTON:  NEW **************** 
+                            <button type="button" onclick="onNewWorkspace()"  data-balloon="New program" data-balloon-pos="down"  class="btn btn-default btn-circle btn-lg"  ><i class="fa fa-file-o"></i>
+                            </button>
+                           
+                            &nbsp;  &nbsp; -->
+                            <!-- ************ Button: LOAD ************** 
+                            <button type="button" class="btn btn-default btn-circle btn-lg"   data-balloon="Load a program" data-balloon-pos="down"  data-toggle="modal" data-target="#LoadModal"><i class="fa fa-folder-open"></i>
+                            </button>
+                            &nbsp;  &nbsp; -->
+                            <!-- ************ BUTTON: SAVE ************** -->
+                            <button type="button"   onclick="onSaveBlocklyXML()"   data-balloon="Save your program" data-balloon-pos="down" class="btn btn-success btn-circle btn-xl" ><i class="fa fa-save"></i>
+                            </button>
+                            <!--  <button type="button" onclick="onNewWorkspace()" class="btn btn-danger btn-lg"><span class="btn-label"><i class="fa fa-trash-o"></i></span> Clear</button> -->
+                            &nbsp;  &nbsp; 
+                            <span> 
+                            <!-- **************** BUTTON:  Undo **************** -->
+                            <button type="button" onclick="doUndo()" data-balloon="Undo" data-balloon-pos="down"  class="btn btn-info btn-circle btn-xl" ><i class="fa fa-undo"></i>
+                            </button>
+                            </span>
+                            &nbsp;  &nbsp; 
+                            <!-- **************** BUTTON:  Redo **************** -->
+                            <button type="button" onclick="doRedo()" data-balloon="Redo" data-balloon-pos="down"  class="btn btn-info btn-circle btn-xl"   ><i class="fa fa-rotate-right"></i>
+                            </button>
+                  
+                            &nbsp;  &nbsp; 
+                            <button type="button" data-balloon="Run program" data-balloon-pos="down" onclick="onRunCode()" class="btn btn-primary btn-circle btn-xl"   ><i class="fa fa-play"></i>
+                            </button>
+                           
+                           &nbsp;  &nbsp; 
+                           <button type="button" data-balloon="Stop program" data-balloon-pos="down" onclick="onStopCode()" class="btn btn-primary btn-circle btn-xl"    ><i class="fa fa-stop"></i>
+                           </button>
+
+                           <!-- Sidebar toggle button-->
+
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+
+            <div class="col-md-12">
+
+                                    <div id="div-program" style="height: 580px">
+                                    </div>
+            
+                            
+            </div> <!-- col-md-12 -->
+            </div>
+        </div>
+
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                       <!-- To the right -->
+                        <img src="interface/tuat.png" alt="Mountain View" style="height:42px;"  >
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+
+<!-- ################################### Modals  #################################### -->
+
+
+
+<!--  Pop-up: LOAD -->
+<div class="modal fade" id="LoadModal" role="dialog">
+                                <div class="modal-dialog">
+                                
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Load an example or a saved program</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                       <h3>Load an examples: </h3>
+                                       <div id="div-lesson-container">
+                                                    <hr>
+                                                    <div id="div-lesson-control">
+                                                        <select id="lesson-chapter" class="form-control"></select>
+                                                    </div>
+                                               
+                                                </div>
+                                         &nbsp;  
+                                         &nbsp;  
+                                        <h3> Load a program saved:</h3>
+                                        &nbsp;  
+                                        <h5>1.- Select a saved program</h5>
+                                         &nbsp; 
+                                        <input type="file" id="uploadme" accept=".xml" >
+                                                &nbsp; 
+                                                &nbsp; 
+                                                <h5>2.- Press to load </h5>
+                                                &nbsp; 
+                                                &nbsp; 
+                                                <!-- **************** BUTTON:  LOAD **************** -->
+                                                <button type="button"  onclick="onLoadBlocklyXML()"  class="btn btn-warning btn-circle btn-lg" ><i class="fa fa-folder-open"></i>
+                                                </button>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>     
+                                </div>
+</div>
+
+
+<!--  Pop-up: Connect -->
+<div class="modal fade" id="ConnectModal" role="dialog">
+        <div class="modal-dialog">
+                                
+        <!-- Modal content-->
+        <div class="modal-content">
+
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Define the robot to connect</h4>
+                </div>
+                <div class="modal-body">
+                <div class="form-group">
+                                    <label>Put a name to your robot:</label>
+                                    <input class="form-control" id = "name_robot">
+                                    <p class="help-block">Example: John </p>
+                </div>
+
+                <label>Select the type of robot</label>
+                            <select class="form-control" id = "type_robot_simple">
+                                    <option>nao</option>
+                                    <option>pepper</option>
+                                    <option>other</option>
+                            </select>
+                                                        
+                                                                    
+
+                <div class="form-group">
+                            <h5> For NAO and Pepper: </h5>
+                            <label>Select the first numbers of the IP address of the robot:</label>
+                            <select class="form-control" id = "ip_robot_simple">
+                                        <option>192.168.0.</option>
+                                        <option>192.168.1.</option>
+                                        <option>192.168.11.</option>
+                            </select>
+                </div>
+
+                <div class="form-group">
+                            <label>Write the last number of the IP address:</label>
+                                        <input class="form-control" id = "last_ip_simple">
+                                        <p class="help-block">Example: 21 </p>
+                </div>
+
+                <label>Press the button to connect the robot:</label>  &nbsp;  
+                <!-- **************** BUTTON: CHANGE DEFAULT ROBOT **************** -->
+                <button type="button" class="btn btn-info btn-circle btn-xl" onclick="onConnectRobot()" data-dismiss="modal" ><i class="fa fa-wifi"></i>
+                                                        
+                                        
+
+                </div>
+                <div class="modal-footer">
+                <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                                   
+                        
+            </div> <!-- modal-content -->  
+            </div> <!-- modal-dialog -->
+</div>
+
+
+<!-- ############################################# XML zone #######################################################--> 
+<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+  <category name="Robots" colour="#5b5ba5">
+    <block type="set_robots">
+      <field name="NAME">nao</field>
+    </block>
+    <block type="robots_add">
+      <field name="NAME">pepper</field>
+    </block>
+  </category>
+  <sep></sep>
+  <category name="Move" colour="#80a55b">
+    <block type="wake_up"></block>
+    <block type="robot_say_body_expression">
+      <field name="inp_var">Hello</field>
+      <field name="language">English</field>
+    </block>
+    <block type="rest"></block>
+  </category>
+  <category name="Speech" colour="#80a55b">
+    <block type="robot_say_simple">
+      <field name="inp_var">Hello</field>
+      <field name="language">English</field>
+    </block>
+    <block type="robot_say_body_expression">
+      <field name="inp_var">Hello</field>
+      <field name="language">English</field>
+    </block>
+    <block type="set_voice_parameter">
+      <field name="speed">50</field>
+      <field name="volum">1</field>
+      <field name="pitch">1</field>
+      <field name="dvoice">1</field>
+    </block>
+  </category>
+  <category name="Fun/Entertainment" colour="#80a55b">
+    <block type="do_animal">
+      <field name="animal">elephant</field>
+    </block>
+    <block type="do_anime">
+      <field name="anime">kenshiro</field>
+    </block>
+  </category>
+  <sep></sep>
+  <category name="Interaction with humans" colour="#a55b5b">
+    <block type="execute_behavior">
+      <field name="name_to_execute">name</field>
+    </block>
+    <block type="robot_behavior">
+      <field name="behavior_name">name</field>
+      <statement name="behavior_code">
+        <block type="robot_behavior_reactive">
+          <statement name="robot_reactions">
+            <block type="behavior_action_reaction">
+            </block>
+          </statement>
+        </block>
+      </statement>
+    </block>
+    <block type="behavior_action_reaction">
+    </block>
+    <block type="behavior_action_exit_times">
+        <field name="number_times">1</field>
+    </block>
+    <block type="say_counter_reactive_action">
+      <field name="option_movement">no_motion</field>
+    </block>
+  </category>
+  <category name="Human states" colour="#5b80a5">
+    <block type="arm_gesture_selector">
+      <field name="gesture">karate</field>
+    </block>
+    <block type="human_state">
+      <field name="gesture">happy</field>
+    </block>
+  </category>
+</xml>
+
+<!-- ######################################  Scripts zone ####################################### -->
+
+<script>
+
+
+// ......... Global variables ................
+
+// This value must have the same value that in the server
+var url_var = "http://127.0.0.1:5000/new_action";
+
+var default_robot_name = "default";
+var default_robot_ip = "192.168.11.100";
+var default_robot_type = "nao";
+var blocks; //Used to save the xml code of the main workspace (program of the user)
+var default_code = '# -*- encoding: UTF-8 -*-' + '\n' + 'import time' + '\n' + 'from nep import*' + '\n' + '\n' + 'lan = launcher()' + '\n' 
+
+//TODO: media need internet, change a to local value: 'https://blockly-demo.appspot.com/static/media/',
+
+// ******************************** Main workspace definition ****************************************
+// DESCRIPTION: Here the setting of the main workspace are defined, also the variable WORKSPACE  that it is used to interact with the workspace
+// ***************************************************************************************************
+var toolbox = document.getElementById("toolbox");
+
+
+var options = { 
+	toolbox : toolbox, 
+	collapse : true, 
+	comments : true, 
+	disable : true, 
+	maxBlocks : Infinity, 
+	trashcan : true, 
+	horizontalLayout : false, 
+	toolboxPosition : 'start', 
+	css : true, 
+	media : 'interface/blockly/media/', 
+	rtl : false, 
+	scrollbars : true, 
+	sounds : true, 
+	oneBasedIndex : true, 
+	grid : {
+		spacing : 20, 
+		length : 1, 
+		colour : '#888', 
+		snap : false
+	}, 
+	zoom : {
+		controls : true, 
+		wheel : true, 
+		startScale : 1, 
+		maxScale : 3, 
+		minScale : 0.5, 
+		scaleSpeed : 1.2
+	}
+};
+/* Inject your workspace */ 
+var WORKSPACE = Blockly.inject('div-program', options);
+
+// ****************** On stop code **********************
+// DESCRIPTION: Used to stop the execution of a program
+// ******************************************************
+
+
+                    
+
+function onStopCode(){
+
+
+    // Action to do by the server
+    var json = {"action":"stop", "node":"main"}
+    console.log(JSON.stringify(json));
+    $.ajax({
+            type : "POST",
+            url : url_var,
+            contentType: "application/json; charset=utf-8",
+            data : JSON.stringify(json),
+            dataType : "json"
+        });
+    
+}
+
+// ******************************** On launch Action function ****************************************
+// DESCRIPTION: This function is used to launch an action engine node 
+// ***************************************************************************************************
+
+
+//OK 
+function onDefaultLaunch() {
+
+    console.log("Type of robot to launch: " + default_robot_type);
+    var node_name = default_robot_type + "_action";
+    console.log("IP of the robot: " + default_robot_ip);
+    var json = {"action":"launch_action", "node_name":node_name, "robot_name":default_robot_name, "robot_ip":default_robot_ip }
+    console.log(JSON.stringify(json));
+    //POST the text to the server
+    $.ajax({
+            type : "POST",
+            url : url_var,
+            contentType: "application/json; charset=utf-8",
+            data : JSON.stringify(json),
+            dataType : "json"
+        });
+}
+
+// OK
+function onConnectRobot() {
+    default_robot_type = document.getElementById("type_robot_simple").value;
+    console.log("Default robot changed to: " + default_robot_type);
+    default_robot_name = document.getElementById("name_robot").value;
+    console.log("New name of the default robot: " + default_robot_name);
+    default_robot_ip =  document.getElementById("ip_robot_simple").value + document.getElementById("last_ip_simple").value 
+    console.log("IP cahnged to: " +  default_robot_ip);
+    onDefaultLaunch()
+}
+
+function doUndo(){
+    WORKSPACE.undo(false);
+}
+
+
+function doRedo(){
+    WORKSPACE.undo(true);
+}
+
+
+
+
+// ******************************** On device launch **************************************************
+// DESCRIPTION: Launch a sensory device
+// ******************************************************************************************************
+
+
+function onNodesLaunch(){
+    //Get a list of sensory device to be use
+    var selected = [];
+    $("input:checkbox[name=checkbox_robot]:checked").each(function(){
+    selected.push($(this).val());
+    });
+    console.log("Sensory devices: " + selected)
+
+    //Attach parameters to the message, TODO: maybe can be better with JSON
+    var nodes_to_launch = ""; 
+
+    if (selected.length > 0){
+
+        if(selected.length == 1){
+            nodes_to_launch += selected[0];
+        } 
+        if (selected.length >= 2){
+            for (index = 0; index < selected.length-1; ++index) {
+                nodes_to_launch += selected[index] + ",";
+            }
+            nodes_to_launch += selected[selected.length-1];
+        }
+
+        var json = {"action":"launch_nodes", "nodes_to_launch":nodes_to_launch}
+        console.log(JSON.stringify(json));
+        //POST the text to the server
+        $.ajax({
+                type : "POST",
+                url : url_var,
+                contentType: "application/json; charset=utf-8",
+                data : JSON.stringify(json),
+                dataType : "json"
+            });
+    }
+}
+
+
+// ******************************** On RunAdd function **************************************************
+// DESCRIPTION: Confugurate a robot 
+// ******************************************************************************************************
+
+function onRobotAdd(){
+
+    console.log(document.getElementById("last_ip").value)
+    console.log(document.getElementById("ip_robot").value)
+
+    console.log(document.getElementById("type_robot").value)
+    console.log(document.getElementById("name_robot").value)
+}
+
+
+// ******************************** On Run function **************************************************
+// DESCRIPTION: This function is used to send the code to the server.
+// ***************************************************************************************************
+
+// The message sended have the next format:
+// "run&" +  code, where "run" is a string that will indicate to the server that the action to be done is to run code
+// & is used as a delimiter in the server. The code is extracted from the workspaceToCode function.
+function onRunCode () {
+    // Get the code from the blocks 
+    var code = Blockly.Python.workspaceToCode(WORKSPACE);
+
+    code = default_code + code
+
+    // See the code in the console (for example the Chorme console)
+    console.log(code);
+
+    // Action to do by the server
+    var json = {"action":"run", "code":code}
+    console.log(JSON.stringify(json));
+    $.ajax({
+            type : "POST",
+            url : url_var,
+            contentType: "application/json; charset=utf-8",
+            data : JSON.stringify(json),
+            dataType : "json"
+        });
+}
+
+// ************************************** OnSaveBlocklyXML **************************************************
+// DESCRIPTION: Save the Blockly program in the Workspace in a XML file 
+// **********************************************************************************************************
+// Save the content of a string variable in a file, used to save the generated code in .py files (Python scripts)
+// Referenece : http://stackoverflow.com/questions/24898044/is-possible-to-save-javascript-variable-as-file
+
+//TODO: This did not work for Japanesse
+
+var Download =
+{
+        click : function(node) {
+            var ev = document.createEvent("MouseEvents");
+            ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            return node.dispatchEvent(ev);
+        },
+        encode : function(data) {
+        return 'data:application/octet-stream;base64,' + btoa( data );
+        },
+        link : function(data, name){
+            var a = document.createElement('a');
+            a.download = name || self.location.pathname.slice(self.location.pathname.lastIndexOf('/')+1);
+            a.href = data || self.location.href;
+            return a;
+    }
+};
+
+
+
+Download.save = function(data, name)
+{
+    this.click(
+        this.link(
+            this.encode( data ),
+            name
+        )
+    );
+};
+
+
+
+function onSaveBlocklyXML(){
+    
+    
+    // Transform the block in a xml format
+    var xml = Blockly.Xml.workspaceToDom(WORKSPACE);
+    // Tranform a xml text in a more redeable xml text
+    xml = Blockly.Xml.domToPrettyText(xml);
+    console.log(xml);
+    // Save a file
+	//Download.save(xml,"block.xml");
+
+    // Save the python code --- TODO: in other button
+    Blockly.Python.INFINITE_LOOP_TRAP = null;
+    var code = Blockly.Python.workspaceToCode(WORKSPACE);
+    code = default_code + code
+    console.log(code);
+
+    //Download.save(code,"code.py");
+
+}
+
+
+
+
+// ************************************** OnLoadBlocklyXML *******************************************
+// DESCRIPTION: Load a Blockly program in a XML file
+// ***************************************************************************************************
+
+// GET request to the server to load a XML file
+function onLoadBlocklyXML(){
+    try {
+        var fil = document.getElementById('uploadme');
+        var name = fil.files[0].name
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function(){
+        if (xmlhttp.readyState==4 && xmlhttp.status==200){
+                blocks = xmlhttp.responseXML;
+                onXML2Workspace();
+            }
+        };
+        xmlhttp.open("GET","programs/" + String(name),true);
+        xmlhttp.send();
+    }
+
+    catch(err) {
+        alert("Error loading the file");
+    }
+}
+
+
+// Clear the workspace and add the blocks from an XML file
+function onXML2Workspace(){
+    WORKSPACE.clear();
+    Blockly.Xml.domToWorkspace(blocks.documentElement, WORKSPACE);
+
+}
+
+
+
+// Clear the workspace
+function onNewWorkspace(){
+    WORKSPACE.clear();
+}
+
+// ************************************** OnSourceSee **************************************************
+// DESCRIPTION: Show the code function
+// ***************************************************************************************************
+
+function OnSourceSee(event) {
+    Blockly.Python.INFINITE_LOOP_TRAP = null;
+    var source_code = Blockly.Python.workspaceToCode(WORKSPACE);
+
+    source_code = default_code + source_code //Import defualt libraries
+    source_code = source_code.replace(/ /g, '&nbsp;');
+    source_code = source_code.replace(/\n/g, '<br />');
+    source_code = '<div style="font-size:large; margin-bottom:5px;">' + 'Python code' + '</div><div style="font-weight:bold">' + source_code + '</div>';
+    $('div#div-source-code').html(source_code);
+}
+
+// Add event
+WORKSPACE.addChangeListener(OnSourceSee);
+$('select#language').change(OnSourceSee);
+
+
+
+// Clear the workspace and add the blocks from an XML file
+function onTestModal(){
+         swal("Robot " +  temp_robot_name + " connected" , "Click to close", "success");
+}
+
+
+
+// state variables
+var WAIT = false; // If WAIT is true, then the program shall halt until alert or prompt box is closed
+var EXEC_MODE = false; // If EXEC_MODE is true, then alert and prompt should write output to #div-output  TODELETE
+var SILENT_MODE = false; // Execute things, silently
+var INPUT_LIST = [];
+var OUTPUT_LIST = [];
+var TEST_CASE_INDEX = 0; // If SILENT_MODE is activated, then INPUT is taken from LESSONS, thus we need to be informed about current INPUT_INDEX
+var INPUT_TEST_INDEX = 0;
+var INTERPRETER = null;
+var HIGHLIGHT_PAUSE = false;
+var LESSON_ID = 0
+
+
+
+// ------------------------------------------ initialize lesson -------------------------------------------------------- CHANGE TO EXAMPLES
+for(var i=0; i<LESSONS.length; i++){
+    var lesson = LESSONS[i]
+    $('#lesson-chapter').append('<option value="'+i+'">' + lesson.caption + '</option>');
+}
+
+function load_lesson(id){
+    if(id < 0 || id >= LESSONS.length){
+        return null;
+    }
+    var lesson = LESSONS[id];
+    var code = lesson.code;
+    LESSON_ID = id;
+    // use ajax to fill block and lesson
+    $.ajax({
+        'url' : 'data/examples/' + code + '/notebook.html',
+        'cache' : false,
+        'success' : function(html){
+            $('div#div-lesson').html(html);
+        }
+    });
+    $.ajax({
+        'url' : 'data/examples/' + code + '/block.xml',
+        'dataType' : 'text',
+        'cache' : false,
+        'success' : function(xml){
+            xml = Blockly.Xml.textToDom(xml);
+            WORKSPACE.clear();
+            Blockly.Xml.domToWorkspace(xml, WORKSPACE);
+        }
+    });
+}
+load_lesson(LESSON_ID);
+$('#lesson-chapter').change(function(event){
+    var new_lesson_id = $('#lesson-chapter option:selected').val();
+    load_lesson(new_lesson_id);
+});
+
+
+// I a robot was connceted, then add to the registered robot list
+
+function onAddRobot(robot_name) {
+$( ".inner" ).append( '<div class="user-panel"><div class="pull-left image"><img src="interface/images/nao_cara.png" class="img-circle" alt="User Image"></div> <div class="pull-left info"><p>' + robot_name + '</p><a href="#"><i class="fa fa-circle text-success"></i> Online</a></div></div>' );
+}
+
+
+// ************************ SSE *****************************
+$(document).ready(
+      function() {
+        sse = new EventSource('/my_event_source');
+        sse.onmessage = function(message) {
+        if (message.data != 'null')
+        {
+          console.log(message.data);
+          var json_event = jQuery.parseJSON( message.data );
+
+          if(json_event.node_type == "action_engine")
+          
+          {
+              if(json_event.node_status == "starting" && json_event.description == "busy")
+              {
+
+                swal({
+                title: "Connectig your robot!",
+                text: " Please wait few seconds",
+                timer: 2000,
+                showConfirmButton: false,
+                });
+
+              }
+              
+              if (json_event.node_status == "on" && json_event.description == "conected")
+              {
+                var temp_robot_name = json_event.robot_name
+                onAddRobot(temp_robot_name)
+                swal("Robot " +  temp_robot_name + " connected" , "Click to close", "success")
+              }
+
+              if (json_event.node_status == "off" && json_event.description == "error")
+              {
+                var temp_robot_name = json_event.robot_name
+                swal({
+                title: "Robot not found",
+                text: "Possible solutions: \n 1.- Are your robot and your computer in the same wifi connection? \n 2.- Did you select the correct IP addres of your robot? ",
+                imageUrl: "static/interface/images/no_wifi.png"
+              });
+              }
+          }
+
+          if(json_event.node_type == "main_code")
+          {
+              if (json_event.node_status == "error" && json_event.description == "busy")
+              {
+                var temp_robot_name = json_event.robot_name
+                swal("Another program is already in execution" , "You can use the stop button to close the execution of the another program", "error")
+              }
+          }
+
+        }
+      }
+
+  })
+
+
+
+
+</script>
+
+
+<!-- ###############################  Script od the interface  #####################################-->
+</script>
+    <!-- jQuery -->
+    <script src="interface/startbootstrap/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="interface/startbootstrap/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="interface/startbootstrap/vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="interface/startbootstrap/dist/js/sb-admin-2.js"></script>
+
+    <script src="interface/slide_panel/js/jquery-2.1.1.js"></script>
+    <script src="interface/slide_panel/js/main.js"></script> <!-- Resource jQuery -->
+
+</script>
+
+
+<!-- ###############################  On load page function  #####################################-->
+<script type="text/javascript">
+        function codeAddress() {
+              var data = [{
+                    'order': '1',
+                        'robot': 'Karen',
+                        'ip': '192.168.11.1',
+                        'type': 'nao'
+                }, {
+                    'order': '2',
+                        'robot': 'Hiro',
+                        'ip': '192.168.11.2',
+                        'type': 'nao'
+                }];
+
+                var transform = {
+                    tag: 'tr',
+                    children: [{
+                        "tag": "td",
+                            "html": "${order}"
+                    }, {
+                        "tag": "td",
+                            "html": "${robot}"
+                    }, {
+                        "tag": "td",
+                            "html": "${ip}"
+                    }, {
+                        "tag": "td",
+                            "html": "${type}"
+                    }]
+                };
+
+                $('#placar  > tbody ').html(json2html.transform(data,transform));
+        }
+        window.onload = codeAddress;
+
+</script>
+
+    <!--   Core JS Files   -->
+    <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+
+	<!--  Checkbox, Radio & Switch Plugins -->
+	<script src="assets/js/bootstrap-checkbox-radio-switch.js"></script>
+
+	<!--  Charts Plugin -->
+	<script src="assets/js/chartist.min.js"></script>
+
+    <!--  Notifications Plugin    -->
+    <script src="assets/js/bootstrap-notify.js"></script>
+
+    <!--  Google Maps Plugin    -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+	<script src="assets/js/light-bootstrap-dashboard.js"></script>
+
+	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+	<script src="assets/js/demo.js"></script>
+
+	<script type="text/javascript">
+    	$(document).ready(function(){
+
+        	demo.initChartist();
+
+        	$.notify({
+            	icon: 'pe-7s-face',
+            	message: "Welcome to <b>Node Primitives (NEP)</b> - a robotic programming interface."
+
+            },{
+                type: 'info',
+                timer: 4000
+            });
+
+    	});
+	</script>
+
+</html>

@@ -1,0 +1,6 @@
+{
+    "primitive": "wake up",
+    "type": "robot_mode",
+    "description": "Turn on the robot from a rest state",
+    "input": "none"
+}

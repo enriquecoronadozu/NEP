@@ -1,0 +1,6 @@
+{
+    "primitive": "human gesture",
+    "type": "human_state",
+    "description": "Imitate an animal or character",
+    "input": "string"
+}

@@ -1,24 +1,28 @@
 #%%
 import zmq
 import time
+import nep
+import thread
 
 
 class master:
-
     
     def __init__(self, IP = '127.0.0.1' , port = 7000):
-        context = zmq.Context()
-        self.sock = context.socket(zmq.REP)
-        self.sock.bind("tcp://" + IP + ":" + str(port))
+        self.s = nep.server(IP,port)
+        
 
         # Ports configuration
         self.current_port = 9000
         self.topic_register = {}
 
+    def onMany2Many(self,port):
+        print "New many2many broker"
+        b = nep.broker('127.0.0.1', port+1, port)
+
     def run(self):
         while True:
             time.sleep(.01)
-            node_request = self.sock.recv_json()
+            node_request = self.s.listen_info()
             print ("Request: " + str(node_request))
             if 'topic' in node_request:
                 topic = str(node_request['topic'])
@@ -26,14 +30,17 @@ class master:
                     print ("Topic already register")
                     port = self.topic_register[topic]
                     msg = {'topic':topic, 'port': port}
-                    self.sock.send_json(msg)
+                    self.s.send_info(msg)
                     print self.topic_register
                 else:
+                    if node_request["mode"] == "many2many":
+                        thread.start_new_thread ( self.onMany2Many, (self.current_port,)) 
+                        time.sleep(.5)
                     print ("New topic register")
                     self.topic_register.update({topic:self.current_port})
                     msg = {'topic':topic, 'port': self.current_port}
-                    self.sock.send_json(msg)
-                    self.current_port = self.current_port + 1
+                    self.s.send_info(msg)
+                    self.current_port = self.current_port + 2
                     print self.topic_register
 
 

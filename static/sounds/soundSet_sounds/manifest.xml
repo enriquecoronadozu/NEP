@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package uuid="soundset_sounds-89847e" version="0.0.1">
+ <names>
+  <name lang="en_US">soundSet_sounds</name>
+ </names>
+ <descriptions>
+  <description lang="en_US">Sound set</description>
+ </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path="behavior_1">
+   <userRequestable/>
+   <nature>interactive</nature>
+   <triggerSentences/>
+   <loadingResponses/>
+   <autonomous/>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+ <requirements>
+  <naoqiRequirement minVersion="2.5"/>
+  <robotRequirement minHeadVersion="3.0" minBodyVersion="3.0" model="NAO"/>
+ </requirements>
+</package>

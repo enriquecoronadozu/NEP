@@ -1,0 +1,13 @@
+var database = {animation: {"input":{"type":"dropdown","values":[{"name":"animation.json"},{"name":"pp_agachate_arriba"},{"name":"pp_agachate_derecha"},{"name":"pp_agachate_izquierda"},{"name":"pp_aleteo"},{"name":"pp_aleteo_rapido"},{"name":"pp_arriba"},{"name":"pp_arriba_zig"},{"name":"pp_brazos"},{"name":"pp_cabeza_arriba_abajo"},{"name":"pp_cabeza_derecha_izquierda"},{"name":"pp_cabeza_gira"},{"name":"pp_cancion1"},{"name":"pp_cancion2"},{"name":"pp_cuerpo_abajo"},{"name":"pp_derecha_abajo"},{"name":"pp_derecha_arriba"},{"name":"pp_derecha_medio"},{"name":"pp_estirar"},{"name":"pp_firmes"},{"name":"pp_gira_arriba"},{"name":"pp_hello1"},{"name":"pp_hello2"},{"name":"pp_marcha"},{"name":"pp_mickey3"},{"name":"pp_mickey_d"},{"name":"pp_mickey_lets_go"},{"name":"pp_mickey_mouse_derecha"},{"name":"pp_mickey_mouse_izquierda"},{"name":"pp_militar"},{"name":"pp_pirata_l"},{"name":"pp_pirata_r"},{"name":"pp_strech"},{"name":"pp_vuelta"},{"name":"pp_zig_medio"}],}, 
+"options":{"velocity":"percentage","flip":"bool","reverse":"bool"},}, 
+human_emotion: {"input":{"type":"string",}, 
+}, 
+human_gesture: {"input":{"type":"string",}, 
+}, 
+rest: {"input":{"type":"none",}, 
+}, 
+say: {"input":{"type":"string",}, 
+"options":{"velocity":"percentage","double voice":"percentage","language":"string","pitch":"percentage"},}, 
+wake_up: {"input":{"type":"none",}, 
+}, 
+}

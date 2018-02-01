@@ -14,15 +14,40 @@ from sys import executable
 #TODO documentation
 
 class launcher():
+    """
+    This class is used to launch nodes inside the node folder
+
+    Example
+    ----------
+
+    Launch a node
+
+    .. code-block:: python
+
+        import nep
+        lan = nep.launcher()
+        lan.nep_launch("action", "nao_action_processor")
+
+    """
 
     def __init__(self):
         self.initial_path = os.getcwd()
 
-    def return_initial_path(self):
+
+    def _return_initial_path(self):
         os.chdir(self.initial_path)
         
 
     def launch(self, script):
+        """
+            Launch a python program
+
+            Parameters
+            ----------
+            script : string
+                script name + extension. Example: "script.py" 
+
+        """
         print "To run: " + script
         if os.environ.get('OS','') == 'Windows_NT':
 
@@ -40,7 +65,8 @@ class launcher():
             complete = tell + '"' +  to_run + '"'
 
             applescript.AppleScript(complete).run()
-            self.return_initial_path()
+            self._return_initial_path()
+
 
 
     #TODO: put in a class that save the initial path to avoid problems with os.chdir("../../..")
@@ -67,7 +93,7 @@ class launcher():
         """
                 
         params = ""
-        self.return_initial_path()
+        self._return_initial_path()
         if(node_type == "action"):
             params = " " + str(param2) + " " + str(param1)
         if(node_type == "perception"):
@@ -83,7 +109,7 @@ class launcher():
         os.chdir(setup)
         print "Current:" + os.getcwd()
         self.launch(script)
-        self.return_initial_path()
+        self._return_initial_path()
         
 
 

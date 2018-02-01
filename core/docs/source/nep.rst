@@ -1,56 +1,43 @@
-nep package
+NEP reference
 ===========
 
-Submodules
-----------
-
-nep.communication module
-------------------------
+communication
+--------------------
 
 .. automodule:: communication
     :members:
     :undoc-members:
     :show-inheritance:
 
-nep.human module
-----------------
+nep_msg
+----------
 
-.. automodule:: human
+.. automodule:: nep_msg
     :members:
     :undoc-members:
     :show-inheritance:
 
-nep.robot module
-----------------
+robot
+----------
 
 .. automodule:: robot
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-
-nep.robot_behaviors module
---------------------------
+robot_behaviors 
+--------------------
 
 .. automodule:: robot_behaviors
     :members:
     :undoc-members:
     :show-inheritance:
 	
-nep.robot module
---------------------------
+launcher 
+----------
 
-.. automodule:: robot
+.. automodule:: launcher
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: nep
-    :members:
-    :undoc-members:
-    :show-inheritance:

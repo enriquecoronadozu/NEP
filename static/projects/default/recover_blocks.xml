@@ -1,0 +1,16 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="do_action" id="=k/0pCfh,!qBCV%Lbp)8" x="3" y="14">
+    <value name="input">
+      <block type="say" id="8m9,+-thWUAn;Gqi|Des">
+        <field name="inp_1">edit</field>
+        <field name="inp_2">edit</field>
+      </block>
+    </value>
+    <value name="robots">
+      <block type="add_robot" id="!;lfC?cd-3NtK.i!/84|">
+        <field name="robot">nao</field>
+      </block>
+    </value>
+  </block>
+</xml>

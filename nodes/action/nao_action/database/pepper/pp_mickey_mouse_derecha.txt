@@ -1,0 +1,69 @@
+
+names.append("HeadPitch")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.231708, 0.231707, 0.234068, 0.231707])
+
+names.append("HeadYaw")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.0159976, 0.0159976, 0.0245425, 0.0159976])
+
+names.append("HipPitch")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([-0.175571, -0.175572, -0.139165, -0.144091])
+
+names.append("HipRoll")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.0120624, 0.0120624, -0.224615, -0.217612])
+
+names.append("KneePitch")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.0862006, 0.0862006, 0.0802202, 0.0862006])
+
+names.append("LElbowRoll")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([-1.46814, -1.46814, -1.46782, -1.46814])
+
+names.append("LElbowYaw")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([-0.729295, -0.729295, -0.705783, -0.708432])
+
+names.append("LHand")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.63718, 0.63718, 0.647953, 0.647182])
+
+names.append("LShoulderPitch")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([1.65603, 1.65603, 1.68205, 1.67843])
+
+names.append("LShoulderRoll")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.716939, 0.71694, 0.83295, 0.832668])
+
+names.append("LWristYaw")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.0618321, 0.0618321, 0.0455044, 0.050994])
+
+names.append("RElbowRoll")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([1.51901, 1.48395, 0.0187839, 0.0277178])
+
+names.append("RElbowYaw")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.159216, 0.185602, 1.43932, 1.43064])
+
+names.append("RHand")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([0.485935, 0.485935, 0.483622, 0.485935])
+
+names.append("RShoulderPitch")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([1.16855, 1.10943, -1.2458, -1.23526])
+
+names.append("RShoulderRoll")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([-0.825446, -0.814823, -0.376586, -0.377092])
+
+names.append("RWristYaw")
+times.append([0.64, 0.72, 1.44, 1.52])
+keys.append([-0.538673, -0.564865, -1.53932, -1.53823])
+

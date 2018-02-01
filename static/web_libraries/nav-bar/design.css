@@ -1,0 +1,184 @@
+  /* ENRIQUE CORONADO
+    Description: CSS design of the main navigation var 
+  */
+
+body,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+body { background: #ffffff; }
+
+.drawer {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding: .4em 0;
+  background: url('images/fuji.jpg');
+  color: white;
+  text-align: center;
+  /* Remove 4px gap between <li> */
+  font-size: 0;
+}
+
+.drawer li {
+  pointer-events: none;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  list-style: none;
+  line-height: 100%;
+  transform: translateZ(0);
+}
+
+.drawer a {
+  pointer-events: auto;
+  position: relative;
+  display: block;
+  min-width: 5em;
+  margin-bottom: .4em;
+  padding: .4em;
+  line-height: 100%;
+  /* Reset font-size */
+  font-size: 16px;
+  text-decoration: none;
+  color: white;
+  transition: background 0.3s;
+}
+
+.drawer a:active,
+.drawer a:focus { background: #B44659; }
+
+.drawer i {
+  display: block;
+  margin-bottom: .2em;
+  font-size: 2em;
+}
+
+.drawer span {
+  font-size: .625em;
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+
+.drawer li:hover ul {
+  /* Open the fly-out menu */
+  transform: translateX(0);
+  background: #B44659;/* Enable this if you wish to replicate hoverIntent */
+}
+
+.drawer > li { display: block;/* Add a shadow to the top-level link */
+  /* Show the shadow when the link is hovered over */
+  /* Fly out menus */
+}
+
+.drawer > li > a { background: none } /* KIKE: Background de siempre*/
+
+.drawer > li:hover { z-index: 100; }
+
+.drawer > li:hover a { background: #B44659; } /* KIKE: Color cuando se selecciona le elemento del menu principal */
+
+.drawer > li a:hover { background: #F56356; }/* KIKE: Color cuando se el botton en el elemento del menu principal */
+
+.drawer > li > a:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  width: 4px;
+  opacity: 0;
+  background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(0, 0, 0, 0.65)), color-stop(100%, transparent));
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
+  background: -o-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
+  background: -ms-linear-gradient(left, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000', GradientType=1 );
+  transition: opacity 0.5s;
+}
+
+.drawer > li:hover a:after { opacity: 1; }
+
+.drawer > li ul {
+  position: absolute;
+  /* Stack below the top level */
+  z-index: -1;
+  top: 0;
+  left: 100%;
+  height: 100%;
+  width: auto;
+  white-space: nowrap;
+  /* Close the menus */
+  transform: translateX(-210%);  /*  KIKE: esta linea resulve el problem de la trasparencia al trasladar de mas la barra*/
+  background:  none;
+  transition: 0.5s transform;
+}
+
+
+
+#main {
+  transition: margin-left .5s;
+  margin-left: 100px;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+.sidenav {padding-top: 15px;}
+.sidenav a {font-size: 18px;}
+}
+
+.footer {
+  background-color: #FFFFFF;
+  line-height: 20px; }
+  .footer nav > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-weight: normal; }
+    .footer nav > ul a:not(.btn) {
+      color: #9A9A9A;
+      display: block;
+      margin-bottom: 3px; }
+      .footer nav > ul a:not(.btn):hover, .footer nav > ul a:not(.btn):focus {
+        color: #777777; }
+  .footer .social-area {
+    padding: 15px 0; }
+    .footer .social-area h5 {
+      padding-bottom: 15px; }
+  .footer .social-area > a:not(.btn) {
+    color: #9A9A9A;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px 5px;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 20px;
+    text-align: center; }
+    .footer .social-area > a:not(.btn):hover, .footer .social-area > a:not(.btn):focus {
+      color: #777777; }
+  .footer .copyright {
+    color: #777777;
+    padding: 10px 15px;
+    margin: 10px 3px;
+    line-height: 20px;
+    font-size: 14px; }
+  .footer hr {
+    border-color: #DDDDDD; }
+  .footer .title {
+    color: #777777; }
+
+.footer-default {
+  background-color: #F5F5F5; }
+
+.footer:not(.footer-big) nav > ul {
+  font-size: 14px; }
+  .footer:not(.footer-big) nav > ul li {
+    margin-left: 20px;
+    float: left; }
+  .footer:not(.footer-big) nav > ul a {
+    padding: 10px 0px;
+    margin: 10px 10px 10px 0px; }

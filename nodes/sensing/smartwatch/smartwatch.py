@@ -11,7 +11,9 @@
 # Autor: Luis Enrique Coronado Zuniga
 
 
+
 import nep
+from nep.nep_msg import*
 import sys
 import zmq
 import time
@@ -107,7 +109,7 @@ class smartwatch_server():
 
                 
                 node = nep.node("smartwatch")
-                pub_config = node.config_pub()
+                pub_config = node.config_pub(msg_type = "accel")
                 pub  = node.new_pub("/smart_accel", pub_config)
                 
                 while True:
@@ -135,14 +137,16 @@ class smartwatch_server():
                                                 #read each line
                                                 for line in list_data:
                                                         condition, option, x,y,z = self.decode(line)
-                                                        message = str(x) + "," + str(y) + "," + str(z)
+         
+                                                        linear = vector(float(x),float(y),float(z))
+                                                        
                                                         if(condition == True and option == 0):
                                                                 # Here we publish the acceleration data in the topic  "/smart_accel"
-                                                                self.pub.send_string(message)
+                                                                pub.send_info(linear.data)
                                                         #TODO not implemented
                                                         if(condition == True and option == 1):
                                                                 # Here we publish the gyroscope data in the topic  "/smart_gyro"
-                                                                self.pub.send_string(message) #change topic
+                                                                pub.send_info(linear.data) #change topic
 
                                                         message_queues[s].put(data)
                                                         # Add output channel for response

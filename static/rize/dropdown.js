@@ -1,0 +1,1 @@
+var rize_add_robots = [["nao","nao"], ["pepper","pepper"], ["arm","arm"]];

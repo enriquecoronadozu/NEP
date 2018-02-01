@@ -7,7 +7,7 @@ setup(
     author_email='enriquecoronadozu@gmail.mx',
     url='http://enriquecoronadozu.github.io',
     description='Node primitives for social human robot interaction',
-    packages=["nep"],
+    packages=["nep","rize"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",

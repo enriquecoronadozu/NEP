@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-# ------------------------ Robot bahavior class --------------------------------
-# Description: Set of robot bahavior clases
+# ------------------------ Robot behavior class --------------------------------
+# Description: Robot complex behaviors class
 # --------------------------------------------------------------------------------
 # You are free to use, change, or redistribute the code in any way you wish
 # but please maintain the name of the original author.
@@ -11,7 +11,7 @@
 
 
 
-from nep import*
+import nep
 import time
 import threading
 
@@ -46,17 +46,16 @@ class robot_behaviors:
 
         # IF the type of behavior is reactive
         if type_behavior == 'reactive':
-            # Get information from a perceptual socket
-            self.perception_ip = '127.0.0.1'
-            self.perception_port= '5002'
             self.perception_topic = "/human_state"
 
-            self.listener = subscriber(self.perception_ip, self.perception_port,self.perception_topic, False)
+            self.node = nep.node("robot_behavior")
+            sub_config = self.node.conf_sub(mode = "many2many")
+            self.listener  =  self.node.new_sub("/human_state", sub_config)
+
             #TODO joint, close threads           
 
-    #Close the sockets
-    def end_listening(self):
-        self.listener.close()
+
+
 
     def update_human_state(self):
         """  Read the data from the socket and update the human state

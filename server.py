@@ -16,27 +16,11 @@ import thread
 import time
 import nep
 import simplejson
+import requests
 
 
 
-def onNewProject(data):
 
-    project_name = data['project_name']
-    path = os.getcwd()
-
-    #Create the projects folder if was delated
-    path_projects = path + "/static/projects"
-    if not os.path.exists(path_projects):
-        os.makedirs(path_projects)
-
-    #Create a new project of not exists
-    path_projects = path_projects + "/"
-    print path_projects
-    if not os.path.exists(path_projects + project_name):
-        os.makedirs(path_projects + project_name)
-        print ("New project created")
-    else:
-        print ("Error creating a new project: the name of the project already exists")
 
 def onDeviceLaunch(params):
     """Launch a sensory device node"""
@@ -52,7 +36,8 @@ def onDeviceLaunch(params):
 
 
 #TODO: improve this approach
-def onRunCode(code):
+def onRunCode(data):
+    code = data['input']
 
     print 
     print "***Code execution request***"
@@ -84,13 +69,48 @@ def onCodeStop():
 
 
 def onSaveFiles(data):
-    xml = data['xml']
-    code = data['code']
-    project_name = data['project_name']
-    text_file = open("blocks.xml", "w")
-    print xml
-    text_file.write(xml)
-    text_file.close()
+    
+    
+    project_name = data['name']
+    how = data['how']
+    path = os.getcwd()
+
+    #Create the projects folder if was delated
+    path_projects = path + "/static/projects"
+    if not os.path.exists(path_projects):
+        os.makedirs(path_projects)
+
+    #Create a new project of not exists
+    path_projects = path_projects + "/"
+    print path_projects
+    if not os.path.exists(path_projects + project_name):
+        os.makedirs(path_projects + project_name)
+        print ("New project created")
+    else:
+        print ("Error creating a new project: the name of the project already exists")
+
+    try:
+        path_projects = path + "/static/projects/"
+        code = data['code']
+        xml = data['xml']
+
+        name_file = "blocks.xml"
+        if how == "auto":
+            name_file = "recover_blocks.xml"
+
+        xml_file = open(path_projects + project_name +  "/" +  name_file , "w")
+        py_file = open(path_projects + project_name + "/code.py", "w")
+        print xml
+        xml_file.write(xml)
+        py_file.write(code)
+        xml_file.close()
+        py_file.close()
+        print ("Code and XML saved for project: " +  project_name)
+    except:
+        pass
+    finally:
+        os.chdir(global_path)
+
 
 
 
@@ -126,8 +146,7 @@ def new_action():
         if (action_to_do == "stop"):
             onCodeStop()
         if (action_to_do == "run"):
-            code = data['code']
-            thread.start_new_thread ( onRunCode, (code,)) #Here the parameter is the code to run
+            thread.start_new_thread ( onRunCode, (data,)) #Here the parameter is the code to run
         if (action_to_do == "launch_action"):
             node_name = data['node_name']
             robot_name = data['robot_name']
@@ -136,10 +155,17 @@ def new_action():
         if (action_to_do == "launch_nodes"):
             nodes = data['nodes_to_launch']
             thread.start_new_thread ( onDeviceLaunch, (nodes,))
-        if (action_to_do == "new_project"):
-            thread.start_new_thread ( onNewProject, (data,))
         if (action_to_do == "save"):
             thread.start_new_thread ( onSaveFiles, (data,))
+
+        if (action_to_do == "load"):
+            # Send a list of project in the static/projects path
+            list_projects = os.listdir("static/projects")
+            print "Projects"
+            print list_projects
+
+            result = {'projects': list_projects}
+            return simplejson.dumps(result)
 
 
         
@@ -159,17 +185,15 @@ def event_stream():
         if success:
             node_type = str(state['node_type'])
             node_status = str(state['node_status'])
-            description = state['description']
-            if node_type == 'action_engine':
+            if node_type == 'action':
                 robot_name = state['robot_name']
-                robot_type = state['robot_type']
-                message = r = {'node_type':node_type, 'node_status':node_status, 'robot_name':robot_name, 'robot_type':robot_type,  'description':description }
-                message = json.dumps(message)
+                message  = {'node_type':node_type, 'node_status':node_status, 'robot_name':robot_name}
+                message = simplejson.dumps(message)
                 yield 'data: %s \n\n' %message
 
             if node_type == 'main_code':
-                message = r = {'node_type':node_type, 'node_status':node_status, 'description':description }
-                message = json.dumps(message)
+                message  = {'node_type':node_type, 'node_status':node_status}
+                message = simplejson.dumps(message)
                 yield 'data: %s \n\n' %message
 
             
@@ -183,6 +207,7 @@ def sse_request():
             mimetype='text/event-stream')
 
 
+
 lan = nep.launcher()
 print ("Starting NEP Master...")
 lan.launch("NEP_master.py")
@@ -190,12 +215,13 @@ time.sleep(3)
 print ("Starting Server ...")
 import webbrowser
 url = "http://127.0.0.1:5000/"
+global_path = os.getcwd()
 
 node = nep.node("RIZE_server")
-sub_config = node.config_sub(mode = "many2one")
+sub_config = node.conf_sub(mode = "many2one")
 status_sub  = node.new_sub("/node_status", sub_config)
 
-pub_config = node.config_pub()
+pub_config = node.conf_pub(mode = "one2many")
 pub_exit  = node.new_pub("/program_execution", pub_config)
 
 webbrowser.open(url, new=2)

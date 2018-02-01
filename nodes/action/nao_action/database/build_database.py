@@ -15,44 +15,53 @@ from os import listdir
 from os.path import isfile, join
 import re
 import ast
-import json
+import simplejson
 
 # Delete database
 import os
 import os.path
 
-if (os.path.exists("nao_animation_db.json")):
-  os.remove("nao_animation_db.json")
+#Define robots
+robots = ["nao", "pepper"]
+
+for path in robots:
+  print ("---------------- " + path +" ---------------")
+  #Restart the databases
+  if (os.path.exists(path+"_animation_db.json")):
+    os.remove(path+"_animation_db.json")
   print("***Database restarted!***")
 
-# Get a list of files inside the animations folder
-path = "animations"
+  # Get a list of files inside the animations folder
 
-onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
-print ("Files to build database:" +  str(onlyfiles))
+  onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+  print ("Files to build database:" +  str(onlyfiles))
 
-# Build database
-print ("***Building database***")
-db = TinyDB('nao_animation_db.json')
-for file_ in onlyfiles:
+  # Build database
+  print ("***Building database***")
+  db = TinyDB(path + '_animation_db.json')
 
-  f = open(path  + "/" +  file_,"r")
+  animation_file = open(path + "/animation.json","w") 
+  animations_options = {"values":[]}
 
-  try:
-    movement_name = file_.split(".txt")
 
-    data =  f.read()
-    names = list()
-    times = list()
-    keys = list()
+  for file_ in onlyfiles:
+    f = open(path  + "/" +  file_,"r")
+    try:
+      movement_name = file_.split(".txt")
+      animations_options["values"].append({"name":movement_name[0]})
+      #animations_options[str(movement_name[0])] = movement_name[0]
 
-    #Get animation elements from Choregraphe timeline/clipboard (simple mode)
-    list_data =  data.split("\n\n")
-    i = 0
-    for parts in list_data:
+      data =  f.read()
+      names = list()
+      times = list()
+      keys = list()
+
+      #Get animation elements from Choregraphe timeline/clipboard (simple mode)
+      list_data =  data.split("\n\n")
+      i = 0
+      for parts in list_data:
         e = parts.split("\n")
-        try:
-          
+        try:  
           result = re.search('names.append\("(.*)"\)', e[0])
           name = str(result.group(1))
           result = re.search('times.append\((.*)\)', e[1])
@@ -67,14 +76,34 @@ for file_ in onlyfiles:
           
         except:
           pass
-        
-    # Save animation in the database
-    db.insert({'animation': movement_name[0], 'names': names, 'times':times, 'keys':keys})
-    print (str(movement_name[0]) + " ---> added")
-
-  except:
-    print ("Error reading file: " + str(file_))
-    pass
+     
+      # Save animation in the database
+      db.insert({'animation': movement_name[0], 'names': names, 'times':times, 'keys':keys})
+      print (str(movement_name[0]) + " ---> added")
+    except:
+      print ("Error reading file: " + str(file_))
+      pass
+  # sort_keys = True is important
+  animation_file.write(simplejson.dumps(animations_options, sort_keys = True))
+  animation_file.close()
       
-print("***database build finished!***")
+  print("***database build finished!***")
+
+"""
+def json2dict(s, **kwargs):
+    if str is unicode and isinstance(s, bytes):
+        s = s.decode('utf8')
+    
+    return simplejson.loads(s, **kwargs)
+
+def read_json(json_file):
+    json_data = open (json_file).read()
+    return json_data
+
+json_data = read_json("animation.json")
+data = json2dict(json_data)
+print data['options']
+
+"""
+
 

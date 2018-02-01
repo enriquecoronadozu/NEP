@@ -13,20 +13,46 @@
 import time
 import os
 import zmq
-from nep import human
-import json
+import simplejson
 import sys
+import socket
+import signal
 
+##try:
+##    import nanomsg
+##except ImportError:
+##    print ("Nanomsg not installed")
 
 
 
 class node:
-    def __init__(self, node_name, useROS = False):
+
+    def signal_handler(self, signal, frame):
+        """Signal handler used to close the app"""
+        print('Signal Handler, you pressed Ctrl+C! to close the node')
+        time.sleep(1)
+        sys.exit(0)
+    
+    def __init__(self, node_name, transport = "ZMQ"):
+        """
+        Class used to define a node and publisher-subscriber patterns
+
+        Parameters
+        ----------
+
+        node_name : string 
+            Name of the node
+        
+        transport : string
+            Define the trasport layer of the node, can be 'ROS', 'ZMQ' or 'NN' to use ROS, ZeroMQ and and nanomsg respectively
+
+        """
+        signal.signal(signal.SIGINT, self.signal_handler)
         self.node_name = node_name
-        self.useROS = useROS
+        self.transport  = transport 
         print ("New NEP node: " + self.node_name)
         
-        if self.useROS ==True:
+        if self.transport  == 'ROS':
             try:
                 import rospy		
                 rospy.init_node(node_name, anonymous=True)
@@ -43,46 +69,210 @@ class node:
                 sys.exit(1)
 
 
-    def config_pub(self, msg_type = "dict",transport = "ZMQ", network = "P2P", port = "9000", ip = "127.0.0.1", mode = "one2many" ):
+    def conf_pub(self, msg_type = "dict", transport = "ZMQ" , network = "P2P", port = "9000", ip = "127.0.0.1", mode = "one2many" ):
+        """
+
+        The configuration of publishers are defined using python dictionaries with a specific format. This function can be used to
+        define the configuration of a publisher. By default "ZMQ" (ZeroMQ) in a "P2P" network in "one2many" mode it is used.
+
+        Parameters
+        ----------
+        msg_type : string 
+            Type of data to send (recomended to allows ROS geometric messages compatibility)
+
+        transport : string 
+            Transport layer used to communicate, it can be:"ZMQ" to use ZeroMQ, "ROS" to use ROS, and "NN" to use Nanomsg
+
+        network : string 
+            Type of network architecture, it can be "direct" and "P2P" (only for ZeroMQ and Nanomsg)
+
+        port : string 
+            Value of the port to perform the socket connection (only for ZeroMQ and Nanomsg in a "direct" network)
+
+        ip : string 
+            Value of the ip to perform the socket connection (only for ZeroMQ and Nanomsg in a "direct" network)
+
+        mode : string
+            Only for ZeroMQ and Nanomsg. It can be "one2many" (one publisher and many subscribers in a topic), "many2one" (one publisher and many subscribers in a topic), "many2many" (many publishers and many subscribers in a topic).    
+
+        Returns
+        ----------
+
+        conf: dictionary
+            Dictionary with the specifications of the publisher
+
+        Example
+        ----------
+
+        Creates a default publisher using ZeroMQ
+
+        .. code-block:: python
+
+            import nep
+            new_node = nep.node("dummy_node")
+            configuration = new_node.config_pub()
+            pub = new_node.new_pub("dummy_topic", configuration)
+        
+
+        Creates a ROS publisher
+
+        .. code-block:: python
+
+            import nep
+            new_node = nep.node("dummy_node", "ROS")
+            configuration = new_node.config_pub()
+            pub = new_node.new_pub("dummy_topic", configuration)
+        
+        """
+
+        
         conf = { 'msg_type': msg_type, 'transport': transport, 'network': network, 'port': port, 'ip': ip, 'mode':mode}
         return conf
 
-    def config_sub(self, msg_type = "dict", transport = "ZMQ", network = "P2P", port = "9000", ip = "127.0.0.1", mode = "one2many" ):
+    def conf_sub(self, msg_type = "dict", transport = "ZMQ", network = "P2P", port = "9000", ip = "127.0.0.1", mode = "one2many" ):
+        
+        """
+        The configuration of subscribers are defined using python dictionaries with a specific format. This function can be used to
+        define the configuration of a subscriber. By default "ZMQ" (ZeroMQ) in a "P2P" network in "one2many" mode it is used.
+
+        Parameters
+        ----------
+        msg_type : string 
+            Type of data to send (recomended to allows ROS geometric messages compatibility)
+
+        transport : string 
+            Transport layer used to communicate, it can be "ZMQ" to use ZeroMQ, "ROS" to use ROS, and "NANO" to use Nanomsg
+
+        network : string 
+            Type of network architecture, it can be "direct" and "P2P" (only for ZeroMQ and Nanomsg)
+
+        port : string 
+            Value of the port to perform the socket connection (only for ZeroMQ and Nanomsg in a "direct" network)
+
+        ip : string 
+            Value of the ip to perform the socket connection (only for ZeroMQ and Nanomsg in a "direct" network)
+
+        mode : string
+            Only for ZeroMQ and Nanomsg. It can be "one2many" (one publisher and many subscribers in a topic), "many2one" (one publisher and many subscribers in a topic), "many2many" (many publishers and many subscribers in a topic).    
+
+        Returns
+        ----------
+
+        conf: dictionary
+            Dictionary with the specifications of the subscriber
+
+        Example
+        ----------
+
+        Creates a default subscriber
+
+        .. code-block:: python
+
+            import nep
+            new_node = nep.node("dummy_node")
+            configuration = new_node.config_sub() 
+            sub = new_node.new_sub("dummy_topic", configuration)
+        
+        Creates a ROS subscriber
+
+        .. code-block:: python
+
+            import nep
+            new_node = nep.node("dummy_node", "ROS")
+            configuration = new_node.config_sub()
+            pub = new_node.new_sub("dummy_topic", configuration)
+        
+        """
+
         conf = { 'msg_type': msg_type, 'transport': transport, 'network': network, 'port': port, 'ip': ip, 'mode':mode}
         return conf
 
     def new_pub(self,topic, configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip': '127.0.0.1', 'msg_type' : 'dict' }):
+        """
+        Function used to generate a new publisher in the current node
+
+        Parameters
+        ----------
+        topic : string 
+            Name of the topic
+
+        configuration : dictionary 
+            Configuration of the publisher
+
+
+        Returns
+        ----------
+
+        pub : publisher
+            publisher instance
+
+
+        Example
+        ----------
+
+        Creates a default publisher
+
+        .. code-block:: python
+
+            import nep
+            new_node = nep.node("dummy_node")
+            configuration = new_node.config_pub() 
+            pub = new_node.new_sub("dummy_topic", configuration)
+
+        """
+        
         #TODO: launch error if you dont put msg_type or conf
         pub = publisher(topic, self.node_name, configuration)
         return pub
 
     def new_sub(self,topic, configuration =  {'transport': "ZMQ", 'network': "P2P", 'mode':"one2many", 'ip': '127.0.0.1', 'msg_type' : 'dict' }):
-        #TODO: launch error if you dont put msg_type or conf
-        sub = subscriber(topic, self.node_name, configuration)
-        return sub
 
-
-#TODO: sock.close() and context.destroy() must be allway when a process ends
-#In some cases socket handles won't be freed until you destroy the context.
-#When you exit the program, close your sockets and then call zmq_ctx_destroy(). This destroys the context.
-# In a language with automatic object destruction, sockets and contexts 
-# will be destroyed as you leave the scope. If you use exceptions you'll have to
-#  do the clean-up in something like a "final" block, the same as for any resource.
-
-#TODO in documentation , see if the function send and receive objects or dictionaries in functions as send_info, problem of publisher already used.
-class publisher:
-    """ Publisher class used for inter-process comunication between nodes. 
+        """
+        Function used to generate a new subscriber in the current node
 
         Parameters
         ----------
         topic : string 
-            topic name to publish the messages
+            Name of the topic
+
+        configuration : dictionary  
+            Configuration of the subscriber
+
+        Returns
+        ----------
+
+        sub : subscriber 
+            subscriber instance
+
+
+        Creates a default subscriber
+
+        .. code-block:: python
+
+            import nep
+            new_node = nep.node("dummy_node")
+            configuration = new_node.config_sub() 
+            sub = new_node.new_sub("dummy_topic", configuration)
+
+        """
+
+        sub = subscriber(topic, self.node_name, configuration)
+        return sub
+
+
+
+class publisher:
+    """ Publisher class used for inter-process comunication between nodes. Supports ZeroMQ, nanomsg and ROS publishers. 
+        Parameters
+        ----------
+        topic : string 
+            Topic name to publish the messages
 
         node_name : string
             Name of the node 
 
         conf : dictionary
-            Configuration of the publisher
+            Configuration of the publisher. The ease way to define this parameter is to use the conf_pub function of the node class
 
     """
 
@@ -95,72 +285,88 @@ class publisher:
         self.topic = topic
         self.msg_type =  self.conf['msg_type']
 
-        if self.transport ==  "ZMQ":
+        if self.transport ==  "ZMQ": #Use ZeroMQ
             print ("New publisher using ZMQ")
             try:
                 self.mode = self.conf['mode']
             except:
-                print ("WARNING: publisher mode not defined, 'one2many' mode is set by default")
+                print ("WARNING: publisher mode parameter not defined, 'one2many' mode is set by default")
                 self.mode = "one2many"
-            self.create_ZMQ_publisher()
+            self.__create_ZMQ_publisher()
+
+        elif self.transport ==  "ROS": #Use ROS
+            print ("New publisher using ROS")
+            self.__create_ROS_publisher()
             
-        if self.transport ==  "ROS":
-            print ("New publisher using ZMQ")
-            self.create_ROS_publisher()
+        elif self.transport ==  "NN": #Use nanmsg
+            print ("New publisher using nanomsg")
+            try:
+                self.mode = self.conf['mode']
+                self.__create_NN_publisher()
+            except:
+                print ("WARNING: publisher mode parameter not defined, 'one2many' mode is set by default")
+                self.mode = "one2many"
+                self.__create_NN_publisher()
+        else:
+            msg = "ERROR: Transport parameter " + self.transport + "is not supported, use instead 'ROS', 'ZMQ' (for ZeroMQ) or 'NN' (for nanomsg). "
+            raise ValueError(msg)
 
 
     #TODO:also define queue_size
-    def create_ROS_publisher(self):
+    def __create_ROS_publisher(self):
+        """Function used to create a ROS publisher"""
+        import rospy
+
+        if self.msg_type == "string":
+            from std_msgs.msg import String
+            self.ros_pub = rospy.Publisher(self.topic, String, queue_size=10)
+
+        elif self.msg_type == "velocity":
+            from geometry_msgs.msg import Twist
+            self.ros_pub = rospy.Publisher(self.topic, Twist, queue_size=10)
+
+        elif self.msg_type == "point":
+
+            from geometry_msgs.msg import Point
+            self.ros_pub = rospy.Publisher(self.topic, Point, queue_size=10)
+
+        elif self.msg_type == "wrench":
+
+            from geometry_msgs.msg import Wrench
+            self.ros_pub = rospy.Publisher(self.topic, Wrench, queue_size=10)
+
+        elif self.msg_type == "accel":
+
+            from geometry_msgs.msg import Accel
+            self.ros_pub = rospy.Publisher(self.topic, Accel, queue_size=10)
+
+        elif self.msg_type == "quaternion":
+
+            from geometry_msgs.msg import Quaternion
+            self.ros_pub = rospy.Publisher(self.topic, Quaternion, queue_size=10)
+
+        elif self.msg_type == "vector":
+
+            from geometry_msgs.msg import Vector3
+            self.ros_pub = rospy.Publisher(self.topic, Vector3, queue_size=10)
+
+        elif self.msg_type == "pose":
+
+            from geometry_msgs.msg import Pose
+            self.ros_pub = rospy.Publisher(self.topic, Pose, queue_size=10)
         
-		import rospy
 
-                if self.msg_type == "string":
-                    from std_msgs.msg import String
-                    self.ros_pub = rospy.Publisher(self.topic, String, queue_size=10)
+    def __create_ZMQ_publisher(self):
+        """Function used to create a ZeroMQ publisher"""
 
-                elif self.msg_type == "velocity":
-                    from geometry_msgs.msg import Twist
-                    self.ros_pub = rospy.Publisher(self.topic, Twist, queue_size=10)
-
-                elif self.msg_type == "point":
-
-                    from geometry_msgs.msg import Point
-                    self.ros_pub = rospy.Publisher(self.topic, Point, queue_size=10)
-
-                elif self.msg_type == "wrench":
-
-                    from geometry_msgs.msg import Wrench
-                    self.ros_pub = rospy.Publisher(self.topic, Wrench, queue_size=10)
-
-                elif self.msg_type == "accel":
-
-                    from geometry_msgs.msg import Accel
-                    self.ros_pub = rospy.Publisher(self.topic, Accel, queue_size=10)
-
-                elif self.msg_type == "quaternion":
-
-                    from geometry_msgs.msg import Quaternion
-                    self.ros_pub = rospy.Publisher(self.topic, Quaternion, queue_size=10)
-
-                elif self.msg_type == "vector":
-
-                    from geometry_msgs.msg import Vector3
-                    self.ros_pub = rospy.Publisher(self.topic, Vector3, queue_size=10)
-
-                elif self.msg_type == "pose":
-
-                    from geometry_msgs.msg import Pose
-                    self.ros_pub = rospy.Publisher(self.topic, Pose, queue_size=10)
-        
-
-    def create_ZMQ_publisher(self):
         if self.network == "direct":
+            self.port = self.conf['port']
             # Set the port selected by the user
-            port = set_port
+            port = self.port
         elif self.network == "P2P":
             # Register the topic in the NEP Master and get the port
-            print ("Advertising topic to NEP Master ....")
-            port = self.advertising_zqm(self.node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000)
+            print ("Advertising topic (" + self.topic + ") to NEP Master ....")
+            port = self.__advertising_nep(self.node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000, mode = self.mode )
             print ("Topic registered by the NEP Master")
 
         ip = self.conf['ip']
@@ -176,12 +382,21 @@ class publisher:
             
             if self.mode == "one2many":
                 # This allows only use one publisher connected at the same endpoint
-                self.sock.bind(endpoint)
                 print ("publisher " + endpoint +  " bind")
+                self.sock.bind(endpoint)
             elif self.mode == "many2one":
                 # This allows two use more that one publisher ate the same endpoint
+                print ("publisher " + endpoint +  " connect")
+                self.sock.connect(endpoint)
+            elif  self.mode == "many2many":
+                print ("many2many mode")
                 self.sock.connect(endpoint)
                 print ("publisher " + endpoint +  " connect")
+            else:
+                print ("WARNING: mode selected as:" + str(self.mode) + "it can be only: 'many2one' or  'one2many'")
+                print ("Mode set as 'one2many'")
+                print ("publisher " + endpoint +  " bind")
+                self.sock.bind(endpoint)
 
         except:
             print("Socket already in use, restarting")
@@ -198,11 +413,21 @@ class publisher:
                 # This allows two use more that one publisher ate the same endpoint
                 self.sock.connect(endpoint)
                 print ("publisher " + endpoint +  " connect")
+            elif  self.mode == "many2many":
+                print ("many2many mode")
+                self.sock.connect(endpoint)
+                print ("publisher " + endpoint +  " connect")
+            else:
+                print ("WARNING: mode selected as:" + str(self.mode) + "it can be only: 'many2one' or  'one2many'")
+                print ("Mode set as 'one2many'")
+                print ("publisher " + endpoint +  " bind")
+                self.sock.bind(endpoint)
 
+        time.sleep(1)
         #TODO: why this problem?
         #This next lines are used to start the comunication, and avoid some errors presented with zeromq
-        message = {'action': 'none'}
-        self.send_info(message)
+        #message = {'actions': [{'action':'none', 'inputs':'none'}]}
+        #self.send_info(message)
 
         # ZeroMQ note:
         # There is one more important thing to know about PUB-SUB sockets: 
@@ -225,23 +450,114 @@ class publisher:
         time.sleep(1)
         print ("ZMQ publisher started in " +  endpoint)
         print
-            
 
-    def advertising_zqm(self, node_name, topic, master_ip = '127.0.0.1', master_port = 7000):
+    def __create_NN_publisher(self):
+        """Function used to create a NN publisher"""
+
+        if self.network == "direct":
+            self.port = self.conf['port']
+            # Set the port selected by the user
+            port = self.port
+        elif self.network == "P2P":
+            # Register the topic in the NEP Master and get the port
+            print ("Advertising topic: '" + self.topic + "' to NEP Master ....")
+            port = self.__advertising_nep(self.node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000, mode = self.mode )
+            print ("Topic registered by the NEP Master")
+
+        ip = self.conf['ip']
+
+        # Create a new ZeroMQ context and a publisher socket
+        try:
+            self.sock = nanomsg.Socket(nanomsg.PUB)
+            
+            if self.mode == "one2many":
+                # This allows only use one publisher connected at the same endpoint
+                if ip == '127.0.0.1':
+                    ip = "*"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                print ("publisher " + endpoint +  " bind")
+                self.sock.bind(endpoint)
+            elif self.mode == "many2one":
+                # This allows two use more that one publisher ate the same endpoint
+                if ip == '127.0.0.1':
+                    ip = "localhost"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                print ("publisher " + endpoint +  " connect")
+                self.sock.connect(endpoint)
+            elif  self.mode == "many2many":
+                if ip == '127.0.0.1':
+                    ip = "localhost"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                print ("many2many mode")
+                self.sock.connect(endpoint)
+                print ("publisher " + endpoint +  " connect")
+            else:
+                if ip == '127.0.0.1':
+                    ip = "*"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                print ("WARNING: mode selected as:" + str(self.mode) + "it can be only: 'many2one' or  'one2many'")
+                print ("Mode set as 'one2many'")
+                print ("publisher " + endpoint +  " bind")
+                self.sock.bind(endpoint)
+            time.sleep(1)
+        except:
+            print ("Socket in use")
+            #TODO: restart connection
         
-        #Use client-server pattern to advertise and register a node and topic to the NEP Master
-        context = zmq.Context()
-        self.master_sock = context.socket(zmq.REQ)
-        self.master_sock.connect("tcp://"+ master_ip + ":" + str(master_port))
-        self.master_sock.send_json({'node_name':node_name, 'topic':topic})
-        response = self.master_sock.recv_json()
+ 
+    def __advertising_nep(self, node_name, topic, master_ip = '127.0.0.1', master_port = 7000, mode = "one2many"):
+        
+        """Function used to register a publisher in P2P connections
+                
+        Parameters
+        ----------
+        node_name : string 
+            Name of the node
+
+        topic : string
+            Topic to register
+
+        master_ip : string 
+            ip of the master node service
+
+        master_port : int
+            port of the master node service
+
+        Returns
+        ----------
+        port : string
+            Port used to connect the socket
+        
+        """
+
+        c = client( master_ip, master_port, transport = "ZMQ")
+        c.send_info({'node_name':node_name, 'topic':topic, 'mode':mode })
+        response = c.listen_info()
+        
         topic_id = response['topic']
         if(topic_id == topic):
             port = response['port']
         return port
 
+    def _dumps(self,o, **kwargs):
+        """Serialize object to JSON bytes (utf-8).
+        
+        See jsonapi.jsonmod.dumps for details on kwargs.
+        """
+        
+        if 'separators' not in kwargs:
+            kwargs['separators'] = (',', ':')
+        
+        s = simplejson.dumps(o, **kwargs)
+        
+        if isinstance(s, unicode):
+            s = s.encode('utf8')
+        
+        return s
+
+
     #Status: OK
-    def serialization(self, message, topic = None):
+    def _serialization(self, message, topic = None):
         """ Function used to serialize a python dictionary using json. In this function the message to be send is attached to the topic. If the topic is not specified it send the message in the default topic.
             
             Parameters
@@ -258,9 +574,9 @@ class publisher:
                 Message to be send, topic + message 
         """
         if topic is None:
-            return self.topic + ' ' + json.dumps(message)
+            return self.topic + ' ' + self._dumps(message)
         else:
-            return topic + ' ' + json.dumps(message)
+            return topic + ' ' + self._dumps(message)
             
     
     
@@ -270,24 +586,44 @@ class publisher:
             
             Parameters
             ----------
-            message : string String to be sended
+            message : string 
+                String to be sended
 
-             topic : string
+            topic : string
                 name of the topic to send the message
-                
+
+            Example
+            ----------
+
+            Send a string in a default publisher
+
+            .. code-block:: python
+
+                import nep
+                new_node = nep.node("dummy_node")
+                configuration = new_node.config_sub() 
+                pub = new_node.new_pub("dummy_topic", configuration)
+                pub.send_string("hello")  
         """
+
         if self.transport ==  "ZMQ":
             if topic is None:
                 self.sock.send_string(self.topic + ' ' + message)
             else:
                 self.sock.send_string(topic + ' ' + message)
+        
+        if self.transport ==  "NN":
+            if topic is None:
+                self.sock.send(self.topic + ' ' + message)
+            else:
+                self.sock.send(topic + ' ' + message)
 
-	if self.transport == "ROS":
-		self.ros_pub.publish(message)
+        if self.transport == "ROS":
+            self.ros_pub.publish(message)
             
 
     #Status: OK
-    def send_info(self,message, topic = None, debug = False):
+    def send_info(self, message, topic = None, debug = False):
         """ Function used to publish a python dictionary. The message is first serialized using json format and then published by the socket
             
             Parameters
@@ -298,14 +634,55 @@ class publisher:
                 name of the topic to send the message
             debug : bool
                 if == True, then it print the message to send
+
+            Examples
+            ----------
+
+            Send a dictionary in a default publisher:
+
+
+            .. code-block:: python
+
+                import nep
+                new_node = nep.node("dummy_node")
+                configuration = new_node.config_sub()) 
+                pub = new_node.new_pub("dummy_topic", configuration)
+                pub.send_info({'message':"hello"}) 
+
+
+            Send a nep_msg in a default publisher:
+
+            .. code-block:: python
+
+                import nep
+                import nep.nep_msg
+                new_node = nep.node("dummy_node")
+                configuration = new_node.config_sub(msg_type = "vector") # nep_msg definition
+                pub = new_node.new_pub("dummy_topic", configuration)
+                vector = nep.vector(0,0,1)
+                pub.send_info(vector)
+            
+            Send a nep_msg in ROS publisher:
+
+            .. code-block:: python
+
+                import nep
+                import nep.nep_msg
+                new_node = nep.node("dummy_node", useROS=True)
+                # ROS Vector3 definition
+                configuration = new_node.config_sub(msg_type = "vector", transport = "ROS")
+                pub = new_node.new_pub("dummy_topic", configuration)
+                vector = nep.vector(0,0,1) 
+                pub.send_info(vector) 
+
         """
 
-        if self.transport ==  "ZMQ":
+        if self.transport ==  "ZMQ" or self.transport ==  "NN":
             # TODO: if data es diferente a la definida poner un warning
             if topic is None:
-                info = self.serialization(message)
+                info = self._serialization(message)
             else:
-                info =  self.serialization(message, topic)
+                info =  self._serialization(message, topic)
 
             if debug:
                 try:
@@ -313,6 +690,7 @@ class publisher:
                 except:
                     pass
             self.sock.send(info)
+
         
         if self.transport == "ROS":
         #TODO add try and except fot error of data
@@ -323,7 +701,7 @@ class publisher:
             elif self.msg_type == "velocity":
                 from geometry_msgs.msg import Twist
                 twist = Twist()
-                twist.linear.x = message['linear']['x']
+                twist.linear.x = message.data['linear']['x']
                 twist.linear.y = message['linear']['y']
                 twist.linear.z = message['linear']['z']
                 twist.angular.x = message['angular']['x']
@@ -393,24 +771,6 @@ class publisher:
                 self.ros_pub.publish(pose)
         
 
-    #TODO: does not work, no manda mensajes
-    def send(self,message, debug = False):
-        if self.transport ==  "ZMQ":
-            if type(message) == type(dict()):
-                if debug:
-                    try:
-                        print (message)
-                    except:
-                        pass
-                
-                self.sock.send_json(message)
-                
-            else:
-                print ("ERROR: message must to be a Python dictionary")
-        
-
-
-
 
     
 #Status: OK
@@ -436,27 +796,43 @@ class subscriber:
         self.transport =  self.conf['transport']
         self.node_name = node_name
         self.topic = topic
+        self.delimiter = " "
 
         if self.transport ==  "ZMQ":
             try:
                 self.mode = self.conf['mode']
+                self.__create_ZMQ_subscriber()
             except:
                 print ("WARNING: publisher mode nod defined, 'one2many' mode is set by default")
                 self.mode = "one2many"
+                self.__create_ZMQ_subscriber()
 
-            self.create_ZMQ_subscriber()
-        if self.transport ==  "ROS":
-            self.create_ROS_subscriber()
+        elif self.transport ==  "NN": #Use nanmsg
+            print ("New subscriber using nanomsg")
+            try:
+                self.mode = self.conf['mode']
+                self.__create_NN_subscriber()
+            except:
+                print ("WARNING: subscriber mode parameter not defined, 'many2one' mode is set by default")
+                self.mode = "many2one"
+                self.__create_NN_subscriber()
 
-    def create_ZMQ_subscriber(self):
         
+        elif self.transport ==  "ROS":
+            self.__create_ROS_subscriber()
+
+
+
+    def __create_ZMQ_subscriber(self):
+        """Function used to create a ZeroMQ publisher"""
         if self.network == "direct":
             # Set the port selected by the user
-            port = set_port
+            self.port = self.conf["port"]
+            port = self.port
         elif self.network == "P2P":
             # Register the topic in the NEP Master and get the port
-            print ("Advertising topic to NEP Master ....")
-            port = self.advertising_zqm(self.node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000)
+            print ("Advertising topic (" + self.topic + ") to NEP Master ....")
+            port = self.__advertising_nep(self.node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000, mode = self.mode)
             print ("Topic registered by the NEP Master")
 
         ip = self.conf['ip']
@@ -482,14 +858,26 @@ class subscriber:
            
             if self.mode == "many2one":
                 # This allows only use one publisher connected at the same endpoint
-                print ("Multiple subscribbers: ON")
+                print ("Multiple subscribers: OFF")
                 self.sock.bind(endpoint)
                 print ("subcriber " + endpoint +  " bind")
             elif self.mode == "one2many":
                 # This allows two use more that one publisher ate the same endpoint
-                print ("Multiple subscribbers: OFF")
+                print ("Multiple subscribers: ON")
                 self.sock.connect(endpoint)
                 print ("subcriber " + endpoint +  " connect")
+
+            elif  self.mode == "many2many":
+                endpoint = "tcp://" + ip + ":" + str(port+1)
+                print ("many2many mode")
+                self.sock.connect(endpoint)
+                print ("subcriber " + endpoint +  " connect")
+
+            else:
+                print ("WARNING: mode selected as:" + str(self.mode) + "it can be only: 'many2one' or  'one2many'")
+                print ("Mode set as 'one2many'")
+                print ("subcriber " + endpoint +  " bind")
+                self.sock.connect(endpoint)
 
 
         except:
@@ -504,31 +892,150 @@ class subscriber:
 
             if self.mode == "many2one":
                 # This allows only use one publisher connected at the same endpoint
+                print ("Multiple subscribers: OFF")
                 print ("subcriber " + endpoint +  " bind")
                 self.sock.bind(endpoint)
                 # This allows two use more that one publisher ate the same endpoint
             elif self.mode == "one2many":
+                print ("Multiple subscribers: ON")
                 print ("subcriber " + endpoint +  " connect")
+                self.sock.connect(endpoint)
+            elif  self.mode == "many2many":
+                endpoint = "tcp://" + ip + ":" + str(port+1)
+                print ("many2many mode")
+                self.sock.connect(endpoint)
+                print ("subcriber " + endpoint +  " connect")
+            else:
+                print ("WARNING: mode selected as:" + str(self.mode) + "it can be only: 'many2one' or  'one2many'")
+                print ("Mode set as 'one2many'")
+                print ("subcriber " + endpoint +  " bind")
                 self.sock.connect(endpoint)
 
         print ("ZMQ subscriber started in " +  endpoint)
 
 
+    def __create_NN_subscriber(self):
+        """Function used to create a NN publisher"""
+        import nanomsg
+
+        if self.network == "direct":
+            self.port = self.conf['port']
+            # Set the port selected by the user
+            port = self.port
+        elif self.network == "P2P":
+            # Register the topic in the NEP Master and get the port
+            print ("Advertising topic: '" + self.topic + "' to NEP Master ....")
+            port = self.__advertising_nep(self.node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000, mode = self.mode )
+            print ("Topic registered by the NEP Master")
+
+        ip = self.conf['ip']
+
+        # Create a new NN socket
+        try:
+            self.sock = nanomsg.Socket(nanomsg.SUB)
+            self.sock.set_string_option(nanomsg.SUB, nanomsg.SUB_SUBSCRIBE, self.topic)
+
+                       
+            if self.mode == "many2one":
+                # This allows only use one publisher connected at the same endpoint
+                if ip == '127.0.0.1':
+                    ip = "*"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                print ("Multiple subscribers: OFF")
+                self.sock.bind(endpoint)
+                print ("subscriber " + endpoint +  " bind")
+            elif self.mode == "one2many":
+                # This allows two use more that one publisher ate the same endpoint
+                if ip == '127.0.0.1':
+                    ip = "localhost"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                print ("Multiple subscribers: ON")
+                self.sock.connect(endpoint)
+                print ("subscriber " + endpoint +  " connect")
+
+            elif  self.mode == "many2many":
+                if ip == '127.0.0.1':
+                    ip = "localhost"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                endpoint = "tcp://" + ip + ":" + str(port+1)
+                print ("many2many mode")
+                self.sock.connect(endpoint)
+                print ("subscriber " + endpoint +  " connect")
+
+            else:
+                if ip == '127.0.0.1':
+                    ip = "*"
+                endpoint = "tcp://" + ip + ":" + str(port)
+                print ("WARNING: mode selected as:" + str(self.mode) + "it can be only: 'many2one' or  'one2many'")
+                print ("Mode set as 'one2many'")
+                print ("subcriber " + endpoint +  " bind")
+                self.sock.connect(endpoint)
+
+        except:
+            print ("Socket in use")
+            #TODO: restart connection
 
 
-    def advertising_zqm(self, node_name, topic, master_ip = '127.0.0.1', master_port = 7000):
-        context = zmq.Context()
-        self.master_sock = context.socket(zmq.REQ)
-        self.master_sock.connect("tcp://"+ master_ip + ":" + str(master_port))
-        self.master_sock.send_json({'node_name':node_name, 'topic':topic})
-        response = self.master_sock.recv_json()
+    #TODO: close for nanomsg
+    def close_ZMQ_subscriber(self):
+        """ This function closes the socket"""
+        print "close listener"
+        self.sock.close()
+        self.context.destroy()
+        time.sleep(1)
+
+
+
+
+    def __advertising_nep(self, node_name, topic, master_ip = '127.0.0.1', master_port = 7000, mode = "one2many"):
+        
+        """Function used to register a publisher in P2P connections
+                
+        Parameters
+        ----------
+        node_name : string 
+            Name of the node
+
+        topic : string
+            Topic to register
+
+        master_ip : string 
+            ip of the master node service
+
+        master_port : int
+            port of the master node service
+
+        Returns
+        ----------
+        port : string
+            Port used to connect the socket
+        
+        """
+
+        c = client( master_ip, master_port, transport = "ZMQ")
+        c.send_info({'node_name':node_name, 'topic':topic, 'mode':mode })
+        response = c.listen_info()
+        
         topic_id = response['topic']
         if(topic_id == topic):
             port = response['port']
         return port
+
+
+    def _loads(self, s, **kwargs):
+        """Load object from JSON bytes (utf-8).
+        
+        See jsonapi.jsonmod.loads for details on kwargs.
+        """
+        
+        if str is unicode and isinstance(s, bytes):
+            s = s.decode('utf8')
+        
+        return simplejson.loads(s, **kwargs)
+
     
     #Status: OK
-    def deserialization(self, info):
+    def _deserialization(self, info):
         """ Separate the topic and the json message from the data received from the ZeroMQ socket. If the deserialization was successful and the message as a python dictionary
             
             Parameters
@@ -544,7 +1051,7 @@ class subscriber:
         try:
             json0 = info.find('{')
             topic = info[0:json0].strip()
-            msg = json.loads(info[json0:])
+            msg = self._loads(info[json0:])
             success = True
         except:
             msg = ""
@@ -552,16 +1059,25 @@ class subscriber:
         return msg
 
 
-    def listen_string(self, block_mode = True):
-        if self.transport ==  "ZMQ":
-            """ Function used to read string data from the sokect. The read operation is in blocking mode
+    def listen_string(self, block_mode = False):
+        
+        """ Function used to read string data from the sokect. The operation is by default in non blocking mode
+
+            Parameters
+            ----------
+            block_mode : bool
+                If True, the socket will set in blocking mode, otherwise the socket will be in non blocking mode
                 
-                Returns
-                -------
-                message : string 
-                    String received in the socket.
-                    
-            """
+            Returns
+            -------
+            success : bool
+                If True the information was obtained inside the timeline in non blocking mode  
+
+            message : string 
+                String received in the socket.      
+        """
+
+        if self.transport ==  "ZMQ" or self.transport ==  "NN" :
             message = ""
             try:
                 #Blocking mode
@@ -569,59 +1085,76 @@ class subscriber:
                     # Get the message
                     info = self.sock.recv()
                     # Split the message
-                    list_message_splitted = info.split(self.delimiter)
 
-                    message = list_message_splitted[1]
-                    time.sleep(.001)
+                    index = info.find(' ')
+                    topic = info[0:index].strip()
+                    message = info[index:]
                     success = True
                 #Non blocking mode
                 else:
-                    info = self.sock.recv(flags = zmq.NOBLOCK)
+                    if self.transport ==  "ZMQ":
+                        info = self.sock.recv(flags = zmq.NOBLOCK)
+                    elif self.transport ==  "NN":
+                        info = self.sock.recv(flags=nanomsg.DONTWAIT)
+                        
                     # Split the message
-                    list_message_splitted = info.split(self.delimiter)
+                    index = info.find(' ')
+                    topic = info[0:index].strip()
+                    message = info[index:]
 
-                    message = list_message_splitted[1]
-                    time.sleep(.001)
                     success = True
             #Exeption for non blocking mode timeout
             except zmq.Again as e:
                 #Nothing to read
                 success = False
                 pass
+
+            #Exeption for non blocking mode timeout
+            except nanomsg.NanoMsgAPIError:
+                #Nothing to read
+                success = False
+                pass
+
             return  success, message
+        
+            
 
 
     #Status: OK
-    def listen_info(self,block_mode =  True):
-        """ Listen for a json message that define the human state or robot action. 
+    def listen_info(self,block_mode =  False):
+        """ Listen for a json message that define the human state or robot action. The operation is by default in non blocking mode
             
             Parameters
             ----------
 
             block_mode : bool
-                If == True, then the read operation is in blocking mode (the execution continue until there are something to read), otherwise in non blocking mode (if not data, then the execution of the program continues an exception is launched after a timeout).
-            
+                If True, the socket will set in blocking mode, otherwise the socket will be in non blocking mode
+                
             Returns
             -------
 
             success : bool
-                Return true if the read operation was successfull
+                If True the information was obtained inside the timeline in non blocking mode  
 
             info : dictionary
-                Message
+                Message obtained
         """
-        if self.transport ==  "ZMQ":    
+        if self.transport ==  "ZMQ" or self.transport == "NN":    
             success = False
             info = {}
             try:
                 #Blocking mode
                 if block_mode:
-                    info = self.deserialization(self.sock.recv())
+                    info = self._deserialization(self.sock.recv())
                     time.sleep(.001)
                     success = True
                 #Non blocking mode
                 else:
-                    info = self.deserialization(self.sock.recv(flags = zmq.NOBLOCK))
+                    if self.transport ==  "ZMQ":
+                        info = self._deserialization(self.sock.recv(flags = zmq.NOBLOCK))
+                    elif self.transport ==  "NN":
+                        info = self._deserialization(self.sock.recv(flags=nanomsg.DONTWAIT))
+
                     time.sleep(.001)
                     success = True
             #Exeption for non blocking mode timeout
@@ -629,194 +1162,335 @@ class subscriber:
                 #Nothing to read
                 success = False
                 pass
+
+            #Exeption for non blocking mode timeout
+            except nanomsg.NanoMsgAPIError:
+                #Nothing to read
+                success = False
+                pass
+
             return  success, info
 
-    #TODO: does not work, no recive mensajes desde send_json
-    def listen(self,block_mode =  True):
-        if self.transport ==  "ZMQ":
-            success = False
-            info = {}
+
+
+class broker():
+    def __init__(self, IP, PORT_XPUB, PORT_XSUB):
+        context = zmq.Context()
+        frontend = context.socket(zmq.XSUB)
+        frontend.bind("tcp://" + IP + ":" + str(PORT_XSUB))
+        backend = context.socket(zmq.XPUB)
+        backend.bind("tcp://" + IP + ":" + str(PORT_XPUB))
+        zmq.proxy(frontend, backend)
+        frontend.close()
+        backend.close()
+        context.term()
+
+#TODO: sock.close() and context.destroy() must be allway when a process ends
+#In some cases socket handles won't be freed until you destroy the context.
+#When you exit the program, close your sockets and then call zmq_ctx_destroy(). This destroys the context.
+# In a language with automatic object destruction, sockets and contexts 
+# will be destroyed as you leave the scope. If you use exceptions you'll have to
+#  do the clean-up in something like a "final" block, the same as for any resource.
+
+
+class server:
+    def __init__(self, IP, port, transport = "ZMQ"):
+        self.transport = transport
+
+        if transport == "ZMQ":
+            # ZMQ sockets
+            context = zmq.Context()
+            # Define the socket using the "Context"
+            self.sock = context.socket(zmq.REP)
+            self.sock.bind("tcp://" + IP + ":" + str(port))
+        
+        elif transport == "normal": 
+            # Normal sockets
             try:
-                #Blocking mode
-                if block_mode:
-                    info = self.sock.recv_json()
-                    print info
-                    time.sleep(.001)
-                    success = True
-                #Non blocking mode
-                else:
-                    info = self.sock.recv_json(flags = zmq.NOBLOCK)
-                    print info
-                    time.sleep(.001)
-                    success = True
-            #Exeption for non blocking mode timeout
-            except zmq.Again as e:
-                #Nothing to read
-                success = False
-                pass
+                #create an AF_INET, STREAM socket (TCP)
+                self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                #self.s.setblocking(0)
+                self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            except socket.error, msg:
+                print 'Failed to create socket. Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1]
+                sys.exit();
+                
+            print 'Socket Created'
 
-        return  success, info
+            try:
+                if IP == "localhost":
+                #Same computer
+                        IP = socket.gethostbyname( IP )
+                        print ("local host in :", IP)
+                
+            except socket.gaierror:
+                #could not resolve
+                print 'Hostname could not be resolved. Exiting'
+                sys.exit()
+            #Connect to remote server
+            self.s.bind(('' , port))
+            self.s.listen(5)
+            print 'Socket connected on ip ' + IP
 
-# Experimental .....................................................................................
+            while True:
+                # Wait for a connection
+                print >>sys.stderr, 'waiting for a connection'
+                connection, client_address = self.s.accept()
 
-    #TODO: used? delete it?
-    def listen_csharp(self, block_mode =  True, debug = False):   
-        """ Function used to read data from a NetMQ socket (C# version of ZeroMQ). 
-            The ZQM wrapper in C# (NetMQ) works different that ZMQ. Instead of send a message as ``topic + space + message`` where ``topic`` and ``message`` are strings, NetMQ send a message as ``topic + enter + message``. 
-            Therefore, this function read first the topic part and then the message part and only returns the message part obtained.
+                try:
+                    print >>sys.stderr, 'connection from', client_address
 
+                    # Receive the data in small chunks and retransmit it
+                    while True:
+                        data = connection.recv(16)
+                        print >>sys.stderr, 'received "%s"' % data
+                        if data:
+                            print >>sys.stderr, 'sending data back to the client'
+                            connection.sendall(data)
+                        else:
+                            print >>sys.stderr, 'no more data from', client_address
+                            break
+            
+                finally:
+                    # Clean up the connection
+                    connection.close()
+
+
+    def _loads(self, s, **kwargs):
+        """Load object from JSON bytes (utf-8).
+        
+        See jsonapi.jsonmod.loads for details on kwargs.
+        """
+        
+        if str is unicode and isinstance(s, bytes):
+            s = s.decode('utf8')
+        
+        return simplejson.loads(s, **kwargs)
+
+    
+    #Status: OK
+    def _deserialization(self, info):
+        """ Separate the topic and the json message from the data received from the ZeroMQ socket. If the deserialization was successful and the message as a python dictionary
+            
             Parameters
             ----------
-
-            block_mode : bool
-                Select blocking (True) or non blocking mode (False).
-
-            debug :bool 
-                If True the message is printed in the console
+            info : string
+                topic + message received by the ZQM socket 
 
             Returns
             -------
-            message : string
-                part from a NetQM socket message
+            msg : string
+                String message as a python dictionary
         """
         try:
-            # If blocking mode
-            if block_mode:
-                # Get the message in non blocking mode
-                topic= self.sock.recv()
-                if topic == self.topic:
-                    message = self.sock.recv()            
-                    if debug:
-                        print (topic)
-                        print (message)
-                    return message
-            else:
+            json0 = info.find('{')
+            topic = info[0:json0].strip()
+            msg = self._loads(info[json0:])
+            success = True
+        except:
+            msg = ""
+            success = False
+        return msg
 
-                # Get the topic in blocking mode
-                topic= self.sock.recv(flags = zmq.NOBLOCK)
-                if topic == self.topic:
-                    # The next message is the message
-                    message = self.sock.recv()
-                    # Print the state value if is in debug mode
-                    if debug:
-                        print (topic)
-                        print (message)
-                    return message
-
-        except zmq.Again as e:
-            time.sleep(.05)
-            return  'none'
+    def _dumps(self,o, **kwargs):
+        """Serialize object to JSON bytes (utf-8).
+    
+            See jsonapi.jsonmod.dumps for details on kwargs.
+        """
+        
+        if 'separators' not in kwargs:
+            kwargs['separators'] = (',', ':')
+        
+        s = simplejson.dumps(o, **kwargs)
+        
+        if isinstance(s, unicode):
+            s = s.encode('utf8')
+        
+        return s
 
 
+    #Status: OK
+    def _serialization(self, message):
+        """ Function used to serialize a python dictionary using json. In this function the message to be send is attached to the topic. If the topic is not specified it send the message in the default topic.
+            
+            Parameters
+            ----------
+            message : dictionary
+                Python dictionary to be send
+
+             topic : string
+                name of the topic to send the message
+            
+            Returns
+            -------
+            message : string
+                Message to be send, topic + message 
+        """
+        return self._dumps(message)
+
+    def listen_info(self):
+
+        if self.transport == "ZMQ":
+            #response = self.sock.recv_json()
+            #return response
+            request = self.sock.recv()
+            return self._deserialization(request)
+            
+        else:
+            request = self.s.recv(1024)
+            return request
+
+    def send_info(self,response):
+        
+        if self.transport == "ZMQ":
+            #self.sock.send_json(request)
+            self.sock.send(self._serialization(response))
+        else:
+            try:
+               self.s.sendall(response)
+            except socket.error:
+                #Send failed
+                print 'Send failed'
+                sys.exit()
+
+
+class client:
+    def __init__(self, IP, port, transport = "ZMQ"):
+        
+        self.transport = transport
+        if self.transport == "ZMQ":
+            context = zmq.Context()
+            # Define the socket using the "Context"
+            self.sock = context.socket(zmq.REQ)
+            self.sock.connect("tcp://" + IP + ":" + str(port))
+
+        elif transport == "normal":
+
+            # Normal sockets
+            try:
+                #create an AF_INET, STREAM socket (TCP)
+                self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            except socket.error, msg:
+                print 'Failed to create socket. Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1]
+                sys.exit();
+                
+            print 'Socket Created'
+
+            try:
+                if IP == "localhost":
+                #Same computer
+                        IP = socket.gethostbyname( IP )
+                        print ("local host in :", IP)
+                
+            except socket.gaierror:
+                #could not resolve
+                print 'Hostname could not be resolved. Exiting'
+                sys.exit()
+            #Connect to remote server
+            self.s.connect((IP , port))
+            print 'Socket connected on ip ' + IP
+
+
+    def _loads(self, s, **kwargs):
+        """Load object from JSON bytes (utf-8).
+        
+        See jsonapi.jsonmod.loads for details on kwargs.
+        """
+        
+        if str is unicode and isinstance(s, bytes):
+            s = s.decode('utf8')
+        
+        return simplejson.loads(s, **kwargs)
+
+    
+    #Status: OK
+    def _deserialization(self, info):
+        """ Separate the topic and the json message from the data received from the ZeroMQ socket. If the deserialization was successful and the message as a python dictionary
+            
+            Parameters
+            ----------
+            info : string
+                topic + message received by the ZQM socket 
+
+            Returns
+            -------
+            msg : string
+                String message as a python dictionary
+        """
+        try:
+            json0 = info.find('{')
+            topic = info[0:json0].strip()
+            msg = self._loads(info[json0:])
+            success = True
+        except:
+            msg = ""
+            success = False
+        return msg
+
+    def _dumps(self,o, **kwargs):
+        """Serialize object to JSON bytes (utf-8).
+        
+        See jsonapi.jsonmod.dumps for details on kwargs.
+        """
+        
+        if 'separators' not in kwargs:
+            kwargs['separators'] = (',', ':')
+        
+        s = simplejson.dumps(o, **kwargs)
+        
+        if isinstance(s, unicode):
+            s = s.encode('utf8')
+        
+        return s
+
+
+    #Status: OK
+    def _serialization(self, message):
+        """ Function used to serialize a python dictionary using json. In this function the message to be send is attached to the topic. If the topic is not specified it send the message in the default topic.
+            
+            Parameters
+            ----------
+            message : dictionary
+                Python dictionary to be send
+
+             topic : string
+                name of the topic to send the message
+            
+            Returns
+            -------
+            message : string
+                Message to be send, topic + message 
+        """
+        return self._dumps(message)
+
+
+
+    def listen_info(self):
+        
+        if self.transport == "ZMQ":
+            #response = self.sock.recv_json()
+            #return response
+            response = self.sock.recv()
+            return self._deserialization(response)
+            
+        else:
+          response = self.s.recv(1024)
+          return response
             
 
-class decode_message():
-    """ This class is used to decode the sensory messages from devices such as Kinect.
-        
-        Parameters
-        ----------
-        delimiter : string
-            This parameter indicate the delimiter between the info received. By default is ``,``.
-    """
-
-    def __init__(self,delimiter = ','):
-        self.delimiter = delimiter
-
-    def decode_smartwatch_imu(self,line,start = 2):
-        """3 axis info decodification
-
-        Parameters
-        ----------
-        line : string 
-            Sample of 3 axis information
-            
-        start : int 
-            Starting line of the 3 axis information
-
-        Returns
-        -------
-        success: bool
-            True if the string has the correct format
-
-        option: int 
-            if option == 0 then is aceleration data, if option = 1 then is gyroscope data, if option = 2 then angle axis representation
-
-        value1: float 
-            x value
-
-        value2: float 
-            y value
-
-        value3: float 
-            z value
-
-        Example
-        -------
-
-        An example of a format used for a wearAmi program is:
-
-        - <indicator>;number;x_value;y_value:z_value
-        
-        where <indicator> can be a (acceleration), y (gyroscope), e (euler angles)
-
-        """
-        line_list = line.split(self.delimiter)
-        if(line_list[0] == 'a'):
-                if(len(line_list)==start+3 and line_list[start+2] != ''):
-                        x = line_list[start ]
-                        y = line_list[start +1]
-                        z = line_list[start +2]
-                        return True,0,x,y,z
-        if(line_list[0] == 'y'):
-                if(len(line_list)==start+3 and line_list[start+2] != ''):
-                        x = line_list[start ]
-                        y = line_list[start +1]
-                        z = line_list[start +2]
-                        return True,1,x,y,z
-        if(line_list[0] == 'r'):
-                if(len(line_list)==start+3 and line_list[start+2] != ''):
-                        pitch = line_list[start ]
-                        yaw = line_list[start +1]
-                        roll = line_list[start +2]
-                        return True,2,yaw,pitch,roll
-        print "error decoding data"
-        return False,0,0,0,0
+    def send_info(self,request):
+        if self.transport == "ZMQ":
+            #self.sock.send_json(request)
+            self.sock.send(self._serialization(request))
+        else:
+            try:
+               self.s.sendall(request)
+            except socket.error:
+                #Send failed
+                print 'Send failed'
+                sys.exit()
 
 
-    def decode_3axis_info(self,line):
-        #TODO: improve and add try catch
-        """3 axis info decodification
-
-        Parameters
-        ----------
-        line : string 
-            Sample of 3 axis information
-
-        Returns
-        -------
-        success: bool
-            True if the string has the correct format
-
-        value1: float 
-            x value
-
-        value2: float 
-            y value
-
-        value3: float 
-            z ValueError
-        """
-        line_list = line.split(self.delimiter)
-        if(len(line_list)==3):
-            x = line_list[0]
-            y = line_list[1]
-            z = line_list[2]
-            return True,x,y,z
-       
-        print "error decoding data"
-        return False,0,0,0
-
-        
 if __name__ == "__main__":
     import doctest
     doctest.testmod()

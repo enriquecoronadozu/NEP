@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="assets/img/gear-2-multi-size.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="author" content="Enrique Coronado" />
+    <!--   //TODO: media need internet, change a to local value: 'https://blockly-demo.appspot.com/static/media/', : in workspace.js -->
+
+	<title>Rize</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="viewport" content="width=device-width" />
+
+     <!-- ################# Rize library  ######################## -->
+     <script src="rize/rize.js"></script>
+
+
+    <!-- ################# Google Blockly realted stuff  ######################## -->
+
+    <!-- In develpment mode use the next line, if not then comment it -->
+    <script src="web_libraries/blockly/blockly_uncompressed.js"></script>
+    <!-- In internet mode better uncomment the next line -->
+    <!-- <script src="web_libraries/blockly/blockly_compressed.js"></script> -->
+    <script src="web_libraries/blockly/blocks/behaviors.js"></script>
+    <script src="web_libraries/blockly/blocks/primitives.js"></script>
+
+    <!-- We need to run build.py in order to add our blocks, this are saved in this script -->
+    <script src="web_libraries/blockly/blocks_compressed.js"></script>
+
+    <!-- This define the lenguage, in this case English -->
+    <script src="web_libraries/blockly/msg/js/en.js"></script>
+
+    <!-- Here the code generation scripts are added for each programming lenguage used -->
+    <script src="web_libraries/blockly/python_compressed.js"></script>
+
+    <!-- Navigation bar (nav-bar) files -->
+    <script src="web_libraries/nav-bar/prefixfree.min.js"></script>
+
+
+
+    <!--  ************************ Toolbox **************************** -->
+    <script type="text/javascript" src="rize/dropdown.js"></script>
+    <script type="text/javascript" src="rize/toolbox.js"></script>
+        
+        
+    <!-- ************** Blockly Workspace definition ***************** -->
+    <script src="rize/workspace.js"></script>
+   
+
+    <!--  ##################################  CSS files ##################################  -->
+    <!-- Awesome font -->
+    <link rel="stylesheet" href="web_libraries/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- Link the CSS boostap library -->
+    <link rel="stylesheet" type="text/css" href="web_libraries/bootstrap-3.3.7/css/bootstrap.min.css" />
+    <!-- My navigation bar design -->
+    <link href="rize/design.css" rel="stylesheet"/>
+
+
+    <!--  ################################## Javascript files ##################################  -->
+    <!-- Link the JQuery library -->
+    <script type="text/javascript" src="web_libraries/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="web_libraries/json2html/json2html.js"></script>
+    <script type="text/javascript" src="web_libraries/json2html/jquery.json2html.js"></script>
+
+    <!-- Link the JS boostrap library -->
+    <script type="text/javascript" src="web_libraries/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="web_libraries/js-interpreter/acorn_interpreter.js"></script>
+    
+    
+    <!-- ************************  Nice allert library: sweetalert2 **************** -->
+    <script src="web_libraries/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
+
+    <!-- ************************  JSON **************** -->
+    <script type="text/javascript" src="rize/databases.js"></script>
+
+
+
+</head>
+
+<body>
+
+        <svg>
+        
+        <g transform = "translate(10,10)">
+        <path class="blocklyPathDark" transform="translate(1,1)" fill="#5d4984" fill-opacity="0.1" d="m 0,0 H 156.3671875 v 5 c 0,10 -8,-8 -8,7.5 s 8,-2.5 8,7.5 v 5 v 5 c 0,10 -8,-8 -8,7.5 s 8,-2.5 8,7.5 v 4 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z"></path><path class="blocklyPath" fill="#745ba5" fill-opacity="9" d="m 0,0 H 156.3671875 v 5 c 0,10 -88,-8 -8,7.5 s 8,-2.5 8,7.5 v 5 v 5 c 0,10 -8,-8 -8,7.5 s 8,-2.5 8,7.5 v 4 H 0 V 20 c 0,-10 -8,8 -8,-7.5 s 8,2.5 8,-7.5 z"></path><path class="blocklyPathLight" stroke="#745ba5" d="m 0.5,0.5 H 155.8671875 M 155.8671875,0.5 M 151.3671875,19.3 l 3.68,-2.1 M 155.8671875,25.5 M 151.3671875,44.3 l 3.68,-2.1 M 0.5,48.5 V 18.5 m -7.36,-0.5 q -1.52,-5.5 0,-11 m 7.36,1 V 0.5 H 1"></path><g class="blocklyIconGroup" display="block" transform="translate(10,5)"><rect class="blocklyIconShape" rx="4" ry="4" height="16" width="16"></rect><path class="blocklyIconSymbol" d="m4.203,7.296 0,1.368 -0.92,0.677 -0.11,0.41 0.9,1.559 0.41,0.11 1.043,-0.457 1.187,0.683 0.127,1.134 0.3,0.3 1.8,0 0.3,-0.299 0.127,-1.138 1.185,-0.682 1.046,0.458 0.409,-0.11 0.9,-1.559 -0.11,-0.41 -0.92,-0.677 0,-1.366 0.92,-0.677 0.11,-0.41 -0.9,-1.559 -0.409,-0.109 -1.046,0.458 -1.185,-0.682 -0.127,-1.138 -0.3,-0.299 -1.8,0 -0.3,0.3 -0.126,1.135 -1.187,0.682 -1.043,-0.457 -0.41,0.11 -0.899,1.559 0.108,0.409z"></path><circle class="blocklyIconShape" r="2.7" cx="8" cy="8"></circle></g><text class="blocklyText" y="12.5" transform="translate(37,5)">create&nbsp;list&nbsp;with</text>
+        </g>
+        </svg>
+        <div id="div-svg" class="svg" >
+
+        </div>
+
+                              
+           
+                           
+
+
+                           <!-- Sidebar toggle button-->
+
+
+
+        <div id="div-program" style="height: 560px">
+        </div>
+
+
+
+
+
+</body>
+
+<script>
+
+
+  
+  
+  // ......... Global variables ................
+  
+  // This value must have the same value that in the server
+  var url_var = "http://127.0.0.1:5000/new_action";
+  
+  var default_robot_name = "default";
+  var default_robot_ip = "192.168.11.100";
+  var default_robot_type = "nao";
+  var blocks; //Used to save the xml code of the main workspace (program of the user)
+  var default_code = '# -*- encoding: UTF-8 -*-' + '\n' + 'import time' + '\n' + 'from nep import*' + '\n' + '\n' + 'r = interaction()' + '\n' 
+  /* Inject your workspace */ 
+
+  var WORKSPACE = Blockly.inject('div-program', options);
+  WORKSPACE.addChangeListener(blockEvent);
+
+  var current_project_defined = false;
+  var project_name = ""; 
+
+  sv = new Blockly.BlockSvg(WORKSPACE)
+
+
+  
+
+  function blockEvent(masterEvent) {
+        
+   // Convert event to JSON.  This could then be transmitted across the net.
+  var json = masterEvent.toJson();
+  //console.log(json);
+  //console.log(json["blockId"]);
+  blockx = WORKSPACE.getBlockById(json["blockId"])
+  console.log(blockx)
+  //console.log(blockx.type)
+  //console.log(blockx.helpUrl)
+  //console.log(blockx.tooltip)
+  //console.log(block.inputList[0])
+  //console.log(block.inputList[0].fieldRow[1].textElement_)
+
+  var svgObject  = blockx.getSvgRoot() //Get svg image of the block selected
+  console.log(svgObject)
+  svgStringData = $(svgObject).html() // Transfrom svg to string
+
+  var html  = '<p>';
+  html += blockx.tooltip;
+  html += '</p>' ;
+  html += '<svg width="600" height="300">';
+  html += svgStringData // Put the image in a svg html form
+  html += "</svg>";
+  
+  console.log(html)
+
+  $('.svg').html(html); // Add the html code in the .svg class (in a div)
+  }
+
+
+        
+  </script>
+</html>

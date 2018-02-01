@@ -1,0 +1,7 @@
+{
+    "primitive": "animation",
+    "type": "robot_action",
+    "description": "Perform some complex animation movement",
+    "input": "dropdown",
+    "options":{"velocity":"percentage","flip":"bool","reverse":"bool"}
+}

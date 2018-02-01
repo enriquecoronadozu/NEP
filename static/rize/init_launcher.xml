@@ -1,0 +1,14 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="use_smartwatch" id="g?,T[})$OE0Z){a^iur|" x="70" y="40">
+    <next>
+      <block type="add_arm_gesture" id="9bzF^3ctu,}3Y$hVG_wQ">
+        <field name="NAME">karate</field>
+        <next>
+          <block type="add_arm_gesture" id="n3;iT(T.enZ]7ku`FG*6">
+            <field name="NAME">hand_up</field>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

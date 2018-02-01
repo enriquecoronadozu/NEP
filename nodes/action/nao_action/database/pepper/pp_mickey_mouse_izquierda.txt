@@ -1,0 +1,75 @@
+# Choregraphe simplified export in Python.
+from naoqi import ALProxy
+names = list()
+times = list()
+keys = list()
+
+names.append("HeadPitch")
+times.append([0.68, 1.44])
+keys.append([0.224743, 0.224743])
+
+names.append("HeadYaw")
+times.append([0.68, 1.44])
+keys.append([0.01778, -0.0190807])
+
+names.append("HipPitch")
+times.append([0.68, 1.44])
+keys.append([-0.142007, -0.142007])
+
+names.append("HipRoll")
+times.append([0.68, 1.44])
+keys.append([0.0184972, 0.215723])
+
+names.append("KneePitch")
+times.append([0.68, 1.44])
+keys.append([0.074143, 0.0852047])
+
+names.append("LElbowRoll")
+times.append([0.68, 1.44])
+keys.append([-1.52112, -0.0306783])
+
+names.append("LElbowYaw")
+times.append([0.68, 1.44])
+keys.append([-0.162231, -1.42961])
+
+names.append("LHand")
+times.append([0.68, 1.44])
+keys.append([0.488712, 0.479167])
+
+names.append("LShoulderPitch")
+times.append([0.68, 1.44])
+keys.append([1.16755, -1.23425])
+
+names.append("LShoulderRoll")
+times.append([0.68, 1.44])
+keys.append([0.826788, 0.379732])
+
+names.append("LWristYaw")
+times.append([0.68, 1.44])
+keys.append([0.603255, 1.53564])
+
+names.append("RElbowRoll")
+times.append([0.68, 1.44])
+keys.append([1.51727, 1.47503])
+
+names.append("RElbowYaw")
+times.append([0.68, 1.44])
+keys.append([0.160209, 0.710001])
+
+names.append("RHand")
+times.append([0.68, 1.44])
+keys.append([0.479795, 0.638557])
+
+names.append("RShoulderPitch")
+times.append([0.68, 1.44])
+keys.append([1.18053, 1.68143])
+
+names.append("RShoulderRoll")
+times.append([0.68, 1.44])
+keys.append([-0.828048, -0.829014])
+
+names.append("RWristYaw")
+times.append([0.68, 1.44])
+keys.append([-0.60665, -0.0484391])
+
+

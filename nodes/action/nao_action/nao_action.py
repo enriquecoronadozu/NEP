@@ -8,191 +8,227 @@
 # This code comes with no warranty of any kind.
 
 
-# TODO: a fuente de error es que al adquirir un valor de  un dicionario esta es de type unicode cuando da esto error, debe ser convertido seimpre a string.
-# ejemplo gesture = param['gesture'], esto da errror, sebe al ser pasado gesture a una funcion, por lo que gesture = str(gesture) soluciona el problema
-
-from nep import*
-from nep_nao import*
+import nep
+import nep_nao
 import time
 import atexit
+import sys
+import signal
+
+
+node = nep.node("NAO")
+
+def signal_handler(signal, frame):
+    """Signal handler used to close the app"""
+    print('Signal Handler, you pressed Ctrl+C!')
+    time.sleep(1)
+    sys.exit(0)
 
 
 class nao_action():
 
-    def __init__(self, status_publisher, nao_ip, nao_port, ip_action, robot_name):
-        self.status_pub = status_publisher
-        self.nao_robot_say = nao_say(nao_ip, nao_port)
-        self.nao_robot_do = nao_do(nao_ip, nao_port)
-        self.ip_action = ip_action
-
-        self.pub = publisher("/action_execution")
+    def __init__(self, status_publisher, nao_ip, nao_port, robot_name):
         
-        time.sleep(1)
-        print " ******** Robot " + robot_name + " ready! ***********"
-        self.action_to_do =  subscriber("/action_request")
-        self.run()
+        # Node status publisher
+        self.status_pub = status_publisher
 
+        # New nao instance
+        self.robot = nep_nao.nao(nao_ip, nao_port)
+        self.language = "English"
+        
+        # Robot funtions 
+
+        self.switch={
+            'say':self.robot.say,
+            'rest':self.robot.rest,
+            'say_contextual': self.robot.say_contextual,
+            'wake_up': self.robot.wake_up,
+            'animation': self.robot.animation,
+            'imitation': self.robot.imitation,
+            'stop_behaviors':self.robot.stop_behaviors,
+            'posture':self.robot.posture,
+            'play_sound':self.robot.play_sound,
+            'open_hand': self.robot.open_hand,
+            'close_hand': self.robot.close_hand,
+            'close_hand': self.robot.close_hand,
+            'move_to_position':self.robot.move_to_position,
+            'change_joint_value':self.robot.change_joint_value
+            }
+
+        # New pub/sub to cognitive nodes
+        conf_pub = node.conf_pub(mode='many2many')
+        self.pub= node.new_pub("/action_response",conf_pub)
+        conf_sub = node.conf_sub(mode='many2many')
+        self.sub = node.new_sub("/action_request",conf_sub)
+        time.sleep(.2)
+
+        
+        print " ******** Robot " + robot_name + " ready! ***********"
+        self.run()
+        
+        
+
+
+    #TODO send response as a nep class
     def send_response(self,state = "success"):
         message = {'robot_name': robot_name, 'execution_state': state}
         print ("robot ***" + robot_name + "*** send a response of: " + state)
         self.pub.send_info(message)
 
-
-
+    def set_language(self,language):
+        self.language = language
 
 
     def run(self):
-        #TODO add signal handler or joint or read socket to exit
-
-        status_message = {'node_type':"action_engine", 'node_status':"on", 'robot_name':robot_name, 'robot_type':'NAO', 'description':"conected"}
-        print "status: on"
-        self.status_pub.send_info(status_message)
-
-        i = 0
         
+
+        
+        #TODO add signal handler or joint or read socket to exit
+        status_message = {'node_type':"action", 'node_status':"connection_ready", 'robot_name':robot_name, 'robot_type':'NAO'}
+        self.status_pub.send_info(status_message)
+        
+        print """=================================================="""
+        print "Waiting for request ... "
+        print
+
+        switch  = self.switch
+
         while(True):            
-            success, params = self.action_to_do.listen_info()
-            
+            success, message = self.sub.listen_info(block_mode=False)
+            time.sleep(.001)
+
             if(success):
-                
-                if params == "":
-                    print "null value received"
-                    self.send_response("error")
-                else:
-                    valid_action = False
+                if robot_name in message['robots']: 
+                    actions = message["actions"]
+                    print
+                    print
+                    print "----------------- REQUEST: ------------------ "
+                    print message
+
+                    n_actions = len(actions)
+
+                    """if n_actions  == 1:
+                        action = actions[0]
+                        print action
+                        action_name = action["action"]
+                        print action_name
+                        input_ = action["input"]
+
+                        if action_name in switch:
+
+                            if  input_ == "none":
+                                switch[action_name]()
+                            else:
+                                switch[action_name](input_)
+
+                            print action_name, "is a valid action"
+                            self.send_response("success")
+                        else:
+                            
+                            print action_name, "is not valid action"
+                            self.send_response("none")
                     
-                    print ("new behavior execution")
-                    action = params["action"]
-                    #TODO: solve problem multiple robots
-                    #name = params["robot"]
-                    #if name == robot_name:
-
-                    #TODO valid action and send_response succes can be improved?
-                    if(action== "setVoice"):
-                        valid_action = True
-                        volum = float(params["volum"])
-                        pitch = float(params["pitch"])
-                        dVoice = float(params["doubleVoice"])
-                        speed = float(params["speed"])
-
-                        self.nao_robot_say.setVoice(speed,volum,pitch,dVoice)
-                        self.send_response("success")
-
-                    if (action == "imitation"):
-                        valid_action = True
+                    if n_actions  == 2:"""
                         
-                        gesture = str(params["gesture"])
-                        sound = str(params["sound"])
-                        type_sound = str(params["type_sound"])
-
-                        self.nao_robot_do.imitation(gesture, type_sound, sound)
-                        self.send_response("success")
-
-                    
-                    if (action == "posture_standInit"):
-                        valid_action = True
-                        self.nao_robot_do.posture_standInit()
-                        self.send_response("success")
-
-                    if (action == "posture_stand"):
-                        valid_action = True
-                        self.nao_robot_do.posture_stand()
-                        self.send_response("success")
+                    positive_response = True
+                    in_parallel = True
                         
-                    if (action == "posture_rest"):
-                        valid_action = True
-                        self.nao_robot_do.posture_rest()
-                        self.send_response("success")
-
-                    if (action == "walk"):
-                        valid_action = True
-                        x = str(params["x"])
-                        y = str(params["y"])
-                        theta = 0.0
-                        self.nao_robot_do.walk_to(x,y,theta)
-                        self.send_response("success")
+                    # Perform all the actions in parallel
+                    for i in range(n_actions):
+                            
+                        # Except the last one
+                        if (i == n_actions-1):
+                            in_parallel = False
                         
-                    if (action == "posture_sit"):
-                        valid_action = True
-                        self.nao_robot_do.posture_sit()
-                        self.send_response("success")
-                        
-                    #TODO add person ability
-                    if (action == "say"):
-                        valid_action = True
-                        gesture = params["gesture"]
+                        action = actions[i]
+                        action_name = action["action"]
+                        input_ = action["input"]
+                        parameters = action["parameters"]
 
                         try:
-                            print ("Robot will say: "  +  str(params["text"]))
+                            print "*ACTION*   "  + str(action_name)  +  ": " +  str(input_)
                         except:
-                            pass
+                            print "Japanese text"
                         
-                        if (gesture == "no_gesture"):
-                            text = params["text"] # text to say (string)
-                            language =  str(params['language'])
-                            self.nao_robot_say.without_moving(text.encode("utf-8"), language)
-                            self.send_response("success")
+                        if action_name in switch:
 
+                            self.runAction(action_name, input_, parameters, in_parallel )
+                            print action_name, "is a valid action"
+                            
                         else:
-                            try:
-                                text = params["text"] # text to say (string)
-                                gesture = params["gesture"] # type of gesture to do (string)
-                                language =  str(params['language'])
-                                self.nao_robot_say.with_gesture(text.encode("utf-8"),str(gesture),language)
-                                self.send_response("success")
-                            except:
-                                print ("Error: Inavlid parameter passed in the socket")
-                                self.send_response("Error")
+                            print action_name, "is not valid action"
+                            positive_response = False
 
-                    print ("Behavior **"  + action + "** finished...")
-                    if valid_action == False:
-                        self.send_response("error")
+                    if positive_response:
+                        self.send_response("success")
+                    else: 
+                        self.send_response("none")
 
 
-def goodbye():
+                    
 
-        status_pub = publisher("/node_status", False)
-        status_message = {'node_type':"action_engine", 'node_status':"off", 'robot_name':robot_name, 'robot_type':'NAO', 'description':"closed"}
-        status_pub.send_info(status_message)
+    def runAction(self,action_name, input_, parameters, in_parallel = False):
+        # ------------------------------- none is important --------------------------------
+        if  input_ == "none":
+            self.switch[action_name](parameters, in_parallel)
+        else:
+            self.switch[action_name](input_, parameters, in_parallel)
 
     
 
-def main(nao_ip,nao_port,ip_action,robot_name):
 
+def connection_error():
+    
+        conf_pub = node.conf_pub(mode='many2one')
+        status_pub = node.new_pub("/node_status",conf_pub)
+        status_message = {'node_type':"action", 'node_status':"connection_error", 'robot_name':robot_name}
+        status_pub.send_info(status_message)            
 
+                    
+def goodbye():
 
-    status_pub = publisher("/node_status", False)
-    status_message = {'node_type':"action_engine", 'node_status':"starting", 'robot_name':robot_name, 'robot_type':'NAO', 'description':"busy"}
+        conf_pub = node.conf_pub(mode='many2one')
+        status_pub = node.new_pub("/node_status",conf_pub)
+        status_message = {'node_type':"action", 'node_status':"connection_closed", 'robot_name':robot_name, 'robot_type':'NAO'}
+        print ("Closing node..")
+        status_pub.send_info(status_message)
+
+    
+def main(nao_ip,nao_port,robot_name):
+
+    signal.signal(signal.SIGINT, signal_handler)
+    conf_pub = node.conf_pub(mode='many2one')
+    status_pub = node.new_pub("/node_status",conf_pub)
+    status_message = {'node_type':"action", 'node_status':"connection_starting", 'robot_name':robot_name, 'robot_type':'NAO'}
     status_pub.send_info(status_message)
     atexit.register(goodbye)
         
     print "****** NAO Robot IP: " + nao_ip
-    nao = nao_action(status_pub,nao_ip, nao_port, ip_action, robot_name )
-
-
-    
-
-
+    nao = nao_action(status_pub,nao_ip, nao_port, robot_name )
 
 
 if __name__ == "__main__":
 
-    
-    nao_port = 9559
-    ip_action = '127.0.0.1'
+    port = 9559
 
-    try:
-        nao_ip = sys.argv[1]
-        robot_name = sys.argv[2]
-        print ("Robot IP to connect:" + str(nao_ip))
-        print ("Robot name:" + str(robot_name))
+    ##try:
+    nao_ip = sys.argv[1]
+    robot_name = sys.argv[2]
+    print ("Robot IP to connect:" + str(nao_ip))
+    print ("Robot name:" + str(robot_name))
+    main(nao_ip,port,robot_name)
         
-    except:
-        nao_ip = '127.0.0.1'
-        robot_name = "nao"
+##    except:
+##        print "No connection"
+##        y = raw_input("Error")
+##        #connection_error()
+##        
+##        #print ("Error connecting to local nao")
+##        nao_ip = '192.168.0.102'
+##        
+##        #ip = '127.0.0.1'
+##        robot_name = "pepper"
+##        main(nao_ip,port,robot_name)
+##        pass
 
-    main(nao_ip,nao_port,ip_action,robot_name)
-            
-            
-        
             
