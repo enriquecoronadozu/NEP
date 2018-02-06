@@ -16,18 +16,6 @@ from sys import executable
 class launcher():
     """
     This class is used to launch nodes inside the node folder
-
-    Example
-    ----------
-
-    Launch a node
-
-    .. code-block:: python
-
-        import nep
-        lan = nep.launcher()
-        lan.nep_launch("action", "nao_action_processor")
-
     """
 
     def __init__(self):
@@ -70,44 +58,44 @@ class launcher():
 
 
     #TODO: put in a class that save the initial path to avoid problems with os.chdir("../../..")
-    #Improve, more paremeters
-    def nep_launch(self, node_type = "action", node_name = "nao_action_engine", param1 = "Akari", param2 = "192.168.11.2"):
+    def nep_launch(self, node_type, input_, options_=""):
         """ Launch a node. We need to specify the type of node and the node name
                 
             Parameters
             ----------
             node_type : string
-                Type of node. Example: sensing, perception, action.
-            node_name: string
-                name of the node to open
-            param1: string
-                first parameter for launch the node
-            param2: string
-                second parameter for launch the node
+                Type of node (name of the folder inside the node folder)
+            input_: string
+                name of the node to launch
+            options_: dictionary or "none"
+                parameters or arguments to launch the node
                 
-                
-            Returns
-            -------
-            node_name : string
-                Name of the node without .py
         """
-                
-        params = ""
-        self._return_initial_path()
-        if(node_type == "action"):
-            params = " " + str(param2) + " " + str(param1)
-        if(node_type == "perception"):
-            params = " " + str(param1) + " " + str(param1)
 
+        node_name = input_
+        parameters = ""
+
+        if node_type == "robots":
+             name = options_['robot_name'].encode("UTF-8")
+             ip = options_['robot_ip'].encode("UTF-8")
+             port = options_['robot_port'].encode("UTF-8")
+             parameters = " " + name + " " + ip +  " " + port
             
-        setup = "nodes/"+ node_type + "/" + node_name
-        print "Running " + setup + "/" + node_name +  ".py" 
+        self._return_initial_path()
+        
 
-        #python script to be excuted +  parameters
-        script =  node_name + ".py" +  params
-        print script
-        os.chdir(setup)
-        print "Current:" + os.getcwd()
+        # Define the folder if the node
+        folder = "nodes/"+ node_type + "/" + node_name
+       
+
+        # Define the script + arguments
+        script =  node_name + ".py" +  parameters
+        os.chdir(folder)
+        cw_path = os.getcwd()
+
+        print "Launching node in path:" + cw_path + "/" + node_name +  ".py"
+        print "Parameters of the node: " +  parameters
+        
         self.launch(script)
         self._return_initial_path()
         

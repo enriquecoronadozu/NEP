@@ -702,72 +702,72 @@ class publisher:
                 from geometry_msgs.msg import Twist
                 twist = Twist()
                 twist.linear.x = message.data['linear']['x']
-                twist.linear.y = message['linear']['y']
-                twist.linear.z = message['linear']['z']
-                twist.angular.x = message['angular']['x']
-                twist.angular.y = message['angular']['y']
-                twist.angular.z = message['angular']['z']
+                twist.linear.y = message.data['linear']['y']
+                twist.linear.z = message.data['linear']['z']
+                twist.angular.x = message.data['angular']['x']
+                twist.angular.y = message.data['angular']['y']
+                twist.angular.z = message.data['angular']['z']
                 self.ros_pub.publish(twist)
 
             elif self.msg_type == "point":
                 from geometry_msgs.msg import Point
                 point = Point()
-                point.x = message['x']
-                point.y = message['y']
-                point.z = message['z']
+                point.x = message.data['x']
+                point.y = message.data['y']
+                point.z = message.data['z']
                 self.ros_pub.publish(point)
 
             elif self.msg_type == "wrench":
                 from geometry_msgs.msg import Wrench
                 wrench = Wrench()
-                wrench.force.x = message['force']['x']
-                wrench.force.y = message['force']['y']
-                wrench.force.z = message['force']['z']
-                wrench.torque.x = message['torque']['x']
-                wrench.torque.y = message['torque']['y']
-                wrench.torque.z = message['torque']['z']
+                wrench.force.x = message.data['force']['x']
+                wrench.force.y = message.data['force']['y']
+                wrench.force.z = message.data['force']['z']
+                wrench.torque.x = message.data['torque']['x']
+                wrench.torque.y = message.data['torque']['y']
+                wrench.torque.z = message.data['torque']['z']
                 self.ros_pub.publish(wrench)
                 
 
             elif self.msg_type == "accel":
                 from geometry_msgs.msg import Accel
                 accel = Accel()
-                accel.linear.x = message['linear']['x']
-                accel.linear.y = message['linear']['y']
-                accel.linear.z = message['linear']['z']
-                accel.angular.x = message['angular']['x']
-                accel.angular.y = message['angular']['y']
-                accel.angular.z = message['angular']['z']
+                accel.linear.x = message.data['linear']['x']
+                accel.linear.y = message.data['linear']['y']
+                accel.linear.z = message.data['linear']['z']
+                accel.angular.x = message.data['angular']['x']
+                accel.angular.y = message.data['angular']['y']
+                accel.angular.z = message.data['angular']['z']
                 self.ros_pub.publish(accel)
 
             elif self.msg_type == "quaternion":
                 from geometry_msgs.msg import Quaternion
                 quaternion = Quaternion()
-                quaternion.x = message['x']
-                quaternion.y = message['y']
-                quaternion.z = message['z']
-                quaternion.w = message['w']
+                quaternion.x = message.data['x']
+                quaternion.y = message.data['y']
+                quaternion.z = message.data['z']
+                quaternion.w = message.data['w']
                 self.ros_pub.publish(quaternion)
                 pass
 
             elif self.msg_type == "vector":
                 from geometry_msgs.msg import Vector3
                 vector = Vector3()
-                vector.x = message['x']
-                vector.y = message['y']
-                vector.z = message['z']
+                vector.x = message.data['x']
+                vector.y = message.data['y']
+                vector.z = message.data['z']
                 self.ros_pub.publish(vector)
 
             elif self.msg_type == "pose":
                 from geometry_msgs.msg import Pose
                 pose = Pose()
-                pose.position.x = message['position']['x']
-                pose.position.y = message['position']['y']
-                pose.position.z = message['position']['z']
-                pose.orientation.x = message['orientation']['x']
-                pose.orientation.y = message['orientation']['y']
-                pose.orientation.z = message['orientation']['z']
-                pose.orientation.w = message['orientation']['w']
+                pose.position.x = message.data['position']['x']
+                pose.position.y = message.data['position']['y']
+                pose.position.z = message.data['position']['z']
+                pose.orientation.x = message.data['orientation']['x']
+                pose.orientation.y = message.data['orientation']['y']
+                pose.orientation.z = message.data['orientation']['z']
+                pose.orientation.w = message.data['orientation']['w']
                 self.ros_pub.publish(pose)
         
 
