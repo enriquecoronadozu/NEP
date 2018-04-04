@@ -6,8 +6,8 @@ setup(
     author='Enrique Coronado',
     author_email='enriquecoronadozu@gmail.mx',
     url='http://enriquecoronadozu.github.io',
-    description='Node primitives for social human robot interaction',
-    packages=["nep","rize"],
+    description='NEP robot programming framework',
+    packages=["nep","nepki"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",

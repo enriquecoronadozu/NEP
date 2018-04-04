@@ -16,12 +16,15 @@ from tinydb import TinyDB, Query
 import re
 import ast
 import json
+import os
 from nep_nao import*
 from naoqi import ALProxy
 import math
 import almath
 import time
 import almath
+# This library allows to create new thread (to do parallel tasks)
+import threading
 
 
 #TODO:
@@ -42,17 +45,36 @@ class nao():
             :param port: Robot port for comunication
         """
         self.ip = ip
-        self.port = port
+        self.port = int(port)
         self.session = qi.Session()
         self._connection()
         self.language = "English"
         
+        self.name_joints = ["LAnklePitch", "LAnkleRoll", "LHipRoll", "LHipYawPitch", "LKneePitch",\
+                                "RAnklePitch", "RAnkleRoll", "RHipRoll", "RHipYawPitch", "RKneePitch", \
+                                "LElbowRoll", "LElbowYaw", "LHand","LShoulderPitch", "LShoulderRoll", "LWristYaw", \
+                                "RElbowRoll", "RElbowYaw" , "RHand", "RShoulderPitch", "RShoulderRoll", "RWristYaw",\
+                                "HeadPitch", "HeadYaw"
+                                ]
+
+        #Pepper
+        #self.name_joints= ["HeadPitch","HeadYaw", "HipPitch", "HipRoll", "KneePitch", "LElbowRoll", "LElbowYaw",\
+        #                  "LHand","LShoulderPitch", "LShoulderRoll", "LWristYaw", "RElbowRoll", "RElbowYaw" , "RHand", \
+        #                   "RShoulderPitch", "RShoulderRoll", "RWristYaw"]
+
+        self.data2save = {}
+        for name in self.name_joints:
+            self.data2save[name] = []
+        
+ 
 
     def _connection(self):
         """Function used to connect the robot, is used always before that perform an action"""
 
         try:
             self.session.connect("tcp://" + self.ip  + ":" + str(self.port))
+            print 
+            print "---- Connected with NAO robot ----"
         except RuntimeError:
             print ("Can't connect to Naoqi at ip \"" + self.ip + "\" on port " + str(self.port) +".\n"
                    "Please check the IP adress or port of the robot")
@@ -61,7 +83,7 @@ class nao():
         ip = self.ip
         port = self.port
 
-        #self.motion_service = self.session.service("ALMotion") #TODO: to delate
+
         self.animatedSpeechProxy = ALProxy("ALAnimatedSpeech", ip, port)
         self.postureProxy =  ALProxy("ALRobotPosture", ip, port)
         self.textToSpeechProxy=  ALProxy("ALTextToSpeech",ip,port)
@@ -105,7 +127,7 @@ class nao():
     # wake up -> Turn ON movements
     # rest -> Turn OFF movements
 
-    def wake_up(self,  parameters = {}, in_parallel = False): #0
+    def wake_up(self,  input ="", parameters = {}, in_parallel = False): #0
         """Function used to turn on the motors of NAO, also to makes NAO go to a stand initial position"""
 
         # Get the services ALMotion & ALRobotPosture.
@@ -115,9 +137,10 @@ class nao():
         # Wake up robot (Turn the motors on)
         self.motionProxy.wakeUp()
         self.postureProxy.goToPosture("StandInit", 0.5)
+        print "FINISH WAKE_UP"
 
 
-    def rest(self,  parameters = {}, in_parallel = False): #0
+    def rest(self,  input =  "", parameters = {}, in_parallel = False): #0
         """Function used to turn off the motors of NAO and to makes NAO to go to a rest position (safe position)"""
 
         # Get the services ALMotion.
@@ -152,7 +175,7 @@ class nao():
         fractionMaxSpeed = 0.3
         self.motionProxy.setAngles(joint_name,angle,fractionMaxSpeed)
         time.sleep(0.1)
-        
+
 
 
     def open_hand(self,handName,  parameters = {}, in_parallel = False):
@@ -203,9 +226,9 @@ class nao():
 
         if mode == "position":
             try:
-                x = parameters["x"]
-                y = parameters["y"]
-                Theta = parameters["theta"]
+                x = float(parameters["x"])
+                y = float(parameters["y"])
+                Theta = float(parameters["angle"])
             
                 motion_service = self.session.service("ALMotion")
 ##                self.posture_standInit()
@@ -261,11 +284,56 @@ class nao():
                 pass
             
         elif mode == "velocity":
-                x = parameters["x"]
-                y = parameters["y"]
-                theta = parameters["theta"]
-                frequency = parameters["frequency"]
+                x = float(parameters["x"])
+                y = float(parameters["y"])
+                theta = float(parameters["angle"])
+                frequency = 0.5
+                #frequency = parameters["frequency"]
                 self.motionProxy.setWalkTargetVelocity(x,y,theta,frequency)
+
+    # ------------------------------------ Move ROMAN ----------------------------------------------- 
+    def move_direction(self, mode , parameters = {}, in_parallel = False): #3
+
+        print "MOVE"
+        print mode
+        print parameters
+        
+        x = int(parameters["velocity"])/100.
+        theta = int(parameters["velocity"])/100.
+        y = 0
+
+        if mode == "foward":
+            x = x
+            y = 0
+            theta = 0 
+
+        elif mode == "backward":
+            x = -x
+            y = 0
+            theta = 0 
+            
+        elif mode == "left":
+            x = 0
+            y = 0
+            theta = theta
+             
+        elif mode == "right":
+            x = 0
+            y = 0
+            theta = -theta
+
+        elif mode == "stop":
+            x = 0
+            y = 0
+            theta = 0
+            
+        frequency = 1
+        print x, y, theta
+        self.motionProxy.setWalkTargetVelocity(x,y,theta,frequency)
+##
+##     def turn(self, mode , parameters = {}, in_parallel = False): #3
+##
+##        print "TURN not jet implemente"
 
     # ------------------------------------ Animation control ----------------------------------------------- 
 
@@ -381,6 +449,36 @@ class nao():
 
 
 
+        
+    
+    # This function will be executed in parallel with the main program
+    def save_motion(self, name_file, parameters = {},in_parallel = False ):
+        samples = parameters["samples"]
+        time_w = float(parameters["time"])/1000.
+        path = os.getcwd()
+        file_n = name_file + ".txt"
+        self.data2save = {}
+        for name in self.name_joints:
+            self.data2save[name] = []
+            
+        for n in range(int(samples)):
+            
+            angles = self.motionProxy.getAngles(self.name_joints, False)
+            print n
+            i = 0
+            for joint in self.name_joints:
+                self.data2save[joint].append(angles[i])
+                i = i + 1
+            time.sleep(time_w)
+
+        with open(file_n, 'w') as outfile:
+            json.dump(self.data2save, outfile)
+        print "++++++++++++++++++ MOTION SAVED ++++++++++++++++++++"
+        print "In file: " + path + "/"+ file_n
+        
+
+
+
     def animation(self, animation_name, parameters = {}, in_parallel = False): #1
         """ Execute a animation saved in the database
         """
@@ -395,11 +493,25 @@ class nao():
         if "flip" in parameters:
             flip = parameters["flip"]
         if "reverse" in parameters:
-            reverse = parameters["reverse"]        
+            reverse = parameters["reverse"]
  
         success, names, times, keys = self._animation_query(animation_name, flip, reverse)
+        self.name_joints = names
 
         if success:
+
+##            if "save" in parameters:
+##                self.data2save = {}
+##                self.saving = True
+##                for name in names:
+##                    self.data2save[name] = []
+##                # --------- In main thread ---------------   
+##                # Here we define which function will be executed in parallel
+##                save_thread = threading.Thread(target = self.get_angles_from_motions)
+##                # This avoid that the parallel task follows running after closing the main task
+##                save_thread.daemon = True
+##                # Here we start the parallel task
+##                save_thread.start()            
             
 
             if "time" in parameters:
@@ -408,12 +520,16 @@ class nao():
             try:
                 if in_parallel:
                     id = self.motionProxy.post.angleInterpolation(names, keys, times, True)
+                    self.saving = False
                 else:
                     self.motionProxy.angleInterpolation(names, keys, times, True)
+                    self.saving = False
+                    
             except BaseException, err:
                 print (err)
         else:
             print ('Animation not found in database')
+        print "FINISH ANIMATION"
 
 
     # *********************************** Robot sound/say ******************************************

@@ -55,6 +55,26 @@ class launcher():
             applescript.AppleScript(complete).run()
             self._return_initial_path()
 
+        
+
+    def launch_exe(self, name, folder):
+        """
+            Launch a python program
+
+            Parameters
+            ----------
+            name: string
+                name + extension. Example: "kinect.exe"
+            file_path : string
+                relative path to the file 
+
+        """
+        if os.environ.get('OS','') == 'Windows_NT':
+            os.chdir(folder)
+            print "Windows launcher in new console ......."
+            Popen(name, creationflags=CREATE_NEW_CONSOLE)
+        
+
 
 
     #TODO: put in a class that save the initial path to avoid problems with os.chdir("../../..")

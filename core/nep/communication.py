@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 # ------------------------ Communication module --------------------------------
-# Description: Set of classes used for simplify the use of ZeroMQ in publisher/subscriber communication pattern.
+# Description: Set of classes used for simplify the use of ZeroMQ, ROS and nanomsg
 # --------------------------------------------------------------------------
 # You are free to use, change, or redistribute the code in any way you wish
 # but please maintain the name of the original author.
@@ -17,11 +17,12 @@ import simplejson
 import sys
 import socket
 import signal
+import threading
 
-##try:
-##    import nanomsg
-##except ImportError:
-##    print ("Nanomsg not installed")
+try:
+    import nanomsg
+except ImportError:
+    print ("Nanomsg not installed")
 
 
 
@@ -31,9 +32,53 @@ class node:
         """Signal handler used to close the app"""
         print('Signal Handler, you pressed Ctrl+C! to close the node')
         time.sleep(1)
+        import os
+        pid = os.getpid()
+        print pid
+        import subprocess as s
+        s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
         sys.exit(0)
+        
+    # ----------------------- Kill thread ------------------------------
+    # Used to kill the current program
+    def __wait_kill(self):
+        """Listen for kill signal of the program"""
+        exit = False
+        time.sleep(.1)
+        conf = self.conf_sub("dict","ZMQ","direct","7002","127.0.0.1", "one2many") 
+        exit_sub  = self.new_sub("/program_execution", conf)
+        time.sleep(.1)
+
+        while not exit:
+            s, data = exit_sub.listen_info(True) # Operation in blocking mode
+            if s == True:
+                try:
+                    primitive = data["primitive"]
+                    input_ = data["input"]
+
+                    if input_ == self.node_name:
+                        print "************* Signal to stop program **************"
+                        print data
+                        
+                        exit = True
+                        import os
+                        pid = os.getpid()
+                        print pid
+                        import subprocess as s
+                        s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
+                except:
+                    pass
+
+    def activate_feedback():
+        """Activate node status publisher"""
+        # Feedback status publisher
+        conf_pub = self.conf_pub(mode='many2one')
+        self.status_pub = self.new_pub("/node_status",conf_pub)
+        self.fd = nep.feedback(self.status_pub, node_name)
+        return fd
+        
     
-    def __init__(self, node_name, transport = "ZMQ"):
+    def __init__(self, node_name, transport = "ZMQ", exit_thread = True):
         """
         Class used to define a node and publisher-subscriber patterns
 
@@ -44,13 +89,28 @@ class node:
             Name of the node
         
         transport : string
-            Define the trasport layer of the node, can be 'ROS', 'ZMQ' or 'NN' to use ROS, ZeroMQ and and nanomsg respectively
+            Define the transport layer of the node, can be 'ROS', 'ZMQ' or 'NN' to use ROS, ZeroMQ and and nanomsg respectively
+
+        exit_thread : bool
+            If True then the node can be killed sending the the a dictionary to the "/program_execution" topic with the format {'primitive': "stop", "input":<node_name>}, where "node_name" is the name of the node. Default value = True. 
+
 
         """
         signal.signal(signal.SIGINT, self.signal_handler)
+        
         self.node_name = node_name
         self.transport  = transport 
         print ("New NEP node: " + self.node_name)
+
+        if exit_thread:
+            # ------------------------- Kill thread ------------------------------------
+            # thread that can de used to stop the program
+            self.exit = threading.Thread(target = self.__wait_kill)
+            # Used to finish the background thread when the main thread finish
+            self.exit.daemon = True
+            # start new thread 
+            self.exit.start()
+
         
         if self.transport  == 'ROS':
             try:
@@ -110,7 +170,7 @@ class node:
 
             import nep
             new_node = nep.node("dummy_node")
-            configuration = new_node.config_pub()
+            configuration = new_node.conf_pub()
             pub = new_node.new_pub("dummy_topic", configuration)
         
 
@@ -120,7 +180,7 @@ class node:
 
             import nep
             new_node = nep.node("dummy_node", "ROS")
-            configuration = new_node.config_pub()
+            configuration = new_node.conf_pub()
             pub = new_node.new_pub("dummy_topic", configuration)
         
         """
@@ -170,7 +230,7 @@ class node:
 
             import nep
             new_node = nep.node("dummy_node")
-            configuration = new_node.config_sub() 
+            configuration = new_node.conf_sub() 
             sub = new_node.new_sub("dummy_topic", configuration)
         
         Creates a ROS subscriber
@@ -179,7 +239,7 @@ class node:
 
             import nep
             new_node = nep.node("dummy_node", "ROS")
-            configuration = new_node.config_sub()
+            configuration = new_node.conf_sub()
             pub = new_node.new_sub("dummy_topic", configuration)
         
         """
@@ -216,7 +276,7 @@ class node:
 
             import nep
             new_node = nep.node("dummy_node")
-            configuration = new_node.config_pub() 
+            configuration = new_node.conf_pub() 
             pub = new_node.new_sub("dummy_topic", configuration)
 
         """
@@ -251,7 +311,7 @@ class node:
 
             import nep
             new_node = nep.node("dummy_node")
-            configuration = new_node.config_sub() 
+            configuration = new_node.conf_sub() 
             sub = new_node.new_sub("dummy_topic", configuration)
 
         """
@@ -539,7 +599,7 @@ class publisher:
             port = response['port']
         return port
 
-    def _dumps(self,o, **kwargs):
+    def __dumps(self,o, **kwargs):
         """Serialize object to JSON bytes (utf-8).
         
         See jsonapi.jsonmod.dumps for details on kwargs.
@@ -557,7 +617,7 @@ class publisher:
 
 
     #Status: OK
-    def _serialization(self, message, topic = None):
+    def __serialization(self, message, topic = None):
         """ Function used to serialize a python dictionary using json. In this function the message to be send is attached to the topic. If the topic is not specified it send the message in the default topic.
             
             Parameters
@@ -574,9 +634,9 @@ class publisher:
                 Message to be send, topic + message 
         """
         if topic is None:
-            return self.topic + ' ' + self._dumps(message)
+            return self.topic + ' ' + self.__dumps(message)
         else:
-            return topic + ' ' + self._dumps(message)
+            return topic + ' ' + self.__dumps(message)
             
     
     
@@ -657,7 +717,7 @@ class publisher:
                 import nep
                 import nep.nep_msg
                 new_node = nep.node("dummy_node")
-                configuration = new_node.config_sub(msg_type = "vector") # nep_msg definition
+                configuration = new_node.conf_sub(msg_type = "vector") # nep_msg definition
                 pub = new_node.new_pub("dummy_topic", configuration)
                 vector = nep.vector(0,0,1)
                 pub.send_info(vector)
@@ -670,7 +730,7 @@ class publisher:
                 import nep.nep_msg
                 new_node = nep.node("dummy_node", useROS=True)
                 # ROS Vector3 definition
-                configuration = new_node.config_sub(msg_type = "vector", transport = "ROS")
+                configuration = new_node.conf_sub(msg_type = "vector", transport = "ROS")
                 pub = new_node.new_pub("dummy_topic", configuration)
                 vector = nep.vector(0,0,1) 
                 pub.send_info(vector) 
@@ -680,9 +740,9 @@ class publisher:
         if self.transport ==  "ZMQ" or self.transport ==  "NN":
             # TODO: if data es diferente a la definida poner un warning
             if topic is None:
-                info = self._serialization(message)
+                info = self.__serialization(message)
             else:
-                info =  self._serialization(message, topic)
+                info =  self.__serialization(message, topic)
 
             if debug:
                 try:
@@ -858,18 +918,18 @@ class subscriber:
            
             if self.mode == "many2one":
                 # This allows only use one publisher connected at the same endpoint
-                print ("Multiple subscribers: OFF")
+                # print ("Multiple subscribers: OFF")
                 self.sock.bind(endpoint)
                 print ("subcriber " + endpoint +  " bind")
             elif self.mode == "one2many":
                 # This allows two use more that one publisher ate the same endpoint
-                print ("Multiple subscribers: ON")
+                # print ("Multiple subscribers: ON")
                 self.sock.connect(endpoint)
                 print ("subcriber " + endpoint +  " connect")
 
             elif  self.mode == "many2many":
                 endpoint = "tcp://" + ip + ":" + str(port+1)
-                print ("many2many mode")
+                # print ("many2many mode")
                 self.sock.connect(endpoint)
                 print ("subcriber " + endpoint +  " connect")
 
@@ -892,17 +952,17 @@ class subscriber:
 
             if self.mode == "many2one":
                 # This allows only use one publisher connected at the same endpoint
-                print ("Multiple subscribers: OFF")
+                #print ("Multiple subscribers: OFF")
                 print ("subcriber " + endpoint +  " bind")
                 self.sock.bind(endpoint)
                 # This allows two use more that one publisher ate the same endpoint
             elif self.mode == "one2many":
-                print ("Multiple subscribers: ON")
+                #print ("Multiple subscribers: ON")
                 print ("subcriber " + endpoint +  " connect")
                 self.sock.connect(endpoint)
             elif  self.mode == "many2many":
                 endpoint = "tcp://" + ip + ":" + str(port+1)
-                print ("many2many mode")
+                #print ("many2many mode")
                 self.sock.connect(endpoint)
                 print ("subcriber " + endpoint +  " connect")
             else:
@@ -941,7 +1001,7 @@ class subscriber:
                 if ip == '127.0.0.1':
                     ip = "*"
                 endpoint = "tcp://" + ip + ":" + str(port)
-                print ("Multiple subscribers: OFF")
+                #print ("Multiple subscribers: OFF")
                 self.sock.bind(endpoint)
                 print ("subscriber " + endpoint +  " bind")
             elif self.mode == "one2many":
@@ -949,7 +1009,7 @@ class subscriber:
                 if ip == '127.0.0.1':
                     ip = "localhost"
                 endpoint = "tcp://" + ip + ":" + str(port)
-                print ("Multiple subscribers: ON")
+                #print ("Multiple subscribers: ON")
                 self.sock.connect(endpoint)
                 print ("subscriber " + endpoint +  " connect")
 
@@ -1022,7 +1082,7 @@ class subscriber:
         return port
 
 
-    def _loads(self, s, **kwargs):
+    def __loads(self, s, **kwargs):
         """Load object from JSON bytes (utf-8).
         
         See jsonapi.jsonmod.loads for details on kwargs.
@@ -1035,7 +1095,7 @@ class subscriber:
 
     
     #Status: OK
-    def _deserialization(self, info):
+    def __deserialization(self, info):
         """ Separate the topic and the json message from the data received from the ZeroMQ socket. If the deserialization was successful and the message as a python dictionary
             
             Parameters
@@ -1051,7 +1111,7 @@ class subscriber:
         try:
             json0 = info.find('{')
             topic = info[0:json0].strip()
-            msg = self._loads(info[json0:])
+            msg = self.__loads(info[json0:])
             success = True
         except:
             msg = ""
@@ -1122,7 +1182,7 @@ class subscriber:
 
     #Status: OK
     def listen_info(self,block_mode =  False):
-        """ Listen for a json message that define the human state or robot action. The operation is by default in non blocking mode
+        """ Listen for a json message. The operation is by default in non blocking mode
             
             Parameters
             ----------
@@ -1145,15 +1205,15 @@ class subscriber:
             try:
                 #Blocking mode
                 if block_mode:
-                    info = self._deserialization(self.sock.recv())
+                    info = self.__deserialization(self.sock.recv())
                     time.sleep(.001)
                     success = True
                 #Non blocking mode
                 else:
                     if self.transport ==  "ZMQ":
-                        info = self._deserialization(self.sock.recv(flags = zmq.NOBLOCK))
+                        info = self.__deserialization(self.sock.recv(flags = zmq.NOBLOCK))
                     elif self.transport ==  "NN":
-                        info = self._deserialization(self.sock.recv(flags=nanomsg.DONTWAIT))
+                        info = self.__deserialization(self.sock.recv(flags=nanomsg.DONTWAIT))
 
                     time.sleep(.001)
                     success = True
@@ -1175,6 +1235,22 @@ class subscriber:
 
 class broker():
     def __init__(self, IP, PORT_XPUB, PORT_XSUB):
+        """
+        Creates a XPUB/XSUB broker.abs
+
+        Parameters
+        ----------
+
+        IP : int 
+            IP value of the broker
+
+        PORT_XPUB : int 
+            XPUB port. Must be different that PORT_XSUB
+
+        PORT_XSUB : int 
+            XSUB port. Must be different that PORT_XPUB
+
+        """
         context = zmq.Context()
         frontend = context.socket(zmq.XSUB)
         frontend.bind("tcp://" + IP + ":" + str(PORT_XSUB))
@@ -1185,7 +1261,7 @@ class broker():
         backend.close()
         context.term()
 
-#TODO: sock.close() and context.destroy() must be allway when a process ends
+#TODO: sock.close() and context.destroy() must be allways when a process ends
 #In some cases socket handles won't be freed until you destroy the context.
 #When you exit the program, close your sockets and then call zmq_ctx_destroy(). This destroys the context.
 # In a language with automatic object destruction, sockets and contexts 
@@ -1195,6 +1271,23 @@ class broker():
 
 class server:
     def __init__(self, IP, port, transport = "ZMQ"):
+        """
+        Server side class
+
+        Parameters
+        ----------
+
+        IP : string
+            IP value of server
+
+        port : string
+            Port used to connect the socket
+            
+        transport : string
+            Define the transport layer of the server, can be 'ZMQ' or "normal", to use ZeroMQ or TCP/IP python sockets
+
+        """
+        
         self.transport = transport
 
         if transport == "ZMQ":
@@ -1256,7 +1349,7 @@ class server:
                     connection.close()
 
 
-    def _loads(self, s, **kwargs):
+    def __loads(self, s, **kwargs):
         """Load object from JSON bytes (utf-8).
         
         See jsonapi.jsonmod.loads for details on kwargs.
@@ -1269,8 +1362,8 @@ class server:
 
     
     #Status: OK
-    def _deserialization(self, info):
-        """ Separate the topic and the json message from the data received from the ZeroMQ socket. If the deserialization was successful and the message as a python dictionary
+    def __deserialization(self, info):
+        """ JSON deserialization function  (string to dictionary)
             
             Parameters
             ----------
@@ -1279,20 +1372,20 @@ class server:
 
             Returns
             -------
-            msg : string
-                String message as a python dictionary
+            info : dictionary
+                Message as python dictionary
         """
         try:
             json0 = info.find('{')
             topic = info[0:json0].strip()
-            msg = self._loads(info[json0:])
+            msg = self.__loads(info[json0:])
             success = True
         except:
             msg = ""
             success = False
         return msg
 
-    def _dumps(self,o, **kwargs):
+    def __dumps(self,o, **kwargs):
         """Serialize object to JSON bytes (utf-8).
     
             See jsonapi.jsonmod.dumps for details on kwargs.
@@ -1310,41 +1403,55 @@ class server:
 
 
     #Status: OK
-    def _serialization(self, message):
-        """ Function used to serialize a python dictionary using json. In this function the message to be send is attached to the topic. If the topic is not specified it send the message in the default topic.
+    def __serialization(self, message):
+        """ Function used to serialize a python dictionary using json.
             
             Parameters
             ----------
             message : dictionary
                 Python dictionary to be send
-
-             topic : string
-                name of the topic to send the message
             
             Returns
             -------
             message : string
-                Message to be send, topic + message 
+                Message to be send
         """
-        return self._dumps(message)
+        return self.__dumps(message)
 
     def listen_info(self):
+        """ Listen for a json message
+                        
+            Returns
+            -------
+
+            request : dictionary or string
+                Message obtained
+        """
 
         if self.transport == "ZMQ":
             #response = self.sock.recv_json()
             #return response
             request = self.sock.recv()
-            return self._deserialization(request)
+            return self.__deserialization(request)
             
         else:
             request = self.s.recv(1024)
             return request
 
     def send_info(self,response):
+        """ Function used to send client response as a python dictionary  (if transport == "ZMQ") or as string (if transport == "normal")
+            
+            Parameters
+            ----------
+
+            response : dictionary or string
+                    Python dictionary (ZMQ) or string (Python sockets) to be send
+
+        """
         
         if self.transport == "ZMQ":
             #self.sock.send_json(request)
-            self.sock.send(self._serialization(response))
+            self.sock.send(self.__serialization(response))
         else:
             try:
                self.s.sendall(response)
@@ -1356,6 +1463,23 @@ class server:
 
 class client:
     def __init__(self, IP, port, transport = "ZMQ"):
+        """
+        Client side class
+
+        Parameters
+        ----------
+
+        IP : string
+            IP value of server
+
+        port : string
+            Port used to connect the socket
+            
+        transport : string
+            Define the transport layer of the server, can be 'ZMQ' or "normal", to use ZeroMQ or TCP/IP python sockets
+
+        """
+        
         
         self.transport = transport
         if self.transport == "ZMQ":
@@ -1363,6 +1487,7 @@ class client:
             # Define the socket using the "Context"
             self.sock = context.socket(zmq.REQ)
             self.sock.connect("tcp://" + IP + ":" + str(port))
+            print "New ZMQ client in " + IP + ":" + str(port)
 
         elif transport == "normal":
 
@@ -1391,7 +1516,7 @@ class client:
             print 'Socket connected on ip ' + IP
 
 
-    def _loads(self, s, **kwargs):
+    def __loads(self, s, **kwargs):
         """Load object from JSON bytes (utf-8).
         
         See jsonapi.jsonmod.loads for details on kwargs.
@@ -1404,9 +1529,8 @@ class client:
 
     
     #Status: OK
-    def _deserialization(self, info):
-        """ Separate the topic and the json message from the data received from the ZeroMQ socket. If the deserialization was successful and the message as a python dictionary
-            
+    def __deserialization(self, info):
+        """ 
             Parameters
             ----------
             info : string
@@ -1420,17 +1544,25 @@ class client:
         try:
             json0 = info.find('{')
             topic = info[0:json0].strip()
-            msg = self._loads(info[json0:])
+            msg = self.__loads(info[json0:])
             success = True
         except:
             msg = ""
             success = False
         return msg
 
-    def _dumps(self,o, **kwargs):
-        """Serialize object to JSON bytes (utf-8).
-        
-        See jsonapi.jsonmod.dumps for details on kwargs.
+    def __dumps(self,o, **kwargs):
+        """ JSON deserialization function  (string to dictionary)
+            
+            Parameters
+            ----------
+            info : string
+                Message received by the ZQM socket 
+
+            Returns
+            -------
+            info : dictionary
+                Message as python dictionary
         """
         
         if 'separators' not in kwargs:
@@ -1445,33 +1577,38 @@ class client:
 
 
     #Status: OK
-    def _serialization(self, message):
-        """ Function used to serialize a python dictionary using json. In this function the message to be send is attached to the topic. If the topic is not specified it send the message in the default topic.
-            
+    def __serialization(self, message):
+        """ Function used to serialize a python dictionary using json. 
+
             Parameters
             ----------
             message : dictionary
                 Python dictionary to be send
-
-             topic : string
-                name of the topic to send the message
             
             Returns
             -------
             message : string
-                Message to be send, topic + message 
+                Message to be send
         """
-        return self._dumps(message)
+        return self.__dumps(message)
 
 
 
     def listen_info(self):
+        """ Listen for a json message
+                        
+            Returns
+            -------
+
+            response : dictionary or string
+                Message obtained
+        """
         
         if self.transport == "ZMQ":
             #response = self.sock.recv_json()
             #return response
             response = self.sock.recv()
-            return self._deserialization(response)
+            return self.__deserialization(response)
             
         else:
           response = self.s.recv(1024)
@@ -1479,9 +1616,20 @@ class client:
             
 
     def send_info(self,request):
+        
+        """ Function used to send client request as a python dictionary  (if transport == "ZMQ") or as string (if transport == "normal")
+            
+            Parameters
+            ----------
+
+            request : dictionary or string
+                    Python dictionary (ZMQ) or string (Python sockets) to be send
+
+        """
+
         if self.transport == "ZMQ":
             #self.sock.send_json(request)
-            self.sock.send(self._serialization(request))
+            self.sock.send(self.__serialization(request))
         else:
             try:
                self.s.sendall(request)
@@ -1490,7 +1638,285 @@ class client:
                 print 'Send failed'
                 sys.exit()
 
+class surveyor():
+    
+        def __init__(self, ip = '127.0.0.1', port = '10000', timeout = 1000):
+            
+            """ Nanomsg surveyor class
+            
+            Parameters
+            ----------
 
+            ip : string
+                IP value of server
+
+            port : string
+                Port used to connect the socket
+
+            timeout : int
+                Maximun miliseconds waiting for response
+
+            """
+
+            self.sock = nanomsg.Socket(nanomsg.SURVEYOR)
+            endpoint = "tcp://" + ip + ":" + str(port)
+            self.sock.bind(endpoint)
+            self.sock.set_int_option(nanomsg.SURVEYOR, nanomsg.SURVEYOR_DEADLINE, timeout)
+            time.sleep(1)
+            print "NEP surveyor started in: " + str(endpoint)
+
+
+        def __dumps(self,o, **kwargs):
+            """ Serialize object to JSON bytes (utf-8).
+                
+                See jsonapi.jsonmod.dumps for details on kwargs.
+            """
+                
+            if 'separators' not in kwargs:
+                kwargs['separators'] = (',', ':')
+                
+            s = simplejson.dumps(o, **kwargs)
+                
+            if isinstance(s, unicode):
+                s = s.encode('utf8')
+                
+            return s
+        #Status: OK
+        def __serialization(self, message):
+            """ Function used to serialize a python dictionary using json. 
+
+                Parameters
+                ----------
+                message : dictionary
+                    Python dictionary to be send
+                    
+                Returns
+                -------
+                message : string
+                    Message to be send
+            """
+            return self.__dumps(message)
+            
+    
+
+        def send_info(self, message):
+            """ Function used to send a python dictionary.
+                    
+                Parameters
+                ----------
+                message : dictionary 
+                    Python dictionary to be send
+
+            """
+
+            info = self.__serialization(message)
+            self.sock.send(info)
+
+
+        def __loads(self, s, **kwargs):
+            """Load object from JSON bytes (utf-8).
+                
+            See jsonapi.jsonmod.loads for details on kwargs.
+            """
+                
+            if str is unicode and isinstance(s, bytes):
+                s = s.decode('utf8')
+                
+            return simplejson.loads(s, **kwargs)
+
+    
+        #Status: OK
+        def __deserialization(self, info):
+            """ Deserialization string to dictionary
+
+                Parameters
+                ----------
+                info : string
+                        Message received 
+
+                Returns
+                -------
+                msg : dictionary
+                    String message as a python dictionary
+            """
+            try:
+                json0 = info.find('{')
+                topic = info[0:json0].strip()
+                msg = self.__loads(info[json0:])
+                success = True
+            except:
+                msg = ""
+                success = False
+            return msg
+
+
+       
+
+
+        #Status: OK
+        def listen_info(self):
+            """ Listen for a json message
+                        
+                Returns
+                -------
+                success: bool
+                    True if a message arrives before the timeoutm, otherwise return false
+
+                info : dictionary
+                    Message obtained
+            """
+          
+            while True:
+                    try:
+                            info = self.__deserialization(self.sock.recv())
+                            return True, info
+
+                    #Exeption for non blocking mode timeout
+                    except nanomsg.NanoMsgAPIError:
+                            return  False, {}
+
+         
+        
+        def close(self):
+            """Close socket """
+            self.sock.close()
+
+
+
+
+class respondent():
+        
+        def __init__(self, ip = '127.0.0.1', port = '10000'):
+            
+            """ Nanomsg surveyor class
+            
+            Parameters
+            ----------
+
+            ip : string
+                IP value of server
+
+            port : string
+                Port used to connect the socket
+
+            """
+
+            self.sock = nanomsg.Socket(nanomsg.RESPONDENT)
+            endpoint = "tcp://" + ip + ":" + str(port)
+            self.sock.connect(endpoint)
+            time.sleep(1)
+            print "NEP respondent started in: " + str(endpoint)
+              
+        def __dumps(self,o, **kwargs):
+            """Serialize object to JSON bytes (utf-8).
+                
+            See jsonapi.jsonmod.dumps for details on kwargs.
+            """
+                
+            if 'separators' not in kwargs:
+                kwargs['separators'] = (',', ':')
+                
+            s = simplejson.dumps(o, **kwargs)
+                
+            if isinstance(s, unicode):
+                s = s.encode('utf8')
+                
+                return s
+        #Status: OK
+        def __serialization(self, message):
+            """ Function used to serialize a python dictionary using json. 
+
+                Parameters
+                ----------
+                message : dictionary
+                    Python dictionary to be send
+
+                    
+                Returns
+                -------
+                message : string
+                    Message to be send, topic + message 
+            """
+            return self.__dumps(message)
+            
+    
+
+        def send_info(self, message):
+            """ Function used to send a python dictionary.
+                    
+                Parameters
+                ----------
+                message : dictionary 
+                    Python dictionary to be send
+
+            """
+
+            info = self.__serialization(message)
+            self.sock.send(info)
+
+
+        def __loads(self, s, **kwargs):
+            """Load object from JSON bytes (utf-8).
+                
+            See jsonapi.jsonmod.loads for details on kwargs.
+            """
+                
+            if str is unicode and isinstance(s, bytes):
+                s = s.decode('utf8')
+                
+            return simplejson.loads(s, **kwargs)
+
+    
+        #Status: OK
+        def __deserialization(self, info):
+            """ JSON deserialization function
+                    
+                Parameters
+                ----------
+                info : string
+                    message received
+
+                Returns
+                -------
+                info : dictionary
+                    Message as python dictionary
+            """
+            try:
+                json0 = info.find('{')
+                topic = info[0:json0].strip()
+                msg = self.__loads(info[json0:])
+                success = True
+            except:
+                msg = ""
+                success = False
+            return msg
+
+
+       
+
+
+        #Status: OK
+        def listen_info(self):
+            """ Listen for a json message
+                        
+                Returns
+                -------
+
+                info : dictionary
+                    Message obtained
+            """
+          
+
+            info = self.__deserialization(self.sock.recv())
+            return  info
+
+
+         
+        
+        def close(self):
+            """Close socket """
+            self.sock.close()
+                
 if __name__ == "__main__":
     import doctest
     doctest.testmod()

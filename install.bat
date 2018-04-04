@@ -14,6 +14,8 @@ pip install sphinx
 pip install sphinxcontrib-napoleon
 pip install gevent
 pip install Flask
+pip install -U scikit-fuzzy
+python -m pip install pyserial
 
 pip install dtw
 

@@ -1,7 +1,0 @@
-{
-    "primitive": "say",
-    "type": "robot_action",
-    "description": "Say something with the robot",
-    "input": "string",
-    "options":{"velocity":"percentage","language":"string","double voice":"percentage","pitch":"percentage"}
-}

@@ -18,26 +18,30 @@ import nep
 import simplejson
 import requests
 
-
-
-
-
-def onDeviceLaunch(params):
-    """Launch a sensory device node"""
-    print "Device execution request"
-    list_devices = params.split(",")
-
-    if ("smartwatch_gestures" in list_devices):
+def _loads(s, **kwargs):
+    """Load object from JSON bytes (utf-8).
         
-        device = "smartwatch"
-        perception = "smartwatch_gestures"
-        lan.nep_launch("sensing", device)
-        lan.nep_launch("perception", perception)
+    See jsonapi.jsonmod.loads for details on kwargs.
+    """
+        
+    if str is unicode and isinstance(s, bytes):
+        s = s.decode('utf8')
+        
+    return simplejson.loads(s, **kwargs)
 
 
-#TODO: improve this approach
-def onRunCode(data):
-    code = data['input']
+# -------------------------------------------- Stop program -------------------------------
+# Send signal to stop all robot programs
+def onStop(input_, options_):
+    dic = {'primitive': "stop", "input":input_, "options": options_}
+    pub_exit.send_info(dic)
+    print "kill sended"
+
+
+
+# -------------------------------------------- Run program -------------------------------
+def onRunCode(input_, options_):
+    code = input_
 
     print 
     print "***Code execution request***"
@@ -53,26 +57,51 @@ def onRunCode(data):
     time.sleep(.5)
     lan.launch("cognitive_node.py") 
 
+def onRun(input_, options_):
+    thread.start_new_thread ( onRunCode, (input_, options_)) #Here the parameter is the code to run
 
-def onRobotLaunch(node_name,robot_name, robot_ip):
+
+# -------------------------------------- Launch a robot ------------------------------------------
+
+
+def onRobotLaunch(input_, options_):
     """Action engine execution request"""
-    
-    print "connecting with the action engine: " +  node_name
-    lan.nep_launch("action", node_name, robot_name, robot_ip)
+    print "connecting with robot of type:   " +  input_ + "   with name:  " +  options_["robot_name"]
+    lan.nep_launch("robots", input_, options_)
 
 
-def onCodeStop():
-    
-    dic = {'action': "stop"}
-    pub_exit.send_info(dic)
-    print "kill sended"
+def onLaunchRobot(input_, options_):
+    thread.start_new_thread ( onRobotLaunch, (input_, options_))
 
 
-def onSaveFiles(data):
+# -------------------------------------- Launch a Nodes ------------------------------------------
+
+
+def onDeviceLaunch(input_, options_):
+    """Launch a sensory device node"""
+    print "Device execution request"
+    list_devices = params.split(",")
+
+    if ("smartwatch_gestures" in list_devices):
+        
+        device = "smartwatch"
+        perception = "smartwatch_gestures"
+        lan.nep_launch("sensing", device)
+        lan.nep_launch("perception", perception)
+
+def onLaunchNodes(input_, options_):
+     thread.start_new_thread ( onDeviceLaunch, (input_, options_))
+
+# ------------------------------------ Save Project ------------------------------
+
+
+def onSave(input_, options_):
+    thread.start_new_thread ( onSaveFiles, (input_, options_))
+
+def onSaveFiles(input_, options_):
     
-    
-    project_name = data['name']
-    how = data['how']
+    project_name = input_
+    how = options_['how']
     path = os.getcwd()
 
     #Create the projects folder if was delated
@@ -91,8 +120,8 @@ def onSaveFiles(data):
 
     try:
         path_projects = path + "/static/projects/"
-        code = data['code']
-        xml = data['xml']
+        code = options_['code']
+        xml = options_['xml']
 
         name_file = "blocks.xml"
         if how == "auto":
@@ -109,9 +138,7 @@ def onSaveFiles(data):
     except:
         pass
     finally:
-        os.chdir(global_path)
-
-
+        os.chdir(path)
 
 
 # Setup Flask app.
@@ -138,16 +165,56 @@ def new_action():
         data =  content
         print "New data: " + str(data)
 
-        # Split the action to do and the parameters
-        action_to_do = data['action']
 
-        #TODO improve this part
-        print "action to do: " + action_to_do
+        # Split the action to do and the parameters
+        primitive_ = data['primitive']
+        input_ = data['input']
+        options_ =  data['options']
+
+
+        # List of actions performed in a new thread
+        switch={
+            'stop': onStop,
+            'run': onRun,
+            'launch_robot': onLaunchRobot,
+            'launch_nodes': onLaunchNodes,
+            'save':onSave
+        }
+
+        # List of actions that need a response to the client
+
+        if primitive_ in switch:
+            print "Server get request to execute primitive: **** "  + primitive_ + "****"
+            switch[primitive_](input_, options_)
+        elif primitive_ == "load":
+             # Send a list of project in the static/projects path
+            list_projects = os.listdir("static/projects")
+            print "Projects"
+            print list_projects
+
+            result = {'projects': list_projects}
+            return simplejson.dumps(result)
+        elif primitive_ == "see_ip":
+            print "IP request ..."
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            cw_ip = s.getsockname()[0]
+            s.close()
+            result = {'ip': str(cw_ip)}
+            print "Current IP: " +  str(cw_ip)
+            return simplejson.dumps(result)
+
+        
+        """
         if (action_to_do == "stop"):
             onCodeStop()
+
         if (action_to_do == "run"):
             thread.start_new_thread ( onRunCode, (data,)) #Here the parameter is the code to run
-        if (action_to_do == "launch_action"):
+
+
+        if (action_to_do == "launch_robot"):
             node_name = data['node_name']
             robot_name = data['robot_name']
             robot_ip = data['robot_ip']
@@ -165,10 +232,8 @@ def new_action():
             print list_projects
 
             result = {'projects': list_projects}
-            return simplejson.dumps(result)
+            return simplejson.dumps(result)"""
 
-
-        
         return "POST request wet it!"
 
     elif request.method == 'GET':
@@ -178,25 +243,22 @@ def new_action():
     return "The request is not defined in the server"
 
 def event_stream():
+
     
     while True:
         gevent.sleep(1)
         success, state =  status_sub.listen_info(False)
         if success:
-            node_type = str(state['node_type'])
-            node_status = str(state['node_status'])
-            if node_type == 'action':
-                robot_name = state['robot_name']
-                message  = {'node_type':node_type, 'node_status':node_status, 'robot_name':robot_name}
+            try:
+                node = str(state['node'])
+                input_ = str(state['input'])
+                message  = {'node':node, 'input':input_}
                 message = simplejson.dumps(message)
                 yield 'data: %s \n\n' %message
+            except:
+                pass
 
-            if node_type == 'main_code':
-                message  = {'node_type':node_type, 'node_status':node_status}
-                message = simplejson.dumps(message)
-                yield 'data: %s \n\n' %message
 
-            
         else: 
             yield 'data: null\n\n'
 
@@ -207,22 +269,21 @@ def sse_request():
             mimetype='text/event-stream')
 
 
-
 lan = nep.launcher()
 print ("Starting NEP Master...")
 lan.launch("NEP_master.py")
 time.sleep(3)
 print ("Starting Server ...")
-import webbrowser
-url = "http://127.0.0.1:5000/"
-global_path = os.getcwd()
 
-node = nep.node("RIZE_server")
+node = nep.node("RIZE_server","ZMQ",False)
 sub_config = node.conf_sub(mode = "many2one")
 status_sub  = node.new_sub("/node_status", sub_config)
 
-pub_config = node.conf_pub(mode = "one2many")
-pub_exit  = node.new_pub("/program_execution", pub_config)
+conf = node.conf_pub("dict","ZMQ","direct","7002","127.0.0.1", "one2many") 
+pub_exit  = node.new_pub("/program_execution", conf)
 
+import webbrowser
+url = "http://127.0.0.1:5000/"
 webbrowser.open(url, new=2)
 app.run(threaded=True)
+

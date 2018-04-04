@@ -1,6 +1,0 @@
-{
-    "primitive": "rest",
-    "type": "robot_mode",
-    "description": "Put the robot in a rest state",
-    "input": "none"
-}
