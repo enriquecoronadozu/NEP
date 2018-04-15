@@ -1296,6 +1296,7 @@ class server:
             # Define the socket using the "Context"
             self.sock = context.socket(zmq.REP)
             self.sock.bind("tcp://" + IP + ":" + str(port))
+            print "New ZMQ server in " + IP + ":" + str(port)
         
         elif transport == "normal": 
             # Normal sockets
@@ -1307,8 +1308,6 @@ class server:
             except socket.error, msg:
                 print 'Failed to create socket. Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1]
                 sys.exit();
-                
-            print 'Socket Created'
 
             try:
                 if IP == "localhost":
@@ -1321,33 +1320,11 @@ class server:
                 print 'Hostname could not be resolved. Exiting'
                 sys.exit()
             #Connect to remote server
-            self.s.bind(('' , port))
+            self.s.bind(('' , int(port)))
             self.s.listen(5)
-            print 'Socket connected on ip ' + IP
-
-            while True:
-                # Wait for a connection
-                print >>sys.stderr, 'waiting for a connection'
-                connection, client_address = self.s.accept()
-
-                try:
-                    print >>sys.stderr, 'connection from', client_address
-
-                    # Receive the data in small chunks and retransmit it
-                    while True:
-                        data = connection.recv(16)
-                        print >>sys.stderr, 'received "%s"' % data
-                        if data:
-                            print >>sys.stderr, 'sending data back to the client'
-                            connection.sendall(data)
-                        else:
-                            print >>sys.stderr, 'no more data from', client_address
-                            break
-            
-                finally:
-                    # Clean up the connection
-                    connection.close()
-
+            print "New normal server in " + IP + ":" + str(port)
+            print >>sys.stderr, 'Waiting for a connection'
+            self.connection, client_address = self.s.accept()
 
     def __loads(self, s, **kwargs):
         """Load object from JSON bytes (utf-8).
@@ -1435,8 +1412,15 @@ class server:
             return self.__deserialization(request)
             
         else:
-            request = self.s.recv(1024)
-            return request
+            # Wait for a connection
+            try:
+                request = self.connection.recv(16)
+                return request
+            except:
+                self.connection.close()
+                self.connection, client_address = self.s.accept()
+                request = self.connection.recv(16)
+                return request
 
     def send_info(self,response):
         """ Function used to send client response as a python dictionary  (if transport == "ZMQ") or as string (if transport == "normal")
@@ -1454,10 +1438,9 @@ class server:
             self.sock.send(self.__serialization(response))
         else:
             try:
-               self.s.sendall(response)
-            except socket.error:
-                #Send failed
-                print 'Send failed'
+               self.connection.sendall(response)
+            except:
+                print "ERROR: for normal socket messages must be string not dictionaries" 
                 sys.exit()
 
 
@@ -1498,8 +1481,6 @@ class client:
             except socket.error, msg:
                 print 'Failed to create socket. Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1]
                 sys.exit();
-                
-            print 'Socket Created'
 
             try:
                 if IP == "localhost":
@@ -1512,8 +1493,24 @@ class client:
                 print 'Hostname could not be resolved. Exiting'
                 sys.exit()
             #Connect to remote server
-            self.s.connect((IP , port))
-            print 'Socket connected on ip ' + IP
+            max_v = 10
+            i = 0
+            connect=False
+            while not connect:
+                try: 
+                    self.s.connect((IP , int(port)))
+                    print "New normal client in " + IP + ":" + str(port)
+                    connect = True
+                except:
+                    print "Server not found intent:" + str(i) + ", max = 10"
+                    time.sleep(2)
+                    i = i + 1
+                    if i > max_v-1:
+                        print "Server not found after max number of intents"
+                        time.sleep(4)
+                        sys.exit()
+                        
+
 
 
     def __loads(self, s, **kwargs):
@@ -1632,10 +1629,9 @@ class client:
             self.sock.send(self.__serialization(request))
         else:
             try:
-               self.s.sendall(request)
-            except socket.error:
-                #Send failed
-                print 'Send failed'
+                self.s.sendall(request)
+            except:
+                print "ERROR: for normal socket messages must be string not dictionaries" 
                 sys.exit()
 
 class surveyor():

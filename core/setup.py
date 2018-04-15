@@ -7,7 +7,7 @@ setup(
     author_email='enriquecoronadozu@gmail.mx',
     url='http://enriquecoronadozu.github.io',
     description='NEP robot programming framework',
-    packages=["nep","nepki"],
+    packages=["nep","rize","nepki"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
