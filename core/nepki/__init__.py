@@ -1,4 +1,4 @@
-from nodes import*
-from nepki import*
+from .nodes import*
+from .nepki import*
 
 

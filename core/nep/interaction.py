@@ -41,7 +41,7 @@ class interaction():
 
         except:
             
-            print "WARNING: Another cognitive node have been launched, please stop the execution of that node first"
+            print ("WARNING: Another cognitive node have been launched, please stop the execution of that node first")
             time.sleep(2)
             pub_config = self.node.conf_pub(mode = "many2one")
             self.status_pub = self.node.new_pub("/node_status", pub_config) 
@@ -60,7 +60,7 @@ class interaction():
         
             # ------------------------- Working memory client -----------------------------------
             # TODO: simplify this.
-            print "Connect to memory server"
+            print ("Connect to memory server")
             self.working_memory_port = "7100"
             self.working_memory_client = nep.client("127.0.0.1", self.working_memory_port, transport = "ZMQ")
             self.execute = True
@@ -87,11 +87,11 @@ class interaction():
         """Listen for kill signal of the program"""
         s, data = self.exit_sub.listen_info(True) # Operation in blocking mode
         if s == True:
-            print "************* Signal to stop program **************"
-            print data
+            print ("************* Signal to stop program **************")
+            print (data)
             import os
             pid = os.getpid()
-            print pid
+            print (pid)
             import subprocess as s
             s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
 
@@ -177,7 +177,7 @@ class interaction():
             response = msg["node"]
             return response
         else:
-            print "ERROR: not response from robot"
+            print ("ERROR: not response from robot")
             return "error"
                     
 
@@ -208,8 +208,8 @@ class interaction():
                     type_state = reaction["condition"]["primitive"] 
                     state  =  reaction["condition"]["input"]
                     detected = self.is_detected(type_state,state)
-                    print detected
-                    print "request sended"
+                    print (detected)
+                    print ("request sended")
                     if detected == True:
                          actions = reaction["actions"]
                          for action in actions:
@@ -230,8 +230,8 @@ class interaction():
             action node to be executed
 
         """
-        print "ACTION execution:"
-        print action
+        print ("ACTION execution:")
+        print (action)
         self.pub.send_info(action)
         robots =  []
         if type(action['robots']) is list:

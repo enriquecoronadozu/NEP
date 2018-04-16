@@ -1,0 +1,81 @@
+# Choregraphe simplified export in Python.
+from naoqi import ALProxy
+names = list()
+times = list()
+keys = list()
+
+names.append("HeadPitch")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.104311, 0.107379, 0.104311, 0.107379])
+
+names.append("HeadYaw")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.00153399, 0.00153399, 0.00153399, 0.00153399])
+
+names.append("HipPitch")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([-0.00613594, 0.00613594, -0.00613595, 0.00613595])
+
+names.append("HipRoll")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([-0.00613594, -0.00460196, -0.00613595, -0.00460196])
+
+names.append("KneePitch")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.0521553, 0.076699, 0.0521553, 0.076699])
+
+names.append("LElbowRoll")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([-0.668816, -0.0383496, -0.668815, -0.0383496])
+
+names.append("LElbowYaw")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([-1.67818, -1.81163, -1.67818, -1.81163])
+
+names.append("LHand")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.494728, 0.494728, 0.494728, 0.494728])
+
+names.append("LShoulderPitch")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.776194, 1.07225, 0.776195, 1.07225])
+
+names.append("LShoulderRoll")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.992486, 0.83602, 0.992485, 0.83602])
+
+names.append("LWristYaw")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([-1.72733, -1.82387, -1.72733, -1.82387])
+
+names.append("RElbowRoll")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.739379, 0.00872665, 0.739379, 0.00872665])
+
+names.append("RElbowYaw")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([1.93742, 1.93588, 1.93742, 1.93588])
+
+names.append("RHand")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.479789, 0.503515, 0.479789, 0.503515])
+
+names.append("RShoulderPitch")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([0.943398, 1.0385, 0.943398, 1.0385])
+
+names.append("RShoulderRoll")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([-0.964874, -0.857495, -0.964874, -0.857496])
+
+names.append("RWristYaw")
+times.append([0.36, 0.76, 1.12, 1.52])
+keys.append([1.75332, 1.59225, 1.75332, 1.59225])
+
+try:
+  # uncomment the following line and modify the IP if you use this script outside Choregraphe.
+  # motion = ALProxy("ALMotion", IP, 9559)
+  motion = ALProxy("ALMotion")
+  motion.angleInterpolation(names, keys, times, True)
+except BaseException, err:
+  print err

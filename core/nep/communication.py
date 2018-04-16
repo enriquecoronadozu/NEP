@@ -34,7 +34,7 @@ class node:
         time.sleep(1)
         import os
         pid = os.getpid()
-        print pid
+        print (pid)
         import subprocess as s
         s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
         sys.exit(0)
@@ -57,13 +57,13 @@ class node:
                     input_ = data["input"]
 
                     if input_ == self.node_name:
-                        print "************* Signal to stop program **************"
-                        print data
+                        print ("************* Signal to stop program **************")
+                        print (data)
                         
                         exit = True
                         import os
                         pid = os.getpid()
-                        print pid
+                        print (pid)
                         import subprocess as s
                         s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
                 except:
@@ -438,6 +438,8 @@ class publisher:
             context = zmq.Context()
             # Define the socket using the "Context"
             self.sock = context.socket(zmq.PUB)
+
+
             #Set the topic of the publisher and the end_point
             
             if self.mode == "one2many":
@@ -604,16 +606,18 @@ class publisher:
         
         See jsonapi.jsonmod.dumps for details on kwargs.
         """
-        
+
         if 'separators' not in kwargs:
             kwargs['separators'] = (',', ':')
         
         s = simplejson.dumps(o, **kwargs)
         
-        if isinstance(s, unicode):
-            s = s.encode('utf8')
-        
+
+        if sys.version_info[0] == 2: #Python 2
+            if isinstance(s, unicode):
+                s = s.encode('utf8')
         return s
+
 
 
     #Status: OK
@@ -749,7 +753,10 @@ class publisher:
                     print (info)
                 except:
                     pass
-            self.sock.send(info)
+            if sys.version_info[0] == 2:
+                self.sock.send(info)
+            else:
+                self.sock.send_string(info)
 
         
         if self.transport == "ROS":
@@ -914,7 +921,10 @@ class subscriber:
             # Define subscription and the messages with prefix to accept.
             # setsockopt obtain the data which message starts with the second argument
             # Then we obtain data from the topic with that starts with topic_name value
-            self.sock.setsockopt(zmq.SUBSCRIBE, self.topic)
+            if sys.version_info[0] == 2:
+                self.sock.setsockopt(zmq.SUBSCRIBE, self.topic)
+            else:
+                self.sock.setsockopt_string(zmq.SUBSCRIBE, self.topic)
            
             if self.mode == "many2one":
                 # This allows only use one publisher connected at the same endpoint
@@ -948,7 +958,11 @@ class subscriber:
             time.sleep(.2)
             self.context = zmq.Context()
             self.sock = self.context.socket(zmq.SUB)
-            self.sock.setsockopt(zmq.SUBSCRIBE, self.topic)
+            
+            if sys.version_info[0] == 2:
+                self.sock.setsockopt(zmq.SUBSCRIBE, self.topic)
+            else:
+                self.sock.setsockopt_string(zmq.SUBSCRIBE, self.topic)
 
             if self.mode == "many2one":
                 # This allows only use one publisher connected at the same endpoint
@@ -1039,7 +1053,7 @@ class subscriber:
     #TODO: close for nanomsg
     def close_ZMQ_subscriber(self):
         """ This function closes the socket"""
-        print "close listener"
+        print ("close listener")
         self.sock.close()
         self.context.destroy()
         time.sleep(1)
@@ -1087,11 +1101,13 @@ class subscriber:
         
         See jsonapi.jsonmod.loads for details on kwargs.
         """
-        
-        if str is unicode and isinstance(s, bytes):
-            s = s.decode('utf8')
+
+        if sys.version_info[0] == 2:
+            if str is unicode and isinstance(s, bytes):
+                s = s.decode('utf8')
         
         return simplejson.loads(s, **kwargs)
+
 
     
     #Status: OK
@@ -1143,7 +1159,10 @@ class subscriber:
                 #Blocking mode
                 if block_mode:
                     # Get the message
-                    info = self.sock.recv()
+                    if sys.version_info[0] == 2:
+                        info = self.sock.recv()
+                    else:
+                        info = self.sock.recv_string()
                     # Split the message
 
                     index = info.find(' ')
@@ -1153,7 +1172,11 @@ class subscriber:
                 #Non blocking mode
                 else:
                     if self.transport ==  "ZMQ":
-                        info = self.sock.recv(flags = zmq.NOBLOCK)
+                        if sys.version_info[0] == 2:
+                            info = self.sock.recv(flags = zmq.NOBLOCK)
+                        else:
+                            info = self.sock.recv_string(flags = zmq.NOBLOCK)
+                            print (info)
                     elif self.transport ==  "NN":
                         info = self.sock.recv(flags=nanomsg.DONTWAIT)
                         
@@ -1211,7 +1234,11 @@ class subscriber:
                 #Non blocking mode
                 else:
                     if self.transport ==  "ZMQ":
-                        info = self.__deserialization(self.sock.recv(flags = zmq.NOBLOCK))
+                        if sys.version_info[0] == 2:
+                            info = self.__deserialization(self.sock.recv(flags = zmq.NOBLOCK))
+                        else:
+                            info = self.__deserialization(self.sock.recv_string(flags = zmq.NOBLOCK))
+
                     elif self.transport ==  "NN":
                         info = self.__deserialization(self.sock.recv(flags=nanomsg.DONTWAIT))
 
@@ -1296,7 +1323,7 @@ class server:
             # Define the socket using the "Context"
             self.sock = context.socket(zmq.REP)
             self.sock.bind("tcp://" + IP + ":" + str(port))
-            print "New ZMQ server in " + IP + ":" + str(port)
+            print ("New ZMQ server in " + IP + ":" + str(port))
         
         elif transport == "normal": 
             # Normal sockets
@@ -1305,8 +1332,8 @@ class server:
                 self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 #self.s.setblocking(0)
                 self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            except socket.error, msg:
-                print 'Failed to create socket. Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1]
+            except:
+                print ('Failed in creating socket')
                 sys.exit();
 
             try:
@@ -1317,13 +1344,13 @@ class server:
                 
             except socket.gaierror:
                 #could not resolve
-                print 'Hostname could not be resolved. Exiting'
+                print ('Hostname could not be resolved. Exiting')
                 sys.exit()
             #Connect to remote server
             self.s.bind(('' , int(port)))
             self.s.listen(5)
-            print "New normal server in " + IP + ":" + str(port)
-            print >>sys.stderr, 'Waiting for a connection'
+            print ("New normal server in " + IP + ":" + str(port))
+            print ('Waiting for a connection')
             self.connection, client_address = self.s.accept()
 
     def __loads(self, s, **kwargs):
@@ -1331,9 +1358,10 @@ class server:
         
         See jsonapi.jsonmod.loads for details on kwargs.
         """
-        
-        if str is unicode and isinstance(s, bytes):
-            s = s.decode('utf8')
+
+        if sys.version_info[0] == 2:
+            if str is unicode and isinstance(s, bytes):
+                s = s.decode('utf8')
         
         return simplejson.loads(s, **kwargs)
 
@@ -1353,9 +1381,7 @@ class server:
                 Message as python dictionary
         """
         try:
-            json0 = info.find('{')
-            topic = info[0:json0].strip()
-            msg = self.__loads(info[json0:])
+            msg = self.__loads(info)
             success = True
         except:
             msg = ""
@@ -1373,8 +1399,9 @@ class server:
         
         s = simplejson.dumps(o, **kwargs)
         
-        if isinstance(s, unicode):
-            s = s.encode('utf8')
+        if sys.version_info[0] == 2: #Python 2
+            if isinstance(s, unicode):
+                s = s.encode('utf8')
         
         return s
 
@@ -1434,13 +1461,16 @@ class server:
         """
         
         if self.transport == "ZMQ":
-            #self.sock.send_json(request)
-            self.sock.send(self.__serialization(response))
+            #self.sock.send_json(response)
+            if sys.version_info[0] == 2:
+                self.sock.send(self.__serialization(response))
+            else:
+                self.sock.send_string(self.__serialization(response))
         else:
             try:
                self.connection.sendall(response)
             except:
-                print "ERROR: for normal socket messages must be string not dictionaries" 
+                print ("ERROR: for normal socket messages must be string not dictionaries" )
                 sys.exit()
 
 
@@ -1470,7 +1500,7 @@ class client:
             # Define the socket using the "Context"
             self.sock = context.socket(zmq.REQ)
             self.sock.connect("tcp://" + IP + ":" + str(port))
-            print "New ZMQ client in " + IP + ":" + str(port)
+            print ("New ZMQ client in " + IP + ":" + str(port))
 
         elif transport == "normal":
 
@@ -1478,8 +1508,8 @@ class client:
             try:
                 #create an AF_INET, STREAM socket (TCP)
                 self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            except socket.error, msg:
-                print 'Failed to create socket. Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1]
+            except socket.error:
+                print ('Failed creating socket')
                 sys.exit();
 
             try:
@@ -1490,7 +1520,7 @@ class client:
                 
             except socket.gaierror:
                 #could not resolve
-                print 'Hostname could not be resolved. Exiting'
+                print ('Hostname could not be resolved. Exiting')
                 sys.exit()
             #Connect to remote server
             max_v = 10
@@ -1499,14 +1529,14 @@ class client:
             while not connect:
                 try: 
                     self.s.connect((IP , int(port)))
-                    print "New normal client in " + IP + ":" + str(port)
+                    print ("New normal client in " + IP + ":" + str(port))
                     connect = True
                 except:
-                    print "Server not found intent:" + str(i) + ", max = 10"
+                    print ("Server not found intent:" + str(i) + ", max = 10")
                     time.sleep(2)
                     i = i + 1
                     if i > max_v-1:
-                        print "Server not found after max number of intents"
+                        print ("Server not found after max number of intents")
                         time.sleep(4)
                         sys.exit()
                         
@@ -1519,8 +1549,9 @@ class client:
         See jsonapi.jsonmod.loads for details on kwargs.
         """
         
-        if str is unicode and isinstance(s, bytes):
-            s = s.decode('utf8')
+        if sys.version_info[0] == 2:
+            if str is unicode and isinstance(s, bytes):
+                s = s.decode('utf8')
         
         return simplejson.loads(s, **kwargs)
 
@@ -1539,13 +1570,9 @@ class client:
                 String message as a python dictionary
         """
         try:
-            json0 = info.find('{')
-            topic = info[0:json0].strip()
-            msg = self.__loads(info[json0:])
-            success = True
+            msg = self.__loads(info)
         except:
             msg = ""
-            success = False
         return msg
 
     def __dumps(self,o, **kwargs):
@@ -1567,9 +1594,10 @@ class client:
         
         s = simplejson.dumps(o, **kwargs)
         
-        if isinstance(s, unicode):
-            s = s.encode('utf8')
-        
+
+        if sys.version_info[0] == 2: #Python 2
+            if isinstance(s, unicode):
+                s = s.encode('utf8')
         return s
 
 
@@ -1626,12 +1654,16 @@ class client:
 
         if self.transport == "ZMQ":
             #self.sock.send_json(request)
-            self.sock.send(self.__serialization(request))
+            if sys.version_info[0] == 2:
+                self.sock.send(self.__serialization(request))
+            else:
+                self.sock.send_string(self.__serialization(request))
+
         else:
             try:
                 self.s.sendall(request)
             except:
-                print "ERROR: for normal socket messages must be string not dictionaries" 
+                print ("ERROR: for normal socket messages must be string not dictionaries")
                 sys.exit()
 
 class surveyor():
@@ -1659,7 +1691,7 @@ class surveyor():
             self.sock.bind(endpoint)
             self.sock.set_int_option(nanomsg.SURVEYOR, nanomsg.SURVEYOR_DEADLINE, timeout)
             time.sleep(1)
-            print "NEP surveyor started in: " + str(endpoint)
+            print ("NEP surveyor started in: " + str(endpoint))
 
 
         def __dumps(self,o, **kwargs):
@@ -1667,16 +1699,17 @@ class surveyor():
                 
                 See jsonapi.jsonmod.dumps for details on kwargs.
             """
-                
+
             if 'separators' not in kwargs:
                 kwargs['separators'] = (',', ':')
-                
+        
             s = simplejson.dumps(o, **kwargs)
-                
-            if isinstance(s, unicode):
-                s = s.encode('utf8')
-                
+            
+            if sys.version_info[0] == 2: #Python 2
+                if isinstance(s, unicode):
+                    s = s.encode('utf8')
             return s
+
         #Status: OK
         def __serialization(self, message):
             """ Function used to serialize a python dictionary using json. 
@@ -1714,11 +1747,13 @@ class surveyor():
                 
             See jsonapi.jsonmod.loads for details on kwargs.
             """
-                
-            if str is unicode and isinstance(s, bytes):
-                s = s.decode('utf8')
-                
+
+            if sys.version_info[0] == 2:
+                if str is unicode and isinstance(s, bytes):
+                    s = s.decode('utf8')
+        
             return simplejson.loads(s, **kwargs)
+                
 
     
         #Status: OK
@@ -1801,23 +1836,26 @@ class respondent():
             endpoint = "tcp://" + ip + ":" + str(port)
             self.sock.connect(endpoint)
             time.sleep(1)
-            print "NEP respondent started in: " + str(endpoint)
+            print ("NEP respondent started in: " + str(endpoint))
               
         def __dumps(self,o, **kwargs):
             """Serialize object to JSON bytes (utf-8).
                 
             See jsonapi.jsonmod.dumps for details on kwargs.
             """
-                
+
             if 'separators' not in kwargs:
                 kwargs['separators'] = (',', ':')
-                
+        
             s = simplejson.dumps(o, **kwargs)
-                
-            if isinstance(s, unicode):
-                s = s.encode('utf8')
-                
-                return s
+            
+
+            if sys.version_info[0] == 2: #Python 2
+                if isinstance(s, unicode):
+                    s = s.encode('utf8')
+            return s
+
+
         #Status: OK
         def __serialization(self, message):
             """ Function used to serialize a python dictionary using json. 
@@ -1856,11 +1894,13 @@ class respondent():
                 
             See jsonapi.jsonmod.loads for details on kwargs.
             """
-                
-            if str is unicode and isinstance(s, bytes):
-                s = s.decode('utf8')
-                
+
+            if sys.version_info[0] == 2:
+                if str is unicode and isinstance(s, bytes):
+                    s = s.decode('utf8')
+        
             return simplejson.loads(s, **kwargs)
+
 
     
         #Status: OK

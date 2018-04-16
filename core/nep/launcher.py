@@ -36,13 +36,13 @@ class launcher():
                 script name + extension. Example: "script.py" 
 
         """
-        print "To run: " + script
+        print ("To run: " + script)
         if os.environ.get('OS','') == 'Windows_NT':
 
-            print "Windows launcher in new console ......."
+            print ("Windows launcher in new console .......")
             Popen("python " + script, creationflags=CREATE_NEW_CONSOLE)
         else: 
-            print "MAC/Linux launcher ......."
+            print ("MAC/Linux launcher .......")
             import applescript
 
             inst = "cd "
@@ -71,7 +71,7 @@ class launcher():
         """
         if os.environ.get('OS','') == 'Windows_NT':
             os.chdir(folder)
-            print "Windows launcher in new console ......."
+            print ("Windows launcher in new console .......")
             Popen(name, creationflags=CREATE_NEW_CONSOLE)
         
 
@@ -113,8 +113,8 @@ class launcher():
         os.chdir(folder)
         cw_path = os.getcwd()
 
-        print "Launching node in path:" + cw_path + "/" + node_name +  ".py"
-        print "Parameters of the node: " +  parameters
+        print ("Launching node in path:" + cw_path + "/" + node_name +  ".py")
+        print ("Parameters of the node: " +  parameters)
         
         self.launch(script)
         self._return_initial_path()

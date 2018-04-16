@@ -96,12 +96,12 @@ class robot:
                 elif self.state == "wait":
                     self.state = "idle"
                     msg = {"node":"success", "robot":self.robot_name}
-                    print msg
+                    print (msg)
                     self.__send_response(msg)
             elif self.state == "wait" and self.pattern == "pubsub":  # TODO: improve?
                     self.state = "idle"
                     msg = {"node":"success", "robot":self.robot_name}
-                    print msg
+                    print (msg)
                     self.__send_response(msg)
                 
 
@@ -172,10 +172,10 @@ class robot:
             if primitive_name in self.robot_actions:
                 # Execute function
                 self.robot_actions[primitive_name](input_, parameters, in_parallel)
-                print primitive_name, " was executed"
+                print (primitive_name, " was executed")
                     
             else:
-                print primitive_name, "is not a valid primitive"
+                print (primitive_name, "is not a valid primitive")
 
 
 

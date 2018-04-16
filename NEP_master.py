@@ -45,7 +45,7 @@ class master:
                     port = self.topic_register[topic]
                     msg = {'topic':topic, 'port': port}
                     self.s.send_info(msg)
-                    print self.topic_register
+                    print (self.topic_register)
                     
                 else:
 
@@ -57,7 +57,7 @@ class master:
                     msg = {'topic':topic, 'port': self.current_port}
                     self.s.send_info(msg)
                     self.current_port = self.current_port + 2
-                    print self.topic_register
+                    print (self.topic_register)
 
 
 server = master()      

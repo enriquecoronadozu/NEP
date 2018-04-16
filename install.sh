@@ -26,4 +26,3 @@ echo Building NEP libraries and packages
 
 python make_nep.py
 python make_packages.py
-python make_blocks.py

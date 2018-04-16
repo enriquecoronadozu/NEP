@@ -3,7 +3,7 @@ from random import randint
 
 class nepki():
     def __init__(self):
-        print "New BT class created"
+        print ("New BT class created")
         self.exit = True
         self.next = False
         self.r = interaction()
@@ -23,7 +23,7 @@ class nepki():
             return "success"
             end = time.time()
             elapsed = end - start
-            print "Nodes actived in :" + str(elapsed) + " seconds"
+            print ("Nodes actived in :" + str(elapsed) + " seconds")
 
         if not node["state"] == "inactive":
         #if node["state"] == "active" or node["state"] == "running" or node["state"] == "loop":
@@ -59,12 +59,12 @@ class nepki():
         n_times = node["n"]
         if (n_times < n_max):
             if node["state"] == "loop":
-                print "loop"
-                print n_times
+                print ("loop")
+                print (n_times)
                 self.tick(child,True) #Activation
 
             response = self.tick(child,False) #Execution
-            print "until success response " + str(response)
+            print ("until success response " + str(response))
             if response == "failure":
                 node["n"] = node["n"] + 1
                 self.set_node_running(node) #TODO: Esta y la siguiente linea casuo confusion
@@ -76,7 +76,7 @@ class nepki():
             elif response == "success":
                 self.set_node_success(node)
                 return "success"
-            print child
+            print (child)
             
         else:
             self.set_node_success(node)
@@ -116,8 +116,8 @@ class nepki():
 
     def run_condition(self,node):
         response = self.r.check_condition(node)
-        print node
-        print "condition response: " + response 
+        print (node)
+        print ("condition response: " + response) 
         if response == "failure":
             self.set_node_failure(node)
         elif response == "success":
@@ -125,7 +125,7 @@ class nepki():
         return response
 
     def run_action(self,node):
-        print "-------- Action ---------"
+        print ("-------- Action ---------")
         response = self.r.research(node)
         if response == "running":
             self.set_node_running(node)
@@ -133,7 +133,7 @@ class nepki():
             self.set_node_failure(node)
         elif response == "success":
             self.set_node_success(node)
-            print node
+            print (node)
         elif response == "error":
             self.set_node_error(node)
         return response
@@ -162,8 +162,8 @@ class nepki():
 
     def set_node_error(self,node,memory=False):
         # Set the node with error state
-        print "ERROR: in"
-        print node
+        print ("ERROR: in")
+        print (node)
         if memory:
             node["state"] = "active"
         else:

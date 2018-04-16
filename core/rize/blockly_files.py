@@ -92,7 +92,7 @@ class blockly_files:
                 self.file_d.write('"values":'+   dict2json(values['values']) + "," )
                 
             except:
-                print "No database javascript file for primitive: " + data["primitive"]
+                print ("No database javascript file for primitive: " + data["primitive"])
         self.file_d.write("},")
 
         
