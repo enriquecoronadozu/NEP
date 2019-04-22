@@ -6,16 +6,22 @@ NEP is mainly a inter-process communication library using sockets. NEP is back-e
 
 Deafult back-end implementation of NEP is ZeroMQ, which enable more user-friendly installation and provides better support for newer and older versions of most used desktop operating systems (Windows and MacOSX).
 
-More details in official documentation page: https://enriquecoronadozu.github.io/learn-nep/
+More details in **official documentation** page: https://enriquecoronadozu.github.io/learn-nep/
 
-Install Python 2: 
+**Install Python 2:** 
 
-**pip install nep**
-**pip install tornado**
-**pip install trollius**
+pip install nep
 
-Install Python 3: 
+pip install tornado
 
-**pip install nep**
-**pip install tornado**
-**pip install asyncio**
+pip install trollius
+
+**Install Python 3:** 
+
+pip install nep
+
+pip install tornado
+
+pip install asyncio
+
+Older beta version on: https://github.com/enriquecoronadozu/NEP-beta-version
