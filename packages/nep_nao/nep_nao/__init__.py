@@ -1,9 +1,0 @@
-from nao import*
-
-
-
-
-
-
-
-
