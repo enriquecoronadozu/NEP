@@ -10,18 +10,18 @@ More details in **official documentation** page: https://enriquecoronadozu.githu
 
 **Install Python 2:** 
 
+```
 pip install nep
-
 pip install tornado
-
 pip install trollius
+```
 
 **Install Python 3:** 
 
+```
 pip install nep
-
 pip install tornado
-
 pip install asyncio
+```
 
 Older beta version on: https://github.com/enriquecoronadozu/NEP-beta-version
