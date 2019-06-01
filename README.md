@@ -1,4 +1,4 @@
-# NEP
+# NEP 1.0
 
 Node Primitives (NEP) is a high-level library that provides simple and re-usable tools that enable the generation of software architectures for Human-Robot Interaction (HRI) and End-User Development (EUD).
 
