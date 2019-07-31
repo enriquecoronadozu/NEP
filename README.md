@@ -7,6 +7,7 @@ NEP is mainly an inter-process communication library using sockets. NEP is back-
 The default back-end implementation of NEP is ZeroMQ, which enables more user-friendly installation and provides better support for newer and older versions of most used desktop operating systems (Windows and MacOSX).
 
 **Main page**: https://enriquecoronadozu.github.io/nep/
+
 **Documentation** page: https://enriquecoronadozu.github.io/learn-nep/
 
 **Install Python 2:** 
