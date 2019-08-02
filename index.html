@@ -17,6 +17,7 @@
   <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
 </head>
 
+
 <body>
 
   <div id="app">
@@ -24,16 +25,29 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar flat app dense color="white">
+      <v-app-bar app dense color="white">
+
+        <v-avatar size="35">
+          <img src="images/nep.png" alt="avatar">
+        </v-avatar> &nbsp; &nbsp;
+        <v-toolbar-title>
+          NEP
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
+          <v-btn text color="grey darken-3" text>Home <v-icon right dark>home</v-icon>
+          </v-btn>
+          <v-btn text color="grey darken-3" text>Main concepts <v-icon right dark>description</v-icon>
+          </v-btn>
+          <v-btn text color="grey darken-3" text>Examples <v-icon right dark>code</v-icon>
+          </v-btn>
           <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
-          <v-btn text color="grey darken-3" text>Tutorials <v-icon right dark>description</v-icon>
-          </v-btn>
           <v-btn text color="grey darken-3" text>Publications <v-icon right dark>school</v-icon>
+          </v-btn>
+          <v-btn text color="grey darken-3" text>issues <v-icon right dark>error</v-icon>
           </v-btn>
         </v-toolbar-items>
         <div>&nbsp;</div>
@@ -56,7 +70,7 @@
                   <div><span style=" color:#424242; font-size: 36px"> <b>N</b>od<b>e</b> <b>P</b>rimitives
                   </div>
                   <v-container>
-                    <v-avatar size="106">
+                    <v-avatar size="75">
                       <img src="images/nep.png" alt="avatar">
                     </v-avatar>
                   </v-container>
@@ -93,11 +107,9 @@
                     <v-layout justify-center>
                       <v-flex xs4 md3>
                         <v-card flat color="white" min-width="200" max-width="300">
-                          <v-card-title>
-                            <p style="color:#1E88E5; font-size:23px;">
-                              Usable
-                            </p>
-                          </v-card-title>
+                          <p style="color:#1E88E5; font-size:23px">
+                            Usable
+                          </p>
                           <v-card-text<p style="font-size:16px;">Lightweight and easy-to-install using pip (Python)</p>
                             </v-card-text>
                         </v-card>
@@ -105,11 +117,9 @@
 
                       <v-flex xs4 md3>
                         <v-card flat color="white" min-width="200" max-width="300">
-                          <v-card-title>
-                            <p style="color:#1E88E5; font-size:23px;">
-                              Cross-platform
-                            </p>
-                          </v-card-title>
+                          <p style="color:#1E88E5; font-size:23px;">
+                            Cross-platform
+                          </p>
                           <v-card-text<p style="font-size:16px;">Runs in Windows (7 and above), OSX 10.x and Linux</p>
                             </v-card-text>
                         </v-card>
@@ -117,11 +127,9 @@
 
                       <v-flex xs4 md3>
                         <v-card flat color="white" min-width="260" max-width="300">
-                          <v-card-title>
-                            <p style="color:#1E88E5; font-size:23px;">
-                              Reusable
-                            </p>
-                          </v-card-title>
+                          <p style="color:#1E88E5; font-size:23px;">
+                            Reusable
+                          </p>
                           <v-card-text<p style="font-size:16px;">Based in ROS, ROS 2.0, ZeroMQ and nanomsg</p>
                             </v-card-text>
                         </v-card>
@@ -133,6 +141,7 @@
 
             </v-container>
             <div>&nbsp;</div>
+
             <v-layout justify-center>
               <v-flex xs10 md12>
                 <v-card color="white" flat>
@@ -150,6 +159,159 @@
               </v-flex>
             </v-layout>
 
+            <div>&nbsp;</div>
+            <div>&nbsp;</div>
+
+
+            <v-layout justify-center>
+              <v-flex xs8>
+                <v-card>
+                  <v-toolbar flat color="primary" dark>
+                    <v-toolbar-title>Main concepts</v-toolbar-title>
+                  </v-toolbar>
+                  <v-tabs vertical>
+                    <v-tab>
+
+                      Nodes
+                    </v-tab>
+                    <v-tab>
+
+                      Sockets
+                    </v-tab>
+                    <v-tab>
+
+                      Client/Server
+                    </v-tab>
+
+                    <v-tab>
+
+                      Publish/Subscribe
+                    </v-tab>
+
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+                          <p>
+                            <b>Nodes</b> are simple, loosely coupled, independent and re-usable building blocks of robot
+                            applications.
+                          </p>
+
+                          <p>
+                            They usually run in parallel in one or different machines and can be written in
+                            different
+                            programming languages.
+                          </p>
+
+                          <p class="mb-0">
+                            Communication between nodes is often done using <b>sockets</b>.
+
+                          </p>
+                        </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+
+                          <p>
+                            A network <b>socket</b> is a inter-process communication method for sending or receiving
+                            data within a <b>node</b> on a
+                            computer network.
+                          </p>
+
+                          <p>
+                            Socket address for endpoints are composed of a <b>protocol</b>, an <b>IP</b> address, and a
+                            <b>port</b> value.
+                          </p>
+
+                          <p>
+                            An example of endpoint definition is:
+
+                            <code>tcp://127.0.0.1:5000</code>
+
+
+                            where:
+
+                            <b>IP</b> indicates the protocol,
+                            <b>127.0.0.1</b> indicates the IP address, and
+                            <b>5000</b> indicates the port of the connection.
+                          </p>
+
+
+
+                        </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+                          <p>
+                            In the <b>Request/Process/Reply</b> pattern, also denoted as <b>Client/Server</b>, a process
+                            sends a request for some data and then waits for the response to this request.
+
+                          </p>
+
+                          <p class="mb-0">
+                            This pattern is suitable for the cases where
+                            synchronization between two tasks is needed. However, if a reply
+                            never comes, a deadlock can occur (i.e., a read operation cannot be performed when a write
+                            operation is in progress, and vice versa).
+                          </p>
+                        </v-card-text>
+
+                        <v-container>
+                          <v-layout justify-center>
+                            <v-flex xs6>
+                              <v-img src="images/cs.png" aspect-ratio="2" class="grey lighten-2" max-width="300"
+                                max-height="200"></v-img>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+
+                      </v-card>
+                    </v-tab-item>
+
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+                          <p>
+                            In the <b>Publish/Subscribe</b> model the producers of messages,
+                            called <b>publishers</b>, send messages without the knowledge of what or if any receiver,
+                            called
+                            <b>subscribers</b>. Unlike typical <b>Client/Server</b> models, the communication is
+                            asynchronous.
+
+                          </p>
+
+                          <p class="mb-0">
+                            The notion of <b>topics</b> is often used to identify socket endpoints and
+                            filter the information
+                            sent by publishers
+                          </p>
+
+                        </v-card-text>
+
+                        <v-container>
+                          <v-layout justify-center>
+                            <v-flex xs6>
+                              <v-img src="images/ps.png" aspect-ratio="1.8" class="grey lighten-2" max-width="300"
+                                max-height="200"></v-img>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+
+                      </v-card>
+                    </v-tab-item>
+
+                  </v-tabs>
+                </v-card>
+              </v-flex>
+            </v-layout>
+
+
+
+
+
 
           </v-container>
       </v-content>
@@ -166,58 +328,138 @@
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
-            Steps:
+            Installation:
           </v-card-title>
           <v-stepper v-model="e6" vertical>
             <v-stepper-step :complete="e6 > 1" step="1" editable>
-              Select Python version
+              If you use Python 2 run in a terminal
             </v-stepper-step>
 
             <v-stepper-content step="1">
 
 
               <v-layout justify-center>
-                <v-flex xs10>
-                    <v-radio-group v-model="row" row>
-                        <v-radio label="Python 2" value="radio-1"></v-radio>
-                        <v-radio label="Python 3" value="radio-2"></v-radio>
-                    </v-radio-group>
+                <v-flex xs12>
 
+
+                  <v-tabs vertical>
+                    <v-tab>
+
+                      Windows
+                    </v-tab>
+                    <v-tab>
+
+                      OSX/Linux
+                    </v-tab>
+
+
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+                          <p style="color:black;">
+                            py -2 -m pip install -U nep <br>
+                            py -2 -m pip install -U trollius <br>
+                            py -2 -m pip install -U tornado
+                          </p>
+                        </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+                          <p style="color:black;">
+                            python2 -m pip install -U nep <br>
+                            python2 -m pip install -U trollius <br>
+                            python2 -m pip install -U tornado
+                          </p>
+
+                        </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+
+                  </v-tabs>
                 </v-flex>
               </v-layout>
               <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
-              <v-btn text>Cancel</v-btn>
 
 
             </v-stepper-content>
 
-            <v-stepper-step editable :complete="e6 > 2" step="2"> Install using pip</v-stepper-step>
+
+
+            <v-stepper-step :complete="e6 > 2" step="2" editable>
+              If you use Python 3 run in a terminal
+            </v-stepper-step>
+
 
             <v-stepper-content step="2">
+
+
               <v-layout justify-center>
-                <v-flex xs8>
-                    <code>py -2 -m pip install -U nep</code>
-                    <code>py -2 -m pip install -U nep</code>
-                    <code>py -2 -m pip install -U nep</code>
+                <v-flex xs12>
+
+
+                  <v-tabs vertical>
+                    <v-tab>
+
+                      Windows
+                    </v-tab>
+                    <v-tab>
+
+                      OSX/Linux
+                    </v-tab>
+
+
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+                          <p>
+                            py -3 -m pip install -U nep <br>
+                            py -3 -m pip install -U trollius <br>
+                            py -3 -m pip install -U tornado
+                          </p>
+                        </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+                    <v-tab-item>
+                      <v-card flat>
+                        <v-card-text>
+                          <p>
+                            python3 -m pip install -U nep <br>
+                            python3 -m pip install -U trollius <br>
+                            python3 -m pip install -U tornado
+                          </p>
+
+                        </v-card-text>
+                      </v-card>
+                    </v-tab-item>
+
+                  </v-tabs>
                 </v-flex>
+              </v-layout>
+              <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
+
+
             </v-stepper-content>
 
-            <v-stepper-step editable :complete="e6 > 3" step="3"> Install NEP Discovery Server </v-stepper-step>
+
+
+            <v-stepper-step editable :complete="e6 > 3" step="3"> NEP Discovery Server (Recomended) </v-stepper-step>
 
             <v-stepper-content step="3">
               <v-layout justify-center>
-                <v-flex xs8>
+                <v-flex xs6>
                   <v-btn
                     href="https://github.com/enriquecoronadozu/RIZE/releases/download/v0.9-beta.2/pynaoqi-2.4.3.2.win32.exe"
-                    target="_blank" color="primary">Install NEP Discovery Server</v-btn>
+                    target="_blank" color="primary">Install NEP Server</v-btn>
                 </v-flex>
               </v-layout>
             </v-stepper-content>
 
 
-            <v-stepper-step editable :complete="e6 > 4" step="4">RIZE robot configuration interface</v-stepper-step>
 
-           
+
+
 
           </v-stepper>
           <v-card-actions>
@@ -234,6 +476,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
   <script>
     new Vue({
       el: '#app',
