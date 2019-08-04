@@ -125,9 +125,13 @@
                       official Python version for use the <b>NEP Service Discovery Server</b>
                     </v-alert>
 
-                    <v-alert icon="mdi-school" prominent text type="success">
-                      For programming in Python and Javascript, it is recommended to install and use <a
-                        href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a>
+                    <v-alert  icon="mdi-school" prominent text type="success">
+                      For programming in Python and Javascript, it is recommended to install and use:
+                     
+                      <div>&nbsp;</div>
+                      <v-btn text color = "indigo"  href="https://code.visualstudio.com/" target="_blank">
+                        Visual Studio Code
+                      </v-btn>
                     </v-alert>
 
 
@@ -140,7 +144,7 @@
                     </div>
 
                     <div class="my-2">
-                      <v-btn outlined small color="primary">See tutorial</v-btn>
+                      <v-btn @click="dialog = true" outlined small color="primary">See tutorial (Python 2)</v-btn>
                     </div>
                     <div>&nbsp;</div>
 
@@ -152,7 +156,7 @@
                     </div>
 
                     <div class="my-2">
-                      <v-btn outlined small color="primary">See tutorial</v-btn>
+                      <v-btn  @click="dialog3 = true" outlined small color="primary">See tutorial (Python 3)</v-btn>
                     </div>
 
                     <div>&nbsp;</div>
@@ -163,7 +167,8 @@
                         to install
                         software. Follow the tutorials shown above to install Python 2 or 3 correctly if that happens.
 
-                        <b>NEP</b> can be installed using <b>pip</b> as follow:</p>
+                        <b>NEP</b> can be installed using <b>pip</b> (in a terminal) in Windows, Linux and OSX as
+                        follow:</p>
                       <pre>pip install -U nep</pre>
 
 
@@ -363,7 +368,7 @@
                         Discovery Server</b> before executing other nodes
                     </v-alert>
 
-                    <v-alert icon="mdi-alert-circle-outline" prominent text type="warning">
+                    <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
                       Don't close the <b>NEP Service Discovery Server</b> until the execution of all nodes is finished
                     </v-alert>
 
@@ -375,15 +380,52 @@
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        The <b>NEP Discovery Server</b> is a Hybrid P2P Broker and interface which performs the management of
+                        The <b>NEP Discovery Server</b> is a Hybrid P2P Broker and interface which performs the
+                        management of
                         <b>endpoints</b>
                         using only a set of identifiers called <b>topics</b>. It functionality is similar
                         that
-                        the <b>ROS Master</b> node in <b>ROS 1.0</b>. Go to Software section to dowload this program</p> 
+                        the <b>ROS Master</b> node in <b>ROS 1.0</b>. Go to Software section to dowload this program</p>
                     </div>
 
 
+
+
                   </v-card-text>
+
+
+
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> Create Python scripts re-usables with ROS 1.0 and ROS
+                      2.0 </p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                        NEP ...
+                    </div>
+
+                  </v-card-text>
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> Use normal POSIX sockets
+                      2.0 </p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                        NEP ...
+                    </div>
+
+                  </v-card-text>
+
                 </v-card>
               </v-flex>
 
@@ -409,6 +451,168 @@
 
           </v-container>
       </v-content>
+
+      <v-dialog v-model="dialog" max-width="700px">
+        <v-card>
+          <v-card-title>
+            Install Python 2 in Windows:
+          </v-card-title>
+          <v-stepper v-model="e5" vertical>
+            <v-stepper-step :complete="e5 > 1" step="1" editable>
+              Download Python 2.7.16 installer (x86)
+            </v-stepper-step>
+            <v-stepper-content step="1">
+
+
+              <v-layout justify-center>
+                <v-flex xs12>
+
+                  <a href="https://www.python.org/ftp/python/2.7.16/python-2.7.16.msi" target="_blank">Link to Python
+                    2.7.16 x86
+                    official installer </a>
+                  <div>&nbsp;</div>
+
+                  <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
+                    NEP can also work in x86-64 version but most robot software works only in x86
+                  </v-alert>
+                  <div>&nbsp;</div>
+
+                </v-flex>
+              </v-layout>
+              <v-btn color="primary" @click="e5 = 2">Continue</v-btn>
+
+
+            </v-stepper-content>
+
+
+
+            <v-stepper-step :complete="e5 > 2" step="2" editable>
+              Check the very important note and then execute the installer (click here for details)
+            </v-stepper-step>
+
+
+            <v-stepper-content step="2">
+
+
+              <v-layout justify-center>
+                <v-flex xs12>
+
+
+                  <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
+                    <b> VERY IMPORTANT </b> when reaching the interface shown below, be sure of activate <b>Add
+                      python.exe to Path - Will be installed on local hard drive.</b>
+                  </v-alert>
+                  <div>&nbsp;</div>
+                  <img src="images/yes.png" alt="python 2" class="center" style="width: 70%;">
+                  <div>&nbsp;</div>
+
+                </v-flex>
+              </v-layout>
+              <v-btn color="primary" @click="e5 = 3">Continue</v-btn>
+
+
+            </v-stepper-content>
+
+
+
+            <v-stepper-step editable :complete="e5 > 3" step="3"> Finish the installation </v-stepper-step>
+
+            <v-stepper-content step="3">
+
+
+            </v-stepper-content>
+
+
+
+
+
+
+          </v-stepper>
+          <v-card-actions>
+            <v-btn color="primary" text @click="dialog = false">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialog3" max-width="700px">
+        <v-card>
+          <v-card-title>
+            Install Python 2 in Windows:
+          </v-card-title>
+          <v-stepper v-model="e5" vertical>
+            <v-stepper-step :complete="e5 > 1" step="1" editable>
+              Download Latest Python 3 version from Python official web page
+            </v-stepper-step>
+            <v-stepper-content step="1">
+
+
+              <v-layout justify-center>
+                <v-flex xs12>
+
+                  <a href="https://www.python.org/" target="_blank">Link to Python
+                    official web </a>
+                  <div>&nbsp;</div>
+
+                </v-flex>
+              </v-layout>
+              <v-btn color="primary" @click="e5 = 2">Continue</v-btn>
+
+
+            </v-stepper-content>
+
+
+
+            <v-stepper-step :complete="e5 > 2" step="2" editable>
+              Check the very important note and then execute the installer (click here for details)
+            </v-stepper-step>
+
+
+            <v-stepper-content step="2">
+
+
+              <v-layout justify-center>
+                <v-flex xs12>
+
+
+                  <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
+                    <b> VERY IMPORTANT </b> be sure of activate <b>Add
+                      Pyhton 3.7 to PATH </b>
+                  </v-alert>
+                  <div>&nbsp;</div>
+                  <img src="images/python3.png" alt="Paris" class="center" style="width: 70%;">
+                  <div>&nbsp;</div>
+
+                </v-flex>
+              </v-layout>
+              <v-btn color="primary" @click="e5 = 3">Continue</v-btn>
+
+
+            </v-stepper-content>
+
+
+
+            <v-stepper-step editable :complete="e5 > 3" step="3"> Finish the installation </v-stepper-step>
+
+            <v-stepper-content step="3">
+
+
+            </v-stepper-content>
+
+
+
+
+
+
+          </v-stepper>
+          <v-card-actions>
+            <v-btn color="primary" text @click="dialog3 = false">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
 
       <v-footer color="teal" app>
@@ -436,8 +640,8 @@
         code: "",
         code_sub: "",
         dialog: false,
-        dialog_matlab: false,
-        e6: 1,
+        dialog3: false,
+        e5: 1,
         row: "radio-1",
         items: ['Python 2', 'Python 3'],
         colors: [
