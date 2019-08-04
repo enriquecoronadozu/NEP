@@ -37,12 +37,14 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn text color="grey darken-3" text>Docs <v-icon right dark>description</v-icon>
+          <v-btn text color="grey darken-3" outlined color="blue darken-1"
+            href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
+              description</v-icon>
           </v-btn>
-          <v-btn  href="https://enriquecoronadozu.github.io/NEP/templates"
-          target="_blank"  text color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
+          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP/templates" target="_blank" text
+            color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
           </v-btn>
-          <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
+          <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
         </v-toolbar-items>
         <div>&nbsp;</div>
@@ -77,8 +79,8 @@
                   <div>&nbsp;</div>
 
                   <v-btn @click="dialog = true" color="blue darken-1" dark>Install in Python</v-btn>
-                  <v-btn outlined color="blue darken-1"   href="https://enriquecoronadozu.github.io/NEP/start"
-                  target="_blank" dark>Get Started</v-btn>
+                  <v-btn outlined color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
+                    target="_blank" dark>Get Started</v-btn>
 
 
 
@@ -293,29 +295,28 @@
 
             <v-stepper-content step="3">
               <v-layout justify-center>
-              
-                  <v-btn
-                    href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
-                    target="_blank" color="primary">Install Windows</v-btn>
-              
+
+                <v-btn href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
+                  target="_blank" color="primary">Install Windows</v-btn>
+
               </v-layout>
               <div>&nbsp;</div>
               <v-layout justify-center>
-              
-                  <v-btn outlined
-                    href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
-                    target="_blank" color="primary">Install OSX</v-btn>
-          
+
+                <v-btn outlined
+                  href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
+                  target="_blank" color="primary">Install OSX</v-btn>
+
               </v-layout>
 
               </v-layout>
               <div>&nbsp;</div>
               <v-layout justify-center>
-                
-                  <v-btn outlined
-                    href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
-                    target="_blank" color="primary">Install Linux</v-btn>
-            
+
+                <v-btn outlined
+                  href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
+                  target="_blank" color="primary">Install Linux</v-btn>
+
               </v-layout>
             </v-stepper-content>
 
@@ -512,7 +513,7 @@
       vuetify: new Vuetify(),
       data: () => ({
 
-   
+
         path_matlab: "C:\\nep-matlab\\jeromq-0.4.3.jar\nC:\\nep-matlab\\gson-2.8.4.jar\nC:\\nep-matlab\\nep.jar",
         labelMode: "Here writes the IP of the publisher",
         code: "",
@@ -523,19 +524,9 @@
         e5: 1,
         row: "radio-1",
         items: ['Python 2', 'Python 3'],
-        colors: [
-          'indigo',
-          'warning',
-          'pink darken-2',
-          'red lighten-1',
-          'deep-purple accent-4',
-        ],
-        slides: [
-          'First',
-          'Second',
-          'Third',
-          'Fourth',
-          'Fifth',
+        items: [
+          { title: 'Click Me' },
+          { title: 'Using NEP D' },
         ],
 
       }),

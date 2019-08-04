@@ -37,14 +37,18 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn text color="grey darken-3" text>Docs <v-icon right dark>description</v-icon>
+          <v-btn text color="grey darken-3" outlined color="blue darken-1"
+            href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
+              description</v-icon>
           </v-btn>
-          <v-btn text color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
+          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP/templates" target="_blank" text
+            color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
           </v-btn>
-          <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
+          <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
         </v-toolbar-items>
         <div>&nbsp;</div>
+
 
 
       </v-app-bar>
@@ -233,7 +237,7 @@
 
                                 <v-container fluid grid-list-md>
                                   <v-layout wrap>
-                                    <v-flex xs6>
+                                    <v-flex xs6 v-show="use_ps">
                                       <v-text-field :disabled="ip_disabled" v-model="ip_value_pub" :label="labelMode">
                                       </v-text-field>
                                     </v-flex>
@@ -248,7 +252,7 @@
                                   </v-layout>
                                 </v-container>
 
-                                <v-container fluid grid-list-md>
+                                <v-container fluid grid-list-md v-show="use_ps">
                                   <v-layout wrap>
 
                                     <v-card-title>
@@ -263,7 +267,7 @@
                                 </v-container>
 
 
-                                <v-container fluid grid-list-md>
+                                <v-container fluid grid-list-md v-show="use_ps">
                                   <v-layout wrap>
                                     <v-card-title>
                                       <p style=" color:#424242; font-size: 20px"> Select mode </p>
@@ -377,6 +381,7 @@
       el: '#app',
       vuetify: new Vuetify(),
       data: () => ({
+        use_ps: true,
         dialog_template: false,
         image: "images/direct1.png",
         ip_value_pub: "127.0.0.1",
@@ -395,8 +400,8 @@
         nep_sub: "sub = node.new_sub('pub_sub_test','json',conf)\n",
         nep_while: "\nwhile True:\n",
         nep_your_code: "\t# Here is your code ...\n",
-        nep_code: "\tmsg = {'message':'hello'}\t#An example of message\n\tpub.publish(msg)\t\t#Send message\n\ttime.sleep(1)",
-        nep_code_sub: "\ts, msg = sub.listen()\t\t#Read message\n\tif s:\t\t\t\t#If there is a message\n\t\tprint(str(msg))\n\t",
+        nep_code: "\tmsg = {'message':'hello'}\t# An example of message\n\tpub.publish(msg)\t\t# Send message\n\ttime.sleep(1)",
+        nep_code_sub: "\ts, msg = sub.listen()\t\t# Read message\n\tif s:\t\t\t\t #If there is a message\n\t\tprint(str(msg))\n\t",
         nep_direct_mode: "one2many",
         radioGroup: "1",
         radioGroup1: "1",
@@ -432,33 +437,43 @@
         onUpdateMode() {
           this.e1 = 2
           if (this.radioGroup === "1") {
+            this.use_ps = true
             this.image = "images/direct1.png"
             this.ip_value_pub = "127.0.0.1"
             this.ip_value_sub = "127.0.0.1"
             this.ip_disabled = true
+            this.labelMode = "Here writes the IP of node 1 (publisher)"
+            this.labelMode2 = "Here writes the IP of node 2 (subscriber)"
 
           }
           if (this.radioGroup === "2") {
+            this.use_ps = true
             this.image = "images/direct2.png"
             this.ip_value_pub = "192.168.0.100"
             this.ip_value_sub = "192.168.0.101"
             this.ip_disabled = false
+            this.labelMode = "Here writes the IP of node 1 (publisher)"
+            this.labelMode2 = "Here writes the IP of node 2 (subscriber)"
 
 
           }
           if (this.radioGroup === "3") {
-
+            this.use_ps = false
             this.image = "images/cs1.png"
             this.ip_value_pub = "127.0.0.1"
             this.ip_value_sub = "127.0.0.1"
             this.ip_disabled = true
+            this.labelMode = "Here writes the IP of node 1 (client)"
+            this.labelMode2 = "Here writes the IP of node 2 (server)"
           }
           if (this.radioGroup === "4") {
-
+            this.use_ps = false
             this.image = "images/cs2.png"
             this.ip_value_pub = "192.168.0.100"
             this.ip_value_sub = "192.168.0.101"
             this.ip_disabled = false
+            this.labelMode = "Here writes the IP of node 1 (client)"
+            this.labelMode2 = "Here writes the IP of node 2 (server)"
           }
         },
 
@@ -476,17 +491,33 @@
 
           }
 
+          if (this.radioGroup === "1" || this.radioGroup === "2") {
+
+            this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json',conf)\n"
+            this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json',conf)\n"
 
 
+            this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "')\n"
+            this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
 
-          this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json',conf)\n"
-          this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json',conf)\n"
+            this.code = this.nep_head + this.nep_node_pub + this.nep_conf + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
+            this.code_sub = this.nep_head_sub + this.nep_node_sub + this.nep_conf + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
+
+          }
+          else {
+
+            this.nep_pub = "client = nep.client('" + this.ip_value_sub + "'," + this.port_value + ")\n"
+            this.nep_sub = "server = nep.server('" + this.ip_value_sub + "'," + this.port_value + ")\n"
 
 
-          this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "')\n"
-          this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
-          this.code = this.nep_head + this.nep_node_pub + this.nep_conf + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
-          this.code_sub = this.nep_head_sub + this.nep_node_sub + this.nep_conf + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
+            let client_code = "\tmsg = {'message':'hello server'}\t# An example of request\n\tclient.send_info(msg)\t\t\t# Send request\n\tresponse = client.listen_info()\t\t# Wait and get response\n\tprint(response)\n\ttime.sleep(1)"
+            let server_code = "\tmsg = {'message':'hello client'}\t# An example of response\n\trequest = server.listen_info()\t\t# Wait and read response\n\tprint (request) \n\tserver.send_info(msg)\t\t\t# Send response"
+            this.code = this.nep_head + this.nep_pub + this.nep_while + client_code
+            this.code_sub = this.nep_head_sub + this.nep_sub + this.nep_while + server_code
+
+          }
+
+
         },
       }
 
