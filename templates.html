@@ -378,7 +378,7 @@
       vuetify: new Vuetify(),
       data: () => ({
         dialog_template: false,
-        image: "/images/direct1.png",
+        image: "images/direct1.png",
         ip_value_pub: "127.0.0.1",
         ip_value_sub: "127.0.0.1",
         ip_disabled: false,
@@ -432,14 +432,14 @@
         onUpdateMode() {
           this.e1 = 2
           if (this.radioGroup === "1") {
-            this.image = "/images/direct1.png"
+            this.image = "images/direct1.png"
             this.ip_value_pub = "127.0.0.1"
             this.ip_value_sub = "127.0.0.1"
             this.ip_disabled = true
 
           }
           if (this.radioGroup === "2") {
-            this.image = "/images/direct2.png"
+            this.image = "images/direct2.png"
             this.ip_value_pub = "192.168.0.100"
             this.ip_value_sub = "192.168.0.101"
             this.ip_disabled = false
@@ -448,14 +448,14 @@
           }
           if (this.radioGroup === "3") {
 
-            this.image = "/images/cs1.png"
+            this.image = "images/cs1.png"
             this.ip_value_pub = "127.0.0.1"
             this.ip_value_sub = "127.0.0.1"
             this.ip_disabled = true
           }
           if (this.radioGroup === "4") {
 
-            this.image = "/images/cs2.png"
+            this.image = "images/cs2.png"
             this.ip_value_pub = "192.168.0.100"
             this.ip_value_sub = "192.168.0.101"
             this.ip_disabled = false
