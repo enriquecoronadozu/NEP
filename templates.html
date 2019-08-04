@@ -216,7 +216,7 @@
                           Continue
                         </v-btn>
 
-                        <v-btn @click="e1 = 1" text>Return</v-btn>
+                        <v-btn outlined @click="e1 = 1" text>Return</v-btn>
                       </v-stepper-content>
 
                       <v-stepper-content step="3">
@@ -310,7 +310,7 @@
                           Continue
                         </v-btn>
 
-                        <v-btn @click="e1 = 2" text>Return</v-btn>
+                        <v-btn outlined @click="e1 = 2" text>Return</v-btn>
                       </v-stepper-content>
 
                       <v-stepper-content step="4">
@@ -339,7 +339,7 @@
 
 
 
-                        <v-btn @click="e1 = 3" text>Return</v-btn>
+                        <v-btn outlined @click="e1 = 3" text>Return</v-btn>
                       </v-stepper-content>
                     </v-stepper-items>
                   </v-stepper>
@@ -378,7 +378,7 @@
       vuetify: new Vuetify(),
       data: () => ({
         dialog_template: false,
-        image: "/images/cs.png",
+        image: "/images/direct1.png",
         ip_value_pub: "127.0.0.1",
         ip_value_sub: "127.0.0.1",
         ip_disabled: false,
@@ -477,16 +477,11 @@
           }
 
 
-          if (this.radioGroup === "2") {
 
-            this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json')\n"
-            this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json')\n"
-          }
-          else {
 
-            this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json',conf)\n"
-            this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json',conf)\n"
-          }
+          this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json',conf)\n"
+          this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json',conf)\n"
+
 
           this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "')\n"
           this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
