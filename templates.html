@@ -37,11 +37,16 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
+          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
+              home
+            </v-icon>
+          </v-btn>
           <v-btn text color="grey darken-3" outlined color="blue darken-1"
             href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
+          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right
+              dark>code
             </v-icon>
           </v-btn>
           <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
@@ -383,7 +388,7 @@
 
                   <v-container>
 
-                    <p style=" color:#424242; font-size: 25px"> Using manual definitions </p>
+                    <p style=" color:#424242; font-size: 25px"> Set sockets manually </p>
                     <div>&nbsp;</div>
 
                     <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
@@ -395,8 +400,8 @@
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
-                  <v-btn outlined  color="indigo"  href="https://enriquecoronadozu.github.io/NEP/templates"
-                  target="_blank"  >Select</v-btn>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
+                    target="_blank">Select</v-btn>
                   <div>&nbsp;</div>
                   <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
                     Endpoints (IP and
@@ -414,7 +419,7 @@
 
                   <v-container>
 
-                    <p style=" color:#424242; font-size: 25px"> Using NEP Discovery Server </p>
+                    <p style=" color:#424242; font-size: 25px"> Use NEP Discovery Server </p>
                     <div>&nbsp;</div>
 
                     <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
@@ -425,12 +430,12 @@
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
-                  <v-btn outlined  color="indigo"  href="https://enriquecoronadozu.github.io/NEP/discovery"
-                  target="_blank"  >Select</v-btn>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/discovery"
+                    target="_blank">Select</v-btn>
                   <div>&nbsp;</div>
 
-                  <v-alert  icon="mdi-school" prominent text type="success">
-                      NEP Discovery Server assign endpoints automatically</b>
+                  <v-alert icon="mdi-school" prominent text type="success">
+                    NEP Discovery Server assign endpoints automatically</b>
                   </v-alert>
 
                 </v-card>
@@ -456,7 +461,7 @@
       vuetify: new Vuetify(),
       data: () => ({
         use_ps: true,
-  
+
         dialog_template: false,
         image: "images/direct1.png",
         ip_value_pub: "127.0.0.1",
@@ -487,7 +492,7 @@
         radioGroupNode1: "1",
         radioGroupNode2: "1",
         code_sub: "",
-    
+
         e1: 1,
         row: "radio-1",
         items: ['Python 2', 'Python 3'],
