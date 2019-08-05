@@ -41,7 +41,7 @@
             href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
+          <v-btn outlined @click="dialog = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
             </v-icon>
           </v-btn>
           <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
@@ -366,7 +366,7 @@
         <span class="white--text">&copy; 2019</span>
       </v-footer>
 
-      <v-dialog v-model="dialog_template" max-width="1000px">
+      <v-dialog v-model="dialog" max-width="1000px">
 
         <v-card>
           <v-card-title>
@@ -425,7 +425,7 @@
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
-                  <v-btn outlined  color="indigo"  href="https://enriquecoronadozu.github.io/NEP/discovery"
+                  <v-btn outlined  color="indigo"  href="https://enriquecoronadozu.github.io/NEP/templates"
                   target="_blank"  >Select</v-btn>
                   <div>&nbsp;</div>
 
@@ -456,7 +456,7 @@
       vuetify: new Vuetify(),
       data: () => ({
         use_ps: true,
-  
+        dialog: false,
         dialog_template: false,
         image: "images/direct1.png",
         ip_value_pub: "127.0.0.1",
@@ -487,7 +487,8 @@
         radioGroupNode1: "1",
         radioGroupNode2: "1",
         code_sub: "",
-    
+        dialog: false,
+        dialog_matlab: false,
         e1: 1,
         row: "radio-1",
         items: ['Python 2', 'Python 3'],

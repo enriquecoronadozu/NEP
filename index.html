@@ -41,7 +41,7 @@
             href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP/templates" target="_blank" text
+          <v-btn @click="dialog_template = true" text
             color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
           </v-btn>
           <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
@@ -171,6 +171,83 @@
         <v-spacer></v-spacer>
         <span class="white--text">&copy; 2019</span>
       </v-footer>
+
+
+      <v-dialog v-model="dialog_template" max-width="1000px">
+
+        <v-card>
+          <v-card-title>
+            <div><span style=" color:#424242; font-size: 32px"> Select type of architecture
+            </div>
+          </v-card-title>
+
+          <v-container grid-list-md text-center>
+
+            <v-layout wrap>
+
+              <v-flex xs6>
+                <v-card>
+
+                  <v-container>
+
+                    <p style=" color:#424242; font-size: 25px"> Using manual definitions </p>
+                    <div>&nbsp;</div>
+
+                    <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
+
+                    <ul style="font-size: 15px; color:#616161; text-align: justify">
+                      <li>The creation of simple software architectures</li>
+                      <li>Connect two or more nodes that runs in different computer</li>
+
+                    </ul>
+                  </v-container>
+                  <div>&nbsp;</div>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
+                    target="_blank">Select</v-btn>
+                  <div>&nbsp;</div>
+                  <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
+                    Endpoints (IP and
+                    ports)
+                    must be
+                    assigned manually</b>
+                  </v-alert>
+
+                </v-card>
+              </v-flex>
+
+
+              <v-flex xs6>
+                <v-card>
+
+                  <v-container>
+
+                    <p style=" color:#424242; font-size: 25px"> Using NEP Discovery Server </p>
+                    <div>&nbsp;</div>
+
+                    <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
+
+                    <ul style="font-size: 15px; color:#616161; text-align: justify">
+                      <li>The creation of complex and scalable software architectures</li>
+                      <li>Reuse code in ROS and ROS 2.0</li>
+                    </ul>
+                  </v-container>
+                  <div>&nbsp;</div>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/discovery"
+                    target="_blank">Select</v-btn>
+                  <div>&nbsp;</div>
+
+                  <v-alert icon="mdi-school" prominent text type="success">
+                    NEP Discovery Server assign endpoints automatically</b>
+                  </v-alert>
+
+                </v-card>
+              </v-flex>
+            </v-layout>
+
+          </v-container>
+        </v-card>
+      </v-dialog>
+
 
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
@@ -520,6 +597,7 @@
         code_sub: "",
         dialog: false,
         dialog_matlab: false,
+        dialog_template: false,
         e6: 1,
         e5: 1,
         row: "radio-1",

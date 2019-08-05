@@ -37,17 +37,18 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-            <v-btn text color="grey darken-3"  outlined color="blue darken-1"   href="https://enriquecoronadozu.github.io/NEP/start"
-            target="_blank" text>Docs <v-icon right dark>description</v-icon>
-            </v-btn>
-            <v-btn  outlined href="https://enriquecoronadozu.github.io/NEP/templates"
-            target="_blank"  text color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
-            </v-btn>
-            <v-btn  outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
-            </v-btn>
-          </v-toolbar-items>
-          <div>&nbsp;</div>
-  
+          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right
+              dark>code
+            </v-icon>
+          </v-btn>
+          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP/templates" target="_blank" text
+            color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
+          </v-btn>
+          <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
+          </v-btn>
+        </v-toolbar-items>
+        <div>&nbsp;</div>
+
 
 
       </v-app-bar>
@@ -128,11 +129,11 @@
                       official Python version for use the <b>NEP Service Discovery Server</b>
                     </v-alert>
 
-                    <v-alert  icon="mdi-school" prominent text type="success">
+                    <v-alert icon="mdi-school" prominent text type="success">
                       For programming in Python and Javascript, it is recommended to install and use:
-                     
+
                       <div>&nbsp;</div>
-                      <v-btn text color = "indigo"  href="https://code.visualstudio.com/" target="_blank">
+                      <v-btn text color="indigo" href="https://code.visualstudio.com/" target="_blank">
                         Visual Studio Code
                       </v-btn>
                     </v-alert>
@@ -159,7 +160,7 @@
                     </div>
 
                     <div class="my-2">
-                      <v-btn  @click="dialog3 = true" outlined small color="primary">See tutorial (Python 3)</v-btn>
+                      <v-btn @click="dialog3 = true" outlined small color="primary">See tutorial (Python 3)</v-btn>
                     </div>
 
                     <div>&nbsp;</div>
@@ -539,6 +540,83 @@
         </v-card>
       </v-dialog>
 
+
+      <v-dialog v-model="dialog_template" max-width="1000px">
+
+        <v-card>
+          <v-card-title>
+            <div><span style=" color:#424242; font-size: 32px"> Select type of architecture
+            </div>
+          </v-card-title>
+
+          <v-container grid-list-md text-center>
+
+            <v-layout wrap>
+
+              <v-flex xs6>
+                <v-card>
+
+                  <v-container>
+
+                    <p style=" color:#424242; font-size: 25px"> Using manual definitions </p>
+                    <div>&nbsp;</div>
+
+                    <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
+
+                    <ul style="font-size: 15px; color:#616161; text-align: justify">
+                      <li>The creation of simple software architectures</li>
+                      <li>Connect two or more nodes that runs in different computer</li>
+
+                    </ul>
+                  </v-container>
+                  <div>&nbsp;</div>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
+                    target="_blank">Select</v-btn>
+                  <div>&nbsp;</div>
+                  <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
+                    Endpoints (IP and
+                    ports)
+                    must be
+                    assigned manually</b>
+                  </v-alert>
+
+                </v-card>
+              </v-flex>
+
+
+              <v-flex xs6>
+                <v-card>
+
+                  <v-container>
+
+                    <p style=" color:#424242; font-size: 25px"> Using NEP Discovery Server </p>
+                    <div>&nbsp;</div>
+
+                    <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
+
+                    <ul style="font-size: 15px; color:#616161; text-align: justify">
+                      <li>The creation of complex and scalable software architectures</li>
+                      <li>Reuse code in ROS and ROS 2.0</li>
+                    </ul>
+                  </v-container>
+                  <div>&nbsp;</div>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/discovery"
+                    target="_blank">Select</v-btn>
+                  <div>&nbsp;</div>
+
+                  <v-alert icon="mdi-school" prominent text type="success">
+                    NEP Discovery Server assign endpoints automatically</b>
+                  </v-alert>
+
+                </v-card>
+              </v-flex>
+            </v-layout>
+
+          </v-container>
+        </v-card>
+      </v-dialog>
+
+
       <v-dialog v-model="dialog3" max-width="700px">
         <v-card>
           <v-card-title>
@@ -645,6 +723,7 @@
         dialog: false,
         dialog3: false,
         e5: 1,
+        dialog_template: false,
         row: "radio-1",
         items: ['Python 2', 'Python 3'],
         colors: [
