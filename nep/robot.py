@@ -31,6 +31,7 @@ class robot:
 
         conf_pub = self.node.broker()
         self.sharo = self.node.new_pub("/sharo", "json", conf_pub)
+        self.rize = self.node.new_pub("rize_event", "json", conf_pub)
 
         # Use survey pattern
         if self.middleware == "nanomsg":
@@ -70,6 +71,12 @@ class robot:
         # ------------------------- Stop thread ------------------------------------
         self.cancel_thread = threading.Thread(target = self.onCancelLoop)
         self.cancel_thread.start()
+
+    def onConnectSuccess(self):
+        self.rize.publish({"robot":"ready"})
+
+    def onConnectError(self):
+        self.rize.publish({"robot":"error"})
 
     def onActionLoop(self):
 
@@ -111,6 +118,24 @@ class robot:
             print ("Error setting actions")
             self.node.failure()
             time.sleep(1)
+
+    
+    def wait(self, input_ = 0,  parameters = {}, parallel = False ):
+        """ Generic wait primitive
+            Parameters
+            ----------
+
+            input : float
+                Seconds to wait
+            
+        """
+        try:
+            value = float(input_)
+            time.sleep(value)
+        except:
+            return False
+            pass
+        return True
 
 
     def setCancelActions(self,actions):
@@ -295,8 +320,10 @@ class robot:
                     except:
                         pass
                 else:
-                    self.robot_actions[primitive_name](input_, options, in_parallel)
-                    #print (primitive_name, " was executed")
-                    
+                    try:
+                        self.robot_actions[primitive_name](input_, options, in_parallel)
+                        print (primitive_name, " was executed")
+                    except:
+                        print ("NEP ERROR: "  + " primitive " + primitive_name + " was not executed")
             else:
                 print (primitive_name, "is not a valid primitive")

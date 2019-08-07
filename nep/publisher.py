@@ -295,7 +295,7 @@ class publisher:
             Message to be send, must have the same type that msg_type 
 
         """
-        
+
         if self.msg_type == "string":
             self.send_string(message)
         elif self.msg_type == "json":

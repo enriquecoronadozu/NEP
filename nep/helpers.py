@@ -351,5 +351,4 @@ def getFiles(path):
 
     """
     onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
-    print ("Available primitives:" +  str(onlyfiles))
     return onlyfiles

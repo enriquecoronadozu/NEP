@@ -70,17 +70,27 @@ class master:
         """
 
         # Start master server
-        
-        self.server = nep.server(IP,port)
-        self.IP = IP
-        self.initial_port_number = initial_port_number
+        try:
+            self.nodes_register = {}
+            self.server = nep.server(IP,port)
+            self.IP = IP
+            self.initial_port_number = initial_port_number
 
-        # Ports configuration
-        self.current_port = initial_port_number
-        self.topic_register = {}
-        self.threads_id = []
-        self.brokers = []
-
+            # Ports configuration
+            self.current_port = initial_port_number
+            self.topic_register = {}
+            self.threads_id = []
+            self.brokers = []
+            msg_type = "json"         # Message type to listen. "string" or "dict"
+            node = nep.node("master_node")                                                                   # Create a new node
+            pub_port = 7777
+            conf = node.direct(ip = "127.0.0.1", port =  pub_port, mode ="one2many")                # Select the configuration of the publisher
+            self.master_pub = node.new_pub("master",msg_type,conf)
+            time.sleep(1)
+            self.master_pub.publish(self.topic_register)
+        except Exception as e:
+            print("MASTER ALREADY OPEN")
+            sys.exit(0)
 
     def __onNewTopic(self,node_request):
         """
@@ -117,13 +127,20 @@ class master:
             pass
         
         self.server.send_info(msg)
-        self.topic_register[topic]["nodes"] = []
-        data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':node_request["pid"]}
-        print (data)
-        self.topic_register[topic]["nodes"].append(data)
+        self.topic_register[topic]["nodes"] = {node_request['node']:{'socket':node_request["socket"], 'pid':"n.a."}}
+        
+        if "pid" in node_request:
+            self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}
+            #data = {node_request['node']:{'socket':node_request["socket"], 'pid':node_request["pid"]}}
+            #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':node_request["pid"]}
+        #else:
+            #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':"n.a."}
+            #data = {node_request['node']:{'socket':node_request["socket"], 'pid':"n.a."}}
+            #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':"n.a."} 
+        #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}}
+        #self.topic_register[topic]["nodes"].append(data)
         self.current_port = self.current_port + 2
-
-
+        self.master_pub.publish(self.topic_register)
         #print (self.topic_register)
 
     def __onRegisteredTopic(self,topic, node_request):
@@ -152,9 +169,28 @@ class master:
                 msg = {'topic':topic, 'port': port, 'ip': self.IP, 'socket':socket_, "state":"success"}
 
             self.server.send_info(msg)
-            data =  {'node':node_request['node'],'socket':node_request["socket"]}
-            self.topic_register[topic]["nodes"].append(data)
-        except:
+
+            if "pid" in node_request:
+                self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}
+
+            #if "pid" in node_request:
+                #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}
+                #data = {node_request['node']:{'socket':node_request["socket"], 'pid':node_request["pid"]}}
+                #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':node_request["pid"]}
+            #else:
+                #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':"n.a."}
+
+            #if "pid" in node_request:
+                #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':node_request["pid"], 'port': port, 'ip': self.IP,}
+            #else:
+                #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':"n.a.", 'port': port, 'ip': self.IP,} 
+
+            #self.topic_register[topic]["nodes"].append(data)
+            self.master_pub.publish(self.topic_register)
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno)
             print ("Error in topic request")
         
         #print (self.topic_register)
@@ -162,39 +198,74 @@ class master:
     def __stop(self):
         for key, value in self.topic_register.iteritems():
             nodes = value["nodes"]
-            print (nodes)
             for node in nodes:
 
                 if not os.environ.get('OS','') == 'Windows_NT': # Windows
                     os.system('kill %d' % node["pid"])
+
                 else:
                     """Signal handler used to close when user press Ctrl+C"""
                     import subprocess as s
                     s.Popen('taskkill /F /PID {0}'.format(node["pid"]), shell=True)
+    
+    def stopNode(self, node):
+
+
+            print ("Kill")
+            print (node)
+            if not os.environ.get('OS','') == 'Windows_NT': # Windows
+                os.system('kill %d' % node["pid"])
+
+            else:
+                import subprocess as s
+                s.Popen('taskkill /F /PID {0}'.format(node["pid"]), shell=True)
+
+            if node['kill'] in self.nodes_register:
+                self.nodes_register.pop(node['kill'], None)
+
+                for topics in self.topic_register:
+                    self.topic_register[topics]["nodes"].pop(node['kill'], None)
+
+
+
 
     def run(self):
-        """ Run master node until Ctrl+C is pressed
-        """
-        # Enable to kill the node using Ctrl + C
-        signal.signal(signal.SIGINT, self.__signal_handler)
+            """ Run master node until Ctrl+C is pressed
+            """
+            # Enable to kill the node using Ctrl + C
+            signal.signal(signal.SIGINT, self.__signal_handler)
 
 
-        try:
             while True:
                 time.sleep(.01)
                 node_request = self.server.listen_info()
                 print ("Request: " + str(node_request))
+                if 'node' in node_request:
+                    if node_request['node'] in self.nodes_register:
+                        current_pid = self.nodes_register[node_request['node']]
+                        if node_request['pid'] == current_pid:
+                            pass
+                        else:
+                            try:
 
-                # Service discovery
-                if 'topic' in node_request:
-                    topic = str(node_request['topic'])
+                                print ("kill: " + str(current_pid))
+                                os.kill(current_pid, signal.SIGTERM)
+                                time.sleep(1)
+
+
+                            except:
+                                pass
                     
-                
+                    self.nodes_register[node_request['node']] = node_request['pid']
+
+                    topic = str(node_request['topic'])
+                    current_pid = node_request['pid']
+                    
                     if topic in self.topic_register:
                         self.__onRegisteredTopic(topic, node_request)
                     else:
                         self.__onNewTopic(node_request)
-                
+                        
 
                 # Get avaliable topic list
                 elif 'topic_list' in node_request: 
@@ -203,31 +274,48 @@ class master:
 
                 elif 'master' in node_request: 
                     action = node_request["master"]
-                    if action == "stop":
-                        print ("Master stoping ...")
-                        time.sleep(1)
-                        for p in self.brokers:
-                            p.stop()
-                        self.server.send_info({"node":"stop", "status":"success"})
-                        break
-                    elif action == "clean":
-                        print ("Clean master")
+                    if action == "node_kill":
+                        self.stopNode(node_request)
+                        self.server.send_info({"node":"close_node", "status":"success"})
+
+                    elif action == "kill_all":
+                        pass
                         
-                        for p in self.brokers:
-                            self.current_port = self.initial_port_number
-                            p.stop()
-
-
-                        self.__stop()
-                        self.topic_register = {}
-
-                        
-                        self.server.send_info({"node":"clean", "status":"success"})
+                    
                     else:
-                        self.server.send_info({"node":action, "status":"failure"})
-        except:
-            print("Master already started")
-            time.sleep(1)
+                        self.server.send_info({"node":"action", "status":"failure"})
+
+                else:
+                    self.server.send_info({"node":"action", "status":"failure"})
+
+
+                    #action = node_request["master"]
+                    #if action == "stop":
+                    #    print ("Master stoping ...")
+                    #    time.sleep(1)
+                    #    for p in self.brokers:
+                    #        p.stop()
+                    #    self.server.send_info({"node":"stop", "status":"success"})
+                    #    break
+                    #elif action == "clean":
+                    #    print ("Clean master")
+                    #    
+                    #    for p in self.brokers:
+                    #        self.current_port = self.initial_port_number
+                    #        p.stop()
+
+
+                    #    self.__stop()
+                    #    self.topic_register = {}
+
+                        
+                    #    self.server.send_info({"node":"clean", "status":"success"})
+                    #else:
+                    #    self.server.send_info({"node":action, "status":"failure"})
+                
+                print (self.topic_register)
+                print (self.nodes_register)
+
                         
 if __name__ == "__main__":
     import doctest

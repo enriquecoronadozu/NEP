@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='nep',
-    version='0.5.1.4',
+    version='0.5.2.1',
     author='Enrique Coronado',
     author_email='enriquecoronadozu@gmail.mx',
     url='http://enriquecoronadozu.github.io',

@@ -32,7 +32,8 @@ except ImportError:
     pass
 
 try:
-    import rclpy
+    if sys.version_info[0] == 3:
+        import rclpy
 except ImportError:
     pass   
 
@@ -52,7 +53,6 @@ class node:
             time.sleep(.5)
             import os
             pid = os.getpid()
-            print (pid)
             import subprocess as s
             s.Popen('taskkill /F /PID {0}'.format(pid), shell=True)
             sys.exit(0)
@@ -112,6 +112,8 @@ class node:
 
     def __unregister(self):
         # TODO send pub message to manster to unregister topics
+        print ("Closing NEP node")
+        time.sleep(3)
         pass
         
     
@@ -149,9 +151,9 @@ class node:
 
         print ("NODE: " + self.node_name + ", pid: " + str(self.pid))
 
-        if self.transport == "ZMQ" or self.transport == "NN" or self.transport == "nanomsg"
-            if exit_thread and : # Enable this node to be killed from an external signal
-                pass
+        if self.transport == "ZMQ" or self.transport == "NN" or self.transport == "nanomsg":
+            if exit_thread: # Enable this node to be killed from an external signal
+                
                 # ------------------------- Kill thread ------------------------------------
                 # thread that can de used to stop the program
                 self.exit = threading.Thread(target = self.__wait_kill)
