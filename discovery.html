@@ -72,15 +72,11 @@
 
                       <v-divider></v-divider>
 
-                      <v-stepper-step :complete="e1 > 2" step="2">Programming languages</v-stepper-step>
+                      <v-stepper-step :complete="e1 > 2" step="2">Parameters</v-stepper-step>
 
                       <v-divider></v-divider>
 
-                      <v-stepper-step step="3">Communication Parameters</v-stepper-step>
-
-                      <v-divider></v-divider>
-
-                      <v-stepper-step step="4">Code</v-stepper-step>
+                      <v-stepper-step step="3">Code</v-stepper-step>
                     </v-stepper-header>
 
                     <v-stepper-items>
@@ -89,84 +85,111 @@
                           <v-layout align-center justify-center row fill-height />
                           <v-flex xs10>
                             <v-card flat>
-                              <v-card-title>I would like:</v-card-title>
+
+
 
 
                               <v-container grid-list-md text-center>
                                 <v-layout wrap>
-
                                   <v-flex xs6>
-                                    <v-card flat color="white">
-                                      <v-radio-group v-model="radioGroup">
-                                        <v-radio label="to send messages to another process/node on the same computer"
-                                          value="1">
-                                        </v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/direct1.png" aspect-ratio="2" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
-                                          </v-layout>
-                                        </v-container>
-                                        <v-radio
-                                          label="to send messages to another process/node  in a different computer"
-                                          value="2"></v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/direct2.png" aspect-ratio="3" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
-                                          </v-layout>
-                                        </v-container>
-                                      </v-radio-group>
+                                    <v-card>
+                                      <div>
+                                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                                        </p>
+                                      </div>
+                                      <p style=" color:#424242; font-size: 25px">Use Publish/Subscribe pattern </p>
+
+
+                                      <div>
+
+                                        <v-layout align-center justify-center row fill-height>
+                                          <v-img src="images/pubsub.png" aspect-ratio="2" class="grey lighten-2"
+                                            max-width="400" max-height="300"></v-img>
+                                        </v-layout>
+
+
+                                        <div>&nbsp;</div>
+
+
+
+                                        <p style=" color:#424242; font-size: 15px">In this pattern</p>
+
+
+                                        <ul style="font-size: 15px; color:#616161; text-align: justify">
+                                          <li> Messages are send
+                                            asynchronously.</li>
+                                          <li>The <b>publisher</b> send messages without stopping its execution </li>
+                                          <li> The <b>subscriber</b> can follow it execution even if a new message do
+                                            not arrives</li>
+                                          <li> The <b>subscriber</b> can execute a callback function each time a new
+                                            message arrives (<b>ROS</b> re-usable) </li>
+
+                                        </ul>
+                                      </div>
+                                      <div>&nbsp;</div>
+                                      <v-alert icon="mdi-arrow-right" prominent text type="info">
+                                        <v-btn color="primary" @click="onUpdateMode1">
+                                          Select this options
+                                        </v-btn>
+                                      </v-alert>
+
+                                      <div>
+
+                                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                                        </p>
+                                      </div>
                                     </v-card>
+
                                   </v-flex>
                                   <v-flex xs6>
-                                    <v-card flat color="white">
-                                      <v-radio-group v-model="radioGroup">
+                                    <v-card>
+                                      <p style=" color:#424242; font-size: 25px">Use Client-Server pattern </p>
+                                      <div>&nbsp;</div>
+                                      <div>
 
-                                        <v-radio
-                                          label="to send messages to another process/node in the same computer and wait for a response"
-                                          value="3">
-                                        </v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/cs1.png" aspect-ratio="2" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
-                                          </v-layout>
-                                        </v-container>
-                                        <v-radio
-                                          label="to send messages to another process/node  in another computer and wait for a response"
-                                          value="4"></v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/cs2.png" aspect-ratio="3" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
-                                          </v-layout>
-                                        </v-container>
-                                      </v-radio-group>
+                                        <v-layout align-center justify-center row fill-height>
+                                          <v-img src="images/clientserver.png" aspect-ratio="2" class="grey lighten-2"
+                                            max-width="400" max-height="300"></v-img>
+                                        </v-layout>
+
+                                        <div>&nbsp;</div>
+
+                                        <p style=" color:#424242; font-size: 15px">In this pattern</p>
+
+                                        <ul style="font-size: 15px; color:#616161; text-align: justify">
+
+                                          <li> A <b>client</b> (node 1) sends
+                                            a request for some data to a <b>server</b> (node 1) </li>
+                                          <li> The <b>server</b> waits until it receives a request of
+                                            some <b>client</b></li>
+                                          <li> The <b>server</b> process the request and send a response to the
+                                            <b>client</b></li>
+                                          <li> The <b>client</b> waits until it receives some response
+                                            of the <b>server</b> </li>
+
+                                        </ul>
+                                        <div>&nbsp;</div>
+
+                                        <v-alert icon="mdi-arrow-right" prominent text type="info">
+                                          </b>
+                                          <v-btn color="primary" @click="onUpdateMode2">
+                                            Select this options
+                                          </v-btn>
+                                        </v-alert>
+
+
+
+                                      </div>
                                     </v-card>
                                   </v-flex>
-
                                 </v-layout>
                               </v-container>
-
 
 
                             </v-card>
                           </v-flex>
                           </v-layout>
                         </v-container>
-
-                        <v-btn color="primary" @click="onUpdateMode">
-                          Continue
-                        </v-btn>
 
                       </v-stepper-content>
 
@@ -195,8 +218,6 @@
                           </v-flex>
                           <v-flex xs2>
 
-
-
                             <v-card flat>
                               <v-card-title>Node 2 is in</v-card-title>
 
@@ -211,127 +232,57 @@
 
 
                           </v-flex>
+                          <v-flex xs8>
+                            <v-card flat>
+
+
+                              <v-container fluid grid-list-md>
+                                <v-layout wrap>
+
+                                  <v-card-title>
+                                    <p style=" color:#424242; font-size: 20px"> Set topic </p>
+                                  </v-card-title>
+
+                                  <v-flex xs12>
+                                    <v-text-field v-model="pub_topic_name" label="Topic name"></v-text-field>
+                                  </v-flex>
+
+                                </v-layout>
+                              </v-container>
+                            </v-card>
+                          </v-flex>
+
+
                           </v-layout>
                         </v-container>
 
 
 
-                        <v-btn color="primary" @click="e1 = 3">
+                        <v-btn color="primary" @click="onUpdate">
                           Continue
                         </v-btn>
 
                         <v-btn outlined @click="e1 = 1" text>Return</v-btn>
                       </v-stepper-content>
 
+
+
+
                       <v-stepper-content step="3">
                         <v-card flat>
-
-                          <v-container bg fill-height grid-list-md>
-                            <v-layout align-center justify-center row fill-height />
-
-                            <v-flex xs8>
-                              <v-card flat>
-                                <v-card-title>
-                                  <p style=" color:#424242; font-size: 20px"> Set endpoint </p>
-                                </v-card-title>
-
-                                <v-container fluid grid-list-md>
-                                  <v-layout wrap>
-                                    <v-flex xs6 v-show="use_ps">
-                                      <v-text-field :disabled="ip_disabled" v-model="ip_value_pub" :label="labelMode">
-                                      </v-text-field>
-                                    </v-flex>
-                                    <v-flex xs6>
-                                      <v-text-field :disabled="ip_disabled" v-model="ip_value_sub" :label="labelMode2">
-                                      </v-text-field>
-                                    </v-flex>
-                                    <v-flex xs6>
-                                      <v-text-field type="number" v-model="port_value" label="port"></v-text-field>
-                                    </v-flex>
-
-                                  </v-layout>
-                                </v-container>
-
-                                <v-container fluid grid-list-md v-show="use_ps">
-                                  <v-layout wrap>
-
-                                    <v-card-title>
-                                      <p style=" color:#424242; font-size: 20px"> Set topic </p>
-                                    </v-card-title>
-
-                                    <v-flex xs12>
-                                      <v-text-field v-model="pub_topic_name" label="Topic name"></v-text-field>
-                                    </v-flex>
-
-                                  </v-layout>
-                                </v-container>
-
-
-                                <v-container fluid grid-list-md v-show="use_ps">
-                                  <v-layout wrap>
-                                    <v-card-title>
-                                      <p style=" color:#424242; font-size: 20px"> Select mode </p>
-                                    </v-card-title>
-
-                                    <v-flex xs12>
-
-                                      <v-radio-group v-model="radioGroup1">
-                                        <v-radio label="Only one publisher can connect with many subscribers" value="1">
-                                        </v-radio>
-
-                                      </v-radio-group>
-                                      <v-card flat max-width="400">
-                                        <v-img src="images/mode2.png" aspect-ratio="3" class="grey lighten-2"></v-img>
-                                      </v-card>
-                                    </v-flex>
-
-                                    <v-flex xs12>
-                                      <v-radio-group v-model="radioGroup1">
-                                        <v-radio label="Many publishers can connect with only one subscriber" value="2">
-                                        </v-radio>
-
-                                      </v-radio-group>
-                                      <v-card flat max-width="400">
-                                        <v-img src="images/mode1.png" aspect-ratio="3" class="grey lighten-2"></v-img>
-                                      </v-card>
-                                    </v-flex>
-
-                                  </v-layout>
-                                </v-container>
-                              </v-card>
-                            </v-flex>
-
-
-
-                            </v-layout>
-                          </v-container>
-
-
-
-                        </v-card>
-
-                        <v-btn color="primary" @click="onUpdate">
-                          Continue
-                        </v-btn>
-
-                        <v-btn outlined @click="e1 = 2" text>Return</v-btn>
-                      </v-stepper-content>
-
-                      <v-stepper-content step="4">
-                        <v-card flat>
                           <v-container bg fill-height grid-list-md>
                             <v-layout align-center justify-center row fill-height />
 
                             <v-flex xs8>
 
-                              <h2>Publisher code</h2>
+                              <h2>{{sender_title}}</h2>
 
                               <v-card-text>
                                 <pre style="text-align:left">{{code}}</pre>
                               </v-card-text>
                             </v-flex>
                             <v-flex xs8>
-                              <h2>Subscriber code</h2>
+                              <h2>{{receiver_title}}</h2>
 
                               <v-card-text>
                                 <pre style="text-align:left">{{code_sub}}</pre>
@@ -343,7 +294,8 @@
 
 
 
-                        <v-btn outlined @click="e1 = 3" text>Return</v-btn>
+                        <v-btn outlined @click="e1 = 2" text>Return</v-btn>
+
                       </v-stepper-content>
                     </v-stepper-items>
                   </v-stepper>
@@ -395,8 +347,9 @@
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
-                  <v-btn outlined  color="indigo"  href="https://enriquecoronadozu.github.io/NEP/templates"
-                  target="_blank"  >Select</v-btn>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
+                    target="_blank">
+                    Select</v-btn>
                   <div>&nbsp;</div>
                   <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
                     Endpoints (IP and
@@ -425,12 +378,13 @@
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
-                  <v-btn outlined  color="indigo"  href="https://enriquecoronadozu.github.io/NEP/templates"
-                  target="_blank"  >Select</v-btn>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
+                    target="_blank">
+                    Select</v-btn>
                   <div>&nbsp;</div>
 
-                  <v-alert  icon="mdi-school" prominent text type="success">
-                      NEP Discovery Server assign endpoints automatically</b>
+                  <v-alert icon="mdi-school" prominent text type="success">
+                    NEP Discovery Server assign endpoints automatically</b>
                   </v-alert>
 
                 </v-card>
@@ -479,10 +433,9 @@
         nep_code_sub: "\ts, msg = sub.listen()\t\t# Read message\n\tif s:\t\t\t\t #If there is a message\n\t\tprint(str(msg))\n\t",
         nep_direct_mode: "one2many",
         radioGroup: "1",
-        radioGroup1: "1",
+        sender_title: "Publisher code",
+        receiver_title: "Subscriber code",
         path_matlab: "C:\\nep-matlab\\jeromq-0.4.3.jar\nC:\\nep-matlab\\gson-2.8.4.jar\nC:\\nep-matlab\\nep.jar",
-        labelMode: "Here writes the IP of node 1 (sender)",
-        labelMode2: "Here writes the IP of node 2 (receiver)",
         code: "",
         radioGroupNode1: "1",
         radioGroupNode2: "1",
@@ -505,88 +458,67 @@
 
       methods: {
         initialize() {
-          this.code = this.nep_head + this.nep_node + this.nep_conf + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
-          this.code_sub = this.nep_head_sub + this.nep_node + this.nep_conf + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
+          this.code = this.nep_head + this.nep_node + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
+          this.code_sub = this.nep_head_sub + this.nep_node + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
         },
 
-        onUpdateMode() {
+
+
+
+        onUpdateMode1() {
           this.e1 = 2
-          if (this.radioGroup === "1") {
-            this.use_ps = true
-            this.image = "images/direct1.png"
-            this.ip_value_pub = "127.0.0.1"
-            this.ip_value_sub = "127.0.0.1"
-            this.ip_disabled = true
-            this.labelMode = "Here writes the IP of node 1 (publisher)"
-            this.labelMode2 = "Here writes the IP of node 2 (subscriber)"
+          this.sender_title = "Publisher code"
+          this.receiver_title = "Subscriber code"
+          this.radioGroup = "1"
+          this.image = "images/pubsub.png"
+          this.ip_value_pub = "192.168.0.100"
+          this.ip_value_sub = "192.168.0.101"
+          this.ip_disabled = false
+          this.labelMode = "Here writes the IP of node 1 (publisher)"
+          this.labelMode2 = "Here writes the IP of node 2 (subscriber)"
 
-          }
-          if (this.radioGroup === "2") {
-            this.use_ps = true
-            this.image = "images/direct2.png"
-            this.ip_value_pub = "192.168.0.100"
-            this.ip_value_sub = "192.168.0.101"
-            this.ip_disabled = false
-            this.labelMode = "Here writes the IP of node 1 (publisher)"
-            this.labelMode2 = "Here writes the IP of node 2 (subscriber)"
-
-
-          }
-          if (this.radioGroup === "3") {
-            this.use_ps = false
-            this.image = "images/cs1.png"
-            this.ip_value_pub = "127.0.0.1"
-            this.ip_value_sub = "127.0.0.1"
-            this.ip_disabled = true
-            this.labelMode = "Here writes the IP of node 1 (client)"
-            this.labelMode2 = "Here writes the IP of node 2 (server)"
-          }
-          if (this.radioGroup === "4") {
-            this.use_ps = false
-            this.image = "images/cs2.png"
-            this.ip_value_pub = "192.168.0.100"
-            this.ip_value_sub = "192.168.0.101"
-            this.ip_disabled = false
-            this.labelMode = "Here writes the IP of node 1 (client)"
-            this.labelMode2 = "Here writes the IP of node 2 (server)"
-          }
         },
+
+        onUpdateMode2() {
+          this.e1 = 2
+          this.sender_title = "Client code"
+          this.receiver_title = "Server code"
+          this.radioGroup = "2"
+          this.image = "images/clientserver.png"
+          this.ip_value_pub = "127.0.0.1"
+          this.ip_value_sub = "127.0.0.1"
+          this.ip_disabled = true
+          this.labelMode = "Here writes the IP of node 1 (client)"
+          this.labelMode2 = "Here writes the IP of node 2 (server)"
+
+        },
+
 
         onUpdate() {
-          this.e1 = "4"
-          if (this.radioGroup1 === "1") {
-            this.nep_direct_mode = "one2many"
-            this.nep_conf = "conf = node.direct(ip = " + "'" + this.ip_value_pub + "'" + ", port =  " + this.port_value + ", mode ='" + this.nep_direct_mode + "')\n"
+          this.e1 = "3"
 
+          if (this.radioGroup === "1") {
 
-          }
-          else {
-            this.nep_direct_mode = "many2one"
-            this.nep_conf = "conf = node.direct(ip = " + "'" + this.ip_value_sub + "'" + ", port =  " + this.port_value + ", mode ='" + this.nep_direct_mode + "')\n"
-
-          }
-
-          if (this.radioGroup === "1" || this.radioGroup === "2") {
-
-            this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json',conf)\n"
-            this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json',conf)\n"
+            this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json')\n"
+            this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json')\n"
 
 
             this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "')\n"
             this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
 
-            this.code = this.nep_head + this.nep_node_pub + this.nep_conf + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
-            this.code_sub = this.nep_head_sub + this.nep_node_sub + this.nep_conf + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
+            this.code = this.nep_head + this.nep_node_pub + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
+            this.code_sub = this.nep_head_sub + this.nep_node_sub  + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
 
           }
           else {
 
-            this.nep_pub = "client = nep.client('" + this.ip_value_sub + "'," + this.port_value + ")\n"
-            this.nep_sub = "server = nep.server('" + this.ip_value_sub + "'," + this.port_value + ")\n"
+            
+            this.nep_pub = "client = nep.new_client('" + this.pub_topic_name + "')\n"
+            this.nep_sub = "server = nep.new_server('" + this.pub_topic_name + "')\n"
 
 
-            let client_code = "\tmsg = {'message':'hello server'}\t# An example of request\n\tclient.send_info(msg)\t\t\t# Send request\n\tresponse = client.listen_info()\t\t# Wait and get response\n\tprint(response)\n\ttime.sleep(1)"
-            let server_code = "\tmsg = {'message':'hello client'}\t# An example of response\n\trequest = server.listen_info()\t\t# Wait and read response\n\tprint (request) \n\tserver.send_info(msg)\t\t\t# Send response"
+            let client_code = "\tmsg = {'message':'hello server'}\t# An example of request\n\tclient.send_info(msg)\t\t\t# Send request\n\tresponse = client.listen_info()\t\t# Wait and get response\n\tprint(response)\n\t# Here you process the response\n\t#\n\t#\n\ttime.sleep(1)"
+            let server_code = "\trequest = server.listen_info()\t\t# Wait and read response\n\tprint (request) \n\t# Here you process the request ...\n\t#\n\t#\n\tmsg = {'message':'hello client'}\t# An example of response\n\tserver.send_info(msg)\t\t\t# Send response"
             this.code = this.nep_head + this.nep_pub + this.nep_while + client_code
             this.code_sub = this.nep_head_sub + this.nep_sub + this.nep_while + server_code
 
