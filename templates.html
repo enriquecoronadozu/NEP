@@ -77,7 +77,7 @@
 
                       <v-divider></v-divider>
 
-                      <v-stepper-step :complete="e1 > 2" step="2">Programming languages</v-stepper-step>
+                      <v-stepper-step :complete="e1 > 2" step="2">Configuration</v-stepper-step>
 
                       <v-divider></v-divider>
 
@@ -94,84 +94,120 @@
                           <v-layout align-center justify-center row fill-height />
                           <v-flex xs10>
                             <v-card flat>
-                              <v-card-title>I would like:</v-card-title>
+
+
 
 
                               <v-container grid-list-md text-center>
                                 <v-layout wrap>
-
                                   <v-flex xs6>
-                                    <v-card flat color="white">
-                                      <v-radio-group v-model="radioGroup">
-                                        <v-radio label="to send messages to another process/node on the same computer"
-                                          value="1">
-                                        </v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/direct1.png" aspect-ratio="2" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
+                                    <v-card>
+
+
+                                      <v-container>
+                                        <div>
+                                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                                          </p>
+                                        </div>
+                                        <p style=" color:#424242; font-size: 25px">Use Publish/Subscribe pattern </p>
+
+
+                                        <div>
+
+                                          <v-layout align-center justify-center row fill-height>
+                                            <v-img src="images/pubsub.png" aspect-ratio="2" class="grey lighten-2"
+                                              max-width="400" max-height="300"></v-img>
                                           </v-layout>
-                                        </v-container>
-                                        <v-radio
-                                          label="to send messages to another process/node  in a different computer"
-                                          value="2"></v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/direct2.png" aspect-ratio="3" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
-                                          </v-layout>
-                                        </v-container>
-                                      </v-radio-group>
+
+
+                                          <div>&nbsp;</div>
+
+
+
+                                          <p style=" color:#424242; font-size: 15px">In this pattern</p>
+
+
+                                          <ul style="font-size: 15px; color:#616161; text-align: justify">
+                                            <li> Messages are send
+                                              asynchronously.</li>
+                                            <li>The <b>publisher</b> send messages without stopping its execution </li>
+                                            <li> The <b>subscriber</b> can follow it execution even if a new message do
+                                              not arrives</li>
+                                            <li> The <b>subscriber</b> can execute a callback function each time a new
+                                              message arrives (<b>ROS</b> re-usable) </li>
+
+                                          </ul>
+                                        </div>
+                                        <div>&nbsp;</div>
+                                        <v-alert icon="mdi-arrow-right" prominent text type="info">
+                                          <v-btn color="primary" @click="onUpdatePatternPS">
+                                            Select this options
+                                          </v-btn>
+                                        </v-alert>
+
+                                        <div>
+
+                                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                                          </p>
+                                        </div>
+                                      </v-container>
                                     </v-card>
+
                                   </v-flex>
                                   <v-flex xs6>
-                                    <v-card flat color="white">
-                                      <v-radio-group v-model="radioGroup">
+                                    <v-card>
 
-                                        <v-radio
-                                          label="to send messages to another process/node in the same computer and wait for a response"
-                                          value="3">
-                                        </v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/cs1.png" aspect-ratio="2" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
+
+                                      <v-container>
+
+                                        <p style=" color:#424242; font-size: 25px">Use Client-Server pattern </p>
+                                        <div>&nbsp;</div>
+                                        <div>
+
+                                          <v-layout align-center justify-center row fill-height>
+                                            <v-img src="images/clientserver.png" aspect-ratio="2" class="grey lighten-2"
+                                              max-width="400" max-height="300"></v-img>
                                           </v-layout>
-                                        </v-container>
-                                        <v-radio
-                                          label="to send messages to another process/node  in another computer and wait for a response"
-                                          value="4"></v-radio>
-                                        <v-container>
-                                          <v-layout justify-center>
-                                            <v-flex xs12>
-                                              <v-img src="images/cs2.png" aspect-ratio="3" class="grey lighten-2"
-                                                max-width="400" max-height="300"></v-img>
-                                            </v-flex>
-                                          </v-layout>
-                                        </v-container>
-                                      </v-radio-group>
+
+                                          <div>&nbsp;</div>
+
+                                          <p style=" color:#424242; font-size: 15px">In this pattern</p>
+
+                                          <ul style="font-size: 15px; color:#616161; text-align: justify">
+
+                                            <li> A <b>client</b> (node 1) sends
+                                              a request for some data to a <b>server</b> (node 1) </li>
+                                            <li> The <b>server</b> waits until it receives a request of
+                                              some <b>client</b></li>
+                                            <li> The <b>server</b> process the request and send a response to the
+                                              <b>client</b></li>
+                                            <li> The <b>client</b> waits until it receives some response
+                                              of the <b>server</b> </li>
+
+                                          </ul>
+                                          <div>&nbsp;</div>
+
+                                          <v-alert icon="mdi-arrow-right" prominent text type="info">
+                                            </b>
+                                            <v-btn color="primary" @click="onUpdatePatternCS">
+                                              Select this options
+                                            </v-btn>
+                                          </v-alert>
+
+
+
+                                        </div>
+                                      </v-container>
                                     </v-card>
                                   </v-flex>
-
                                 </v-layout>
                               </v-container>
-
 
 
                             </v-card>
                           </v-flex>
                           </v-layout>
                         </v-container>
-
-                        <v-btn color="primary" @click="onUpdateMode">
-                          Continue
-                        </v-btn>
 
                       </v-stepper-content>
 
@@ -280,7 +316,7 @@
 
                                     <v-flex xs12>
 
-                                      <v-radio-group v-model="radioGroup1">
+                                      <v-radio-group v-model="pattern">
                                         <v-radio label="Only one publisher can connect with many subscribers" value="1">
                                         </v-radio>
 
@@ -291,7 +327,7 @@
                                     </v-flex>
 
                                     <v-flex xs12>
-                                      <v-radio-group v-model="radioGroup1">
+                                      <v-radio-group v-model="pattern">
                                         <v-radio label="Many publishers can connect with only one subscriber" value="2">
                                         </v-radio>
 
@@ -484,7 +520,7 @@
         nep_code_sub: "\ts, msg = sub.listen()\t\t# Read message\n\tif s:\t\t\t\t #If there is a message\n\t\tprint(str(msg))\n\t",
         nep_direct_mode: "one2many",
         radioGroup: "1",
-        radioGroup1: "1",
+        pattern: "1",
         path_matlab: "C:\\nep-matlab\\jeromq-0.4.3.jar\nC:\\nep-matlab\\gson-2.8.4.jar\nC:\\nep-matlab\\nep.jar",
         labelMode: "Here writes the IP of node 1 (sender)",
         labelMode2: "Here writes the IP of node 2 (receiver)",
@@ -512,6 +548,45 @@
           this.code = this.nep_head + this.nep_node + this.nep_conf + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
           this.code_sub = this.nep_head_sub + this.nep_node + this.nep_conf + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
         },
+
+
+        onUpdatePatternPS() {
+          this.e1 = 2
+          this.sender_title = "Publisher code"
+          this.receiver_title = "Subscriber code"
+          this.image = "images/pubsub.png"
+          this.labelMode = "Here writes the IP of node 1 (publisher)"
+          this.labelMode2 = "Here writes the IP of node 2 (subscriber)"
+
+        },
+
+        onUpdatePatternCS() {
+          this.e1 = 2
+          this.sender_title = "Client code"
+          this.receiver_title = "Server code"
+          this.image = "images/clientserver.png"
+          this.labelMode = "Here writes the IP of node 1 (client)"
+          this.labelMode2 = "Here writes the IP of node 2 (server)"
+
+        },
+
+        onUpdateModeB() {
+          this.e1 = 3
+          this.ip_value_pub = "192.168.0.100"
+          this.ip_value_sub = "192.168.0.101"
+          this.ip_disabled = false
+        },
+
+
+        onUpdateModeD() {
+          this.e1 = 3
+          this.ip_value_pub = "127.0.0.1"
+          this.ip_value_sub = "127.0.0.1"
+          this.ip_disabled = true
+        },
+
+
+
 
         onUpdateMode() {
           this.e1 = 2
@@ -558,7 +633,7 @@
 
         onUpdate() {
           this.e1 = "4"
-          if (this.radioGroup1 === "1") {
+          if (this.pattern === "1") {
             this.nep_direct_mode = "one2many"
             this.nep_conf = "conf = node.direct(ip = " + "'" + this.ip_value_pub + "'" + ", port =  " + this.port_value + ", mode ='" + this.nep_direct_mode + "')\n"
 

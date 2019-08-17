@@ -93,93 +93,100 @@
                                 <v-layout wrap>
                                   <v-flex xs6>
                                     <v-card>
-                                      <div>
-                                        <p style="font-size: 15px; color:#616161; text-align: justify">
-                                        </p>
-                                      </div>
-                                      <p style=" color:#424242; font-size: 25px">Use Publish/Subscribe pattern </p>
+
+                                      <v-container>
+                                        <div>
+                                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                                          </p>
+                                        </div>
+                                        <p style=" color:#424242; font-size: 25px">Use Publish/Subscribe pattern </p>
 
 
-                                      <div>
+                                        <div>
 
-                                        <v-layout align-center justify-center row fill-height>
-                                          <v-img src="images/pubsub.png" aspect-ratio="2" class="grey lighten-2"
-                                            max-width="400" max-height="300"></v-img>
-                                        </v-layout>
+                                          <v-layout align-center justify-center row fill-height>
+                                            <v-img src="images/pubsub.png" aspect-ratio="2" class="grey lighten-2"
+                                              max-width="400" max-height="300"></v-img>
+                                          </v-layout>
 
 
+                                          <div>&nbsp;</div>
+
+
+
+                                          <p style=" color:#424242; font-size: 15px">In this pattern</p>
+
+
+                                          <ul style="font-size: 15px; color:#616161; text-align: justify">
+                                            <li> Messages are send
+                                              asynchronously.</li>
+                                            <li>The <b>publisher</b> send messages without stopping its execution </li>
+                                            <li> The <b>subscriber</b> can follow it execution even if a new message do
+                                              not arrives</li>
+                                            <li> The <b>subscriber</b> can execute a callback function each time a new
+                                              message arrives (<b>ROS</b> re-usable) </li>
+
+                                          </ul>
+                                        </div>
                                         <div>&nbsp;</div>
+                                        <v-alert icon="mdi-arrow-right" prominent text type="info">
+                                          <v-btn color="primary" @click="onUpdateMode1">
+                                            Select this options
+                                          </v-btn>
+                                        </v-alert>
 
+                                        <div>
 
-
-                                        <p style=" color:#424242; font-size: 15px">In this pattern</p>
-
-
-                                        <ul style="font-size: 15px; color:#616161; text-align: justify">
-                                          <li> Messages are send
-                                            asynchronously.</li>
-                                          <li>The <b>publisher</b> send messages without stopping its execution </li>
-                                          <li> The <b>subscriber</b> can follow it execution even if a new message do
-                                            not arrives</li>
-                                          <li> The <b>subscriber</b> can execute a callback function each time a new
-                                            message arrives (<b>ROS</b> re-usable) </li>
-
-                                        </ul>
-                                      </div>
-                                      <div>&nbsp;</div>
-                                      <v-alert icon="mdi-arrow-right" prominent text type="info">
-                                        <v-btn color="primary" @click="onUpdateMode1">
-                                          Select this options
-                                        </v-btn>
-                                      </v-alert>
-
-                                      <div>
-
-                                        <p style="font-size: 15px; color:#616161; text-align: justify">
-                                        </p>
-                                      </div>
+                                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                                          </p>
+                                        </div>
+                                      </v-container>
                                     </v-card>
 
                                   </v-flex>
                                   <v-flex xs6>
                                     <v-card>
-                                      <p style=" color:#424242; font-size: 25px">Use Client-Server pattern </p>
-                                      <div>&nbsp;</div>
-                                      <div>
 
-                                        <v-layout align-center justify-center row fill-height>
-                                          <v-img src="images/clientserver.png" aspect-ratio="2" class="grey lighten-2"
-                                            max-width="400" max-height="300"></v-img>
-                                        </v-layout>
-
+                                      <v-container>
+                                        <p style=" color:#424242; font-size: 25px">Use Client-Server pattern </p>
                                         <div>&nbsp;</div>
+                                        <div>
 
-                                        <p style=" color:#424242; font-size: 15px">In this pattern</p>
+                                          <v-layout align-center justify-center row fill-height>
+                                            <v-img src="images/clientserver.png" aspect-ratio="2" class="grey lighten-2"
+                                              max-width="400" max-height="300"></v-img>
+                                          </v-layout>
 
-                                        <ul style="font-size: 15px; color:#616161; text-align: justify">
+                                          <div>&nbsp;</div>
 
-                                          <li> A <b>client</b> (node 1) sends
-                                            a request for some data to a <b>server</b> (node 1) </li>
-                                          <li> The <b>server</b> waits until it receives a request of
-                                            some <b>client</b></li>
-                                          <li> The <b>server</b> process the request and send a response to the
-                                            <b>client</b></li>
-                                          <li> The <b>client</b> waits until it receives some response
-                                            of the <b>server</b> </li>
+                                          <p style=" color:#424242; font-size: 15px">In this pattern</p>
 
-                                        </ul>
-                                        <div>&nbsp;</div>
+                                          <ul style="font-size: 15px; color:#616161; text-align: justify">
 
-                                        <v-alert icon="mdi-arrow-right" prominent text type="info">
-                                          </b>
-                                          <v-btn color="primary" @click="onUpdateMode2">
-                                            Select this options
-                                          </v-btn>
-                                        </v-alert>
+                                            <li> A <b>client</b> (node 1) sends
+                                              a request for some data to a <b>server</b> (node 1) </li>
+                                            <li> The <b>server</b> waits until it receives a request of
+                                              some <b>client</b></li>
+                                            <li> The <b>server</b> process the request and send a response to the
+                                              <b>client</b></li>
+                                            <li> The <b>client</b> waits until it receives some response
+                                              of the <b>server</b> </li>
+
+                                          </ul>
+                                          <div>&nbsp;</div>
+
+                                          <v-alert icon="mdi-arrow-right" prominent text type="info">
+                                            </b>
+                                            <v-btn color="primary" @click="onUpdateMode2">
+                                              Select this options
+                                            </v-btn>
+                                          </v-alert>
 
 
 
-                                      </div>
+                                        </div>
+
+                                      </v-container>
                                     </v-card>
                                   </v-flex>
                                 </v-layout>
@@ -507,12 +514,12 @@
             this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
 
             this.code = this.nep_head + this.nep_node_pub + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
-            this.code_sub = this.nep_head_sub + this.nep_node_sub  + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
+            this.code_sub = this.nep_head_sub + this.nep_node_sub + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
 
           }
           else {
 
-            
+
             this.nep_pub = "client = nep.new_client('" + this.pub_topic_name + "')\n"
             this.nep_sub = "server = nep.new_server('" + this.pub_topic_name + "')\n"
 
