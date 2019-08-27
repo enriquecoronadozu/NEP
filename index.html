@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="author" content="Enrique Coronado" />
+  <link rel="shortcut icon" type="image/png" href="images/nep.png"/>
   <title>NEP</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
@@ -25,7 +26,7 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar app dense color="white">
+      <v-app-bar app flat dense color="white">
 
         <v-avatar size="35">
           <img src="images/nep.png" alt="avatar">
@@ -37,14 +38,14 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn text color="grey darken-3" outlined color="blue darken-1"
+          <v-btn text color="grey darken-3"  color="blue darken-1"
             href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn @click="dialog_template = true" text
+          <v-btn  @click="dialog_template = true" text
             color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
           </v-btn>
-          <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
+          <v-btn  text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
         </v-toolbar-items>
         <div>&nbsp;</div>
@@ -373,15 +374,15 @@
             <v-stepper-content step="3">
               <v-layout justify-center>
 
-                <v-btn href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
+                <v-btn color="indigo" outlined href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
                   target="_blank" color="primary">Install Windows</v-btn>
 
               </v-layout>
               <div>&nbsp;</div>
               <v-layout justify-center>
 
-                <v-btn outlined
-                  href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
+                <v-btn outlined color="grey lighten-1" 
+                 
                   target="_blank" color="primary">Install OSX</v-btn>
 
               </v-layout>
@@ -390,8 +391,8 @@
               <div>&nbsp;</div>
               <v-layout justify-center>
 
-                <v-btn outlined
-                  href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
+                <v-btn outlined color="grey lighten-1" 
+                 
                   target="_blank" color="primary">Install Linux</v-btn>
 
               </v-layout>
