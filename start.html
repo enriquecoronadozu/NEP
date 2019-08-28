@@ -5,7 +5,8 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="author" content="Enrique Coronado" />
-  <title>NEP</title>
+  <title>NEP Docs</title>
+  <link rel="shortcut icon" type="image/png" href="images/nep.png" />
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
@@ -37,12 +38,12 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn outlined  href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right
-              dark>home
+          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
+              home
             </v-icon>
           </v-btn>
-          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text text
-            color="grey darken-3" text>Code Templates <v-icon right dark>code</v-icon>
+          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text text color="grey darken-3"
+            text>Code Templates <v-icon right dark>code</v-icon>
           </v-btn>
           <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
@@ -120,7 +121,7 @@
                         2 or 3. To use all features of <b>NEP</b> and many robots (e.g. Nao and Papper) it is highly
                         recommended to use the <b>official Python installers</b> from the <a
                           href="https://www.python.org/" target="_blank">Python
-                          website</a> rather than <b>PyCharm</b>.
+                          website</a> rather than <b>PyCharm</b> or <b>Anaconda</b>.
                       </p>
                     </div>
 
@@ -133,7 +134,7 @@
                       For programming in Python and Javascript, it is recommended to install and use:
 
                       <div>&nbsp;</div>
-                      <v-btn text color="indigo" href="https://code.visualstudio.com/" target="_blank">
+                      <v-btn outlined small color="indigo" href="https://code.visualstudio.com/" target="_blank">
                         Visual Studio Code
                       </v-btn>
                     </v-alert>
@@ -142,7 +143,8 @@
 
 
                     <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> We recommend install <b>Python
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> We highly recommend to install
+                        <b>Python
                           2</b> in Windows following next steps:
                       </p>
                     </div>
@@ -154,7 +156,8 @@
 
 
                     <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> We recommend install <b>Python
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> We highly recommend to install
+                        <b>Python
                           3</b> in Windows following next steps:
                       </p>
                     </div>
@@ -165,11 +168,17 @@
 
                     <div>&nbsp;</div>
                     <div>
+
+                      <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
+                        If <b>python.exe</b> is not defined in the <b>PATH</b> then you can not use <b>pip</b> command
+                        to install Python libraries and launch Python scripts from terminal
+
+                        </b>
+                      </v-alert>
+
                       <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        If <b>python.exe</b> is not defined in the <b>PATH</b> then you can not use <b>pip</b> command
-                        to install
-                        software. Follow the tutorials shown above to install Python 2 or 3 correctly if that happens.
+
 
                         <b>NEP</b> can be installed using <b>pip</b> (in a terminal) in Windows, Linux and OSX as
                         follow:</p>
@@ -185,17 +194,9 @@
                       <p style="font-size: 15px; color:#616161; text-align: justify">
                         and asyncio (only Pyhton 3) or trollius (only Pyhton 2):</p>
 
-                      <pre>pip install asyncio</pre> or
-                      <pre>pip install trollius</pre>
+                      <pre>pip install -U asyncio</pre> or
+                      <pre>pip install -U trollius</pre>
                       <div>&nbsp;</div>
-
-                      <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
-                        <b>Do not work pip command in Windows?</b> Maybe <b>python.exe</b> is not defined in the
-                        <b>PATH</b>
-                        environment variable.
-
-                        </b>
-                      </v-alert>
 
 
                     </div>
@@ -389,46 +390,134 @@
                         <b>endpoints</b>
                         using only a set of identifiers called <b>topics</b>. It functionality is similar
                         that
-                        the <b>ROS Master</b> node in <b>ROS 1.0</b>. Go to Software section to dowload this program</p>
+                        the <b>ROS Master</b> node in <b>ROS 1.0</b></p>
                     </div>
-
-
-
-
                   </v-card-text>
 
 
-
-
                   <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> Create Python scripts re-usables with ROS 1.0 and ROS
-                      2.0 </p>
+                    <p style=" color:#424242; font-size: 25px"> Message types </p>
                   </v-card-title>
                   <v-divider></v-divider>
                   <div>&nbsp;</div>
                   <v-card-text>
+
+
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        NEP ...
+                        In <b>NEP</b> messages to send between nodes can be defined as: </p>
+
+
+
                     </div>
 
-                  </v-card-text>
+                    <div>&nbsp;</div>
+                    <p style=" color:#424242; font-size: 20px"> JSON </p>
 
-                  <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> Use normal POSIX sockets
-                      2.0 </p>
-                  </v-card-title>
-                  <v-divider></v-divider>
-                  <div>&nbsp;</div>
-                  <v-card-text>
+                    <div>&nbsp;</div>
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        NEP ...
-                    </div>
+                        This is the recommended way to define messages in <b>NEP</b>. JSON (JavaScript Object Notation)
+                        is an open-standard file format that uses human-readable text to transmit data objects
+                        consisting of attribute–value pairs. </p>
 
-                  </v-card-text>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        In Python a JSON value can be defined as a Python <a href=" https://www.w3schools.com/python/python_dictionaries.asp
+                        " target="_blank">
+                          dictionary</a>. An example of a dictionary defined in the variable <b> message </b> is:
+                      </p>
+
+                      <pre>messsage = {"robot":"pepper", "temperature":"20"} </pre>
+                      <div>&nbsp;</div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        To access to the value of <b> robot </b> and <b> temperature </b> keys you can use:
+                      </p>
+
+                      <pre> robot = message["robot"] </pre>
+
+                      <pre> temperature = message["temperature"]  </pre>
+
+
+                      </p>
+
+                      <div>&nbsp;</div>
+                      <p style=" color:#424242; font-size: 20px"> Strings </p>
+
+                      <div>&nbsp;</div>
+                      <div>
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                          Is the simplest was to define messages in <b>NEP</b>. An simple example of a string in Python
+                          is: </p>
+
+                        <pre> message = "hello world" </pre>
+
+                        </p>
+
+                      </div>
+
+                      <div>&nbsp;</div>
+
+                      <div>&nbsp;</div>
+                      <p style=" color:#424242; font-size: 20px"> Images (only Python) </p>
+
+                      <div>&nbsp;</div>
+
+                      <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+  
+                              You can send <b>OpenCV</b> images directly between Python nodes using this type of message.
+                              Supposing you are following the example presented <a href=" https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
+                              " target="_blank">
+                                here</a>. The message as OpenCV Image can be defined as:: </p>
+  
+                          <pre>  message = cv2.imread('messi5.jpg',0) </pre>
+  
+                          </p>
+  
+                        </div>
+
+
+                      <div>
+                 
+
+                      <div>&nbsp;</div>
+
+
+
+
+                      <v-card-title>
+                        <p style=" color:#424242; font-size: 25px"> Create Python scripts re-usables with ROS 1.0 and
+                          ROS
+                          2.0 </p>
+                      </v-card-title>
+                      <v-divider></v-divider>
+                      <div>&nbsp;</div>
+                      <v-card-text>
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            NEP ...
+                        </div>
+
+                      </v-card-text>
+
+                      <v-card-title>
+                        <p style=" color:#424242; font-size: 25px"> Use normal POSIX sockets
+                          2.0 </p>
+                      </v-card-title>
+                      <v-divider></v-divider>
+                      <div>&nbsp;</div>
+                      <v-card-text>
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            NEP ...
+                        </div>
+
+                      </v-card-text>
 
                 </v-card>
               </v-flex>
@@ -620,7 +709,7 @@
       <v-dialog v-model="dialog3" max-width="700px">
         <v-card>
           <v-card-title>
-            Install Python 2 in Windows:
+            Install Python 3 in Windows:
           </v-card-title>
           <v-stepper v-model="e5" vertical>
             <v-stepper-step :complete="e5 > 1" step="1" editable>
