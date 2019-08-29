@@ -18,6 +18,8 @@
 </head>
 
 
+
+
 <body>
 
   <div id="app">
@@ -25,7 +27,7 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar app dense color="white">
+      <v-app-bar app flat dense color="white">
 
         <v-avatar size="35">
           <img src="images/nep.png" alt="avatar">
@@ -37,14 +39,14 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn text color="grey darken-3" outlined color="blue darken-1"
-            href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
+          <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
+            target="_blank" text>Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn outlined @click="dialog = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
+          <v-btn text @click="dialog = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
             </v-icon>
           </v-btn>
-          <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
+          <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
         </v-toolbar-items>
         <div>&nbsp;</div>
@@ -81,36 +83,34 @@
 
                     <v-stepper-items>
                       <v-stepper-content step="1">
+
                         <v-container bg fill-height grid-list-md>
                           <v-layout align-center justify-center row fill-height />
-                          <v-flex xs10>
+                          <v-flex xs12>
                             <v-card flat>
 
 
 
 
                               <v-container grid-list-md text-center>
-                                <v-layout wrap>
-                                  <v-flex xs6>
-                                    <v-card>
+                                <v-layout row wrap>
+                                  <v-flex xs12 sm10 md6 order-md1 order-sm8>
+                                    <v-card flat>
+
 
                                       <v-container>
-                                        <div>
-                                          <p style="font-size: 15px; color:#616161; text-align: justify">
-                                          </p>
-                                        </div>
-                                        <p style=" color:#424242; font-size: 25px">Use Publish/Subscribe pattern </p>
+
+                                        <p style=" color:#424242; font-size: 25px">Use Publish/Subscribe </p>
 
 
                                         <div>
 
                                           <v-layout align-center justify-center row fill-height>
-                                            <v-img src="images/pubsub.png" aspect-ratio="2" class="grey lighten-2"
-                                              max-width="400" max-height="300"></v-img>
+                                            <v-img src="images/pub.png" aspect-ratio="1.8" class="grey lighten-2"
+                                              max-width="400" max-height="280"></v-img>
                                           </v-layout>
 
 
-                                          <div>&nbsp;</div>
 
 
 
@@ -119,18 +119,17 @@
 
                                           <ul style="font-size: 15px; color:#616161; text-align: justify">
                                             <li> Messages are send
-                                              asynchronously.</li>
+                                              asynchronously from <b>publishers</b> to <b>subscribers</b></li>
                                             <li>The <b>publisher</b> send messages without stopping its execution </li>
-                                            <li> The <b>subscriber</b> can follow it execution even if a new message do
-                                              not arrives</li>
-                                            <li> The <b>subscriber</b> can execute a callback function each time a new
-                                              message arrives (<b>ROS</b> re-usable) </li>
+                                            <li> The <b>subscriber</b> can follow it execution even if message never
+                                              arrives</li>
+                                            <li> Create <b>ROS 1.0</b> and <b>ROS 2.0</b> re-usable code </li>
 
                                           </ul>
                                         </div>
                                         <div>&nbsp;</div>
                                         <v-alert icon="mdi-arrow-right" prominent text type="info">
-                                          <v-btn color="primary" @click="onUpdateMode1">
+                                          <v-btn color="primary" @click="onUpdatePatternPS">
                                             Select this options
                                           </v-btn>
                                         </v-alert>
@@ -144,27 +143,28 @@
                                     </v-card>
 
                                   </v-flex>
-                                  <v-flex xs6>
-                                    <v-card>
+                                  <v-flex xs12 sm10 md6 order-md1 order-sm8>
+                                    <v-card flat>
+
 
                                       <v-container>
-                                        <p style=" color:#424242; font-size: 25px">Use Client-Server pattern </p>
-                                        <div>&nbsp;</div>
+
+                                        <p style=" color:#424242; font-size: 25px">Use Client-Server </p>
+
                                         <div>
 
                                           <v-layout align-center justify-center row fill-height>
-                                            <v-img src="images/clientserver.png" aspect-ratio="2" class="grey lighten-2"
-                                              max-width="400" max-height="300"></v-img>
+                                            <v-img src="images/client.png" aspect-ratio="1.8" class="grey lighten-2"
+                                              max-width="400" max-height="280"></v-img>
                                           </v-layout>
 
-                                          <div>&nbsp;</div>
 
                                           <p style=" color:#424242; font-size: 15px">In this pattern</p>
 
                                           <ul style="font-size: 15px; color:#616161; text-align: justify">
 
-                                            <li> A <b>client</b> (node 1) sends
-                                              a request for some data to a <b>server</b> (node 1) </li>
+                                            <li> A <b>client</b> sends
+                                              a request for some data to a <b>server</b> synchronously </li>
                                             <li> The <b>server</b> waits until it receives a request of
                                               some <b>client</b></li>
                                             <li> The <b>server</b> process the request and send a response to the
@@ -177,7 +177,7 @@
 
                                           <v-alert icon="mdi-arrow-right" prominent text type="info">
                                             </b>
-                                            <v-btn color="primary" @click="onUpdateMode2">
+                                            <v-btn color="primary" @click="onUpdatePatternCS">
                                               Select this options
                                             </v-btn>
                                           </v-alert>
@@ -185,7 +185,6 @@
 
 
                                         </div>
-
                                       </v-container>
                                     </v-card>
                                   </v-flex>
@@ -204,64 +203,52 @@
 
                         <v-container bg fill-height grid-list-md>
                           <v-layout align-center justify-center row fill-height />
-                          <v-flex xs4>
-                            <v-card flat max-width="400">
-                              <v-img :src="image" aspect-ratio="2" class="grey lighten-2"></v-img>
-                            </v-card>
-                          </v-flex>
-                          <v-flex xs2>
 
-                            <v-card flat>
-                              <v-card-title>Node 1 is in</v-card-title>
-
-                              <v-radio-group v-model="radioGroupNode2">
-                                <v-radio label="Python" value="1">
-                                </v-radio>
-
-                                <v-radio label="MATLAB" value="2"></v-radio>
-                              </v-radio-group>
-                            </v-card>
-
-                          </v-flex>
-                          <v-flex xs2>
-
-                            <v-card flat>
-                              <v-card-title>Node 2 is in</v-card-title>
-
-                              <v-radio-group v-model="radioGroupNode1">
-                                <v-radio label="Python" value="1">
-                                </v-radio>
-
-                                <v-radio label="MATLAB" value="2"></v-radio>
-                              </v-radio-group>
-                            </v-card>
-
-
-
-                          </v-flex>
                           <v-flex xs8>
-                            <v-card flat>
+
+                              <v-card flat>
+                                <v-card-title>Topic</v-card-title>
+                                <v-text-field outlined v-model="pub_topic_name"></v-text-field>
+
+                              </v-card>
+
+                            </v-flex>
+
+                          <v-container bg fill-height grid-list-md>
+                            <v-layout align-center justify-center row fill-height />
+
+                            <v-flex xs12 sm4 md4 order-md1 order-sm4>
+
+                              <v-card flat>
+                                <v-card-title>{{sender}} in</v-card-title>
+                                <v-select v-model="sender_language" :items="sender_languages" outlined></v-select>
+
+                              </v-card>
+
+                            </v-flex>
+                            <v-flex xs12 sm4 md4 order-md1 order-sm4>
 
 
-                              <v-container fluid grid-list-md>
-                                <v-layout wrap>
 
-                                  <v-card-title>
-                                    <p style=" color:#424242; font-size: 20px"> Set topic </p>
-                                  </v-card-title>
+                              <v-card flat>
+                                <v-card-title>{{receiver}} in</v-card-title>
+                                <v-select v-model="receiver_language" :items="receiver_languages" outlined></v-select>
 
-                                  <v-flex xs12>
-                                    <v-text-field v-model="pub_topic_name" label="Topic name"></v-text-field>
-                                  </v-flex>
 
-                                </v-layout>
-                              </v-container>
-                            </v-card>
-                          </v-flex>
+                              </v-card>
+
+
+
+                            </v-flex>
+                            </v-layout>
+                          </v-container>
 
 
                           </v-layout>
                         </v-container>
+
+                        <v-btn outlined @click="e1 = 1" text>Return</v-btn>
+
 
 
 
@@ -269,7 +256,6 @@
                           Continue
                         </v-btn>
 
-                        <v-btn outlined @click="e1 = 1" text>Return</v-btn>
                       </v-stepper-content>
 
 
@@ -280,28 +266,60 @@
                           <v-container bg fill-height grid-list-md>
                             <v-layout align-center justify-center row fill-height />
 
-                            <v-flex xs8>
+                            <v-flex xs10>
 
                               <h2>{{sender_title}}</h2>
+
+                              <v-spacer></v-spacer>
+
+                              <v-flex xs12 v-show="use_ps">
+                                <v-toolbar-items>
+                                  <v-btn text :color="zmq_c" @click="onZMQ" text>ZMQ
+                                  </v-btn>
+                                  <v-btn text :color="ros_c " @click="onROS" text>ROS
+                                  </v-btn>
+                                  <v-btn text :color="ros2_c" @click="onROS2" text>ROS 2.0
+                                  </v-btn>
+                                </v-toolbar-items>
+                                <v-divider></v-divider>
+                              </v-flex>
+
 
                               <v-card-text>
                                 <pre style="text-align:left">{{code}}</pre>
                               </v-card-text>
                             </v-flex>
-                            <v-flex xs8>
+                            <v-flex xs10>
                               <h2>{{receiver_title}}</h2>
+
+                              <v-flex xs12 v-show="use_ps">
+                                <v-toolbar-items>
+                                  <v-btn text :color="use_listen_c" @click="onListen" text>Use listen()
+                                  </v-btn>
+                                  <v-btn text :color="use_callback_c" @click="onCallback" text>Use Callback
+                                  </v-btn>
+                                </v-toolbar-items>
+                                <v-divider></v-divider>
+                              </v-flex>
 
                               <v-card-text>
                                 <pre style="text-align:left">{{code_sub}}</pre>
                               </v-card-text>
+
+
+
+
+
                             </v-flex>
+
+
                             </v-layout>
                           </v-container>
                         </v-card>
 
 
 
-                        <v-btn outlined @click="e1 = 2" text>Return</v-btn>
+                        <v-btn outlined @click="e1 = 2">Return</v-btn>
 
                       </v-stepper-content>
                     </v-stepper-items>
@@ -437,22 +455,32 @@
         nep_while: "\nwhile True:\n",
         nep_your_code: "\t# Here is your code ...\n",
         nep_code: "\tmsg = {'message':'hello'}\t# An example of message\n\tpub.publish(msg)\t\t# Send message\n\ttime.sleep(1)",
-        nep_code_sub: "\ts, msg = sub.listen()\t\t# Read message\n\tif s:\t\t\t\t #If there is a message\n\t\tprint(str(msg))\n\t",
+        nep_code_sub: "\ts, msg = sub.listen()\t\t# Read message\n\tif s:\t\t\t\t# If there is a message\n\t\tprint(str(msg))\n\t",
         nep_direct_mode: "one2many",
         radioGroup: "1",
         sender_title: "Publisher code",
         receiver_title: "Subscriber code",
         path_matlab: "C:\\nep-matlab\\jeromq-0.4.3.jar\nC:\\nep-matlab\\gson-2.8.4.jar\nC:\\nep-matlab\\nep.jar",
         code: "",
-        radioGroupNode1: "1",
-        radioGroupNode2: "1",
+        sender: "Publisher",
+        receiver: "Subscriber",
+        sender_language: "Python",
+        sender_languages: ["Python", "Matlab"],
+        receiver_language: "Python",
+        receiver_languages: ["Python", "Matlab"],
         code_sub: "",
         dialog: false,
         dialog_matlab: false,
         e1: 1,
         row: "radio-1",
         items: ['Python 2', 'Python 3'],
-
+        midleware: "ZMQ",
+        listen_function: true,
+        zmq_c:  "primary",
+        ros_c: "grey darken-3",
+        ros2_c: "grey darken-3",
+        use_listen_c: "primary",
+        use_callback_c: "grey darken-3",
 
       }),
 
@@ -472,62 +500,142 @@
 
 
 
-        onUpdateMode1() {
+        onUpdatePatternPS() {
           this.e1 = 2
           this.sender_title = "Publisher code"
+          this.use_ps = true
           this.receiver_title = "Subscriber code"
-          this.radioGroup = "1"
-          this.image = "images/pubsub.png"
-          this.ip_value_pub = "192.168.0.100"
-          this.ip_value_sub = "192.168.0.101"
-          this.ip_disabled = false
-          this.labelMode = "Here writes the IP of node 1 (publisher)"
-          this.labelMode2 = "Here writes the IP of node 2 (subscriber)"
+          this.image = "images/pub.png"
+          this.sender = "Publisher"
+          this.receiver = "Subscriber"
+          this.labelMode = "Here writes the IP the publisher"
+          this.labelMode2 = "Here writes the IP the subscriber"
 
         },
 
-        onUpdateMode2() {
+        onUpdatePatternCS() {
           this.e1 = 2
+          this.use_ps = false
           this.sender_title = "Client code"
           this.receiver_title = "Server code"
-          this.radioGroup = "2"
-          this.image = "images/clientserver.png"
-          this.ip_value_pub = "127.0.0.1"
-          this.ip_value_sub = "127.0.0.1"
-          this.ip_disabled = true
-          this.labelMode = "Here writes the IP of node 1 (client)"
-          this.labelMode2 = "Here writes the IP of node 2 (server)"
+          this.image = "images/client.png"
+          this.sender = "Client"
+          this.receiver = "Server"
+          this.labelMode = "Here writes the IP the client"
+          this.labelMode2 = "Here writes the IP of the server"
 
         },
+
+
+        onListen() {
+
+          this.listen_function = true
+          this.use_listen_c = "primary",
+          this.use_callback_c =  "grey darken-3",
+          this.onUpdate()
+        },
+
+
+        onCallback() {
+
+          this.use_listen_c = "grey darken-3",
+          this.use_callback_c =  "primary",
+          this.listen_function = false
+          this.onUpdate()
+        },
+
+        onZMQ() {
+
+          this.zmq_c = "primary"
+          this.ros_c = "grey darken-3"
+          this.ros2_c = "grey darken-3"
+          this.midleware = "ZMQ"
+          this.onUpdate()
+
+        },
+
+
+        onROS() {
+
+          this.zmq_c ="grey darken-3"
+          this.ros_c =  "primary"
+          this.ros2_c = "grey darken-3"
+          this.midleware = "ROS"
+          this.onUpdate()
+
+        },
+
+
+        onROS2() {
+          this.zmq_c = "grey darken-3"
+          this.ros_c = "grey darken-3"
+          this.ros2_c =  "primary"
+          this.midleware = "ROS2"
+          this.onUpdate()
+        },
+
 
 
         onUpdate() {
           this.e1 = "3"
 
-          if (this.radioGroup === "1") {
+          if (this.sender === "Publisher") {
+
+
+            if (this.midleware === "ZMQ") {
+
+              this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "')\n"
+              this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
+
+
+            }
+            else if (this.midleware === "ROS") {
+              this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "', 'ROS')\n"
+              this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "', 'ROS')\n"
+
+            }
+            else if (this.midleware === "ROS2") {
+              this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "', 'ROS2')\n"
+              this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "', 'ROS2')\n"
+
+            }
+
+            if (this.listen_function === true && this.midleware === "ZMQ") {
+              this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json')\n"
+              this.code_sub = this.nep_head_sub + this.nep_node_sub + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
+            }
+            else if (this.listen_function === false) {
+
+              var nep_callback = "def callback(msg):\n\tprint(msg)\n\t# Here is your code ...\n\n"
+              this.nep_sub = "sub = node.new_callback('" + this.pub_topic_name + "','json', callback)\nnode.spin()\t\t# This blocks the main thread\n"
+              this.code_sub = this.nep_head_sub + nep_callback + this.nep_node_sub + this.nep_sub
+            }
+            else {
+              this.code_sub = "ROS and ROS 2.0 only can be used with callback functions"
+            }
+
 
             this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json')\n"
-            this.nep_sub = "sub = node.new_sub('" + this.pub_topic_name + "','json')\n"
-
-
-            this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "')\n"
-            this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
-
             this.code = this.nep_head + this.nep_node_pub + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
-            this.code_sub = this.nep_head_sub + this.nep_node_sub + this.nep_sub + this.nep_while + this.nep_code_sub + this.nep_your_code
+
+
+
 
           }
           else {
 
 
-            this.nep_pub = "client = nep.new_client('" + this.pub_topic_name + "')\n"
-            this.nep_sub = "server = nep.new_server('" + this.pub_topic_name + "')\n"
+            this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "')\n"
+            this.nep_node_sub = "node = nep.node('" + this.sub_node_name + "')\n"
+
+            this.nep_pub = "client = node.new_client('" + this.pub_topic_name + "')\n"
+            this.nep_sub = "server = node.new_server('" + this.pub_topic_name + "')\n"
 
 
             let client_code = "\tmsg = {'message':'hello server'}\t# An example of request\n\tclient.send_info(msg)\t\t\t# Send request\n\tresponse = client.listen_info()\t\t# Wait and get response\n\tprint(response)\n\t# Here you process the response\n\t#\n\t#\n\ttime.sleep(1)"
             let server_code = "\trequest = server.listen_info()\t\t# Wait and read response\n\tprint (request) \n\t# Here you process the request ...\n\t#\n\t#\n\tmsg = {'message':'hello client'}\t# An example of response\n\tserver.send_info(msg)\t\t\t# Send response"
-            this.code = this.nep_head + this.nep_pub + this.nep_while + client_code
-            this.code_sub = this.nep_head_sub + this.nep_sub + this.nep_while + server_code
+            this.code = this.nep_head + this.nep_node_pub + this.nep_pub + this.nep_while + client_code
+            this.code_sub = this.nep_head_sub + this.nep_node_sub + this.nep_sub + this.nep_while + server_code
 
           }
 

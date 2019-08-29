@@ -25,7 +25,7 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar app dense color="white">
+      <v-app-bar flat app dense color="white">
 
         <v-avatar size="35">
           <img src="images/nep.png" alt="avatar">
@@ -37,19 +37,18 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
+          <v-btn href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
               home
             </v-icon>
           </v-btn>
-          <v-btn text color="grey darken-3" outlined color="blue darken-1"
-            href="https://enriquecoronadozu.github.io/NEP/start" target="_blank" text>Docs <v-icon right dark>
+          <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
+            target="_blank" text>Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right
-              dark>code
+          <v-btn @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
             </v-icon>
           </v-btn>
-          <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
+          <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
         </v-toolbar-items>
         <div>&nbsp;</div>
@@ -92,7 +91,7 @@
                       <v-stepper-content step="1">
                         <v-container bg fill-height grid-list-md>
                           <v-layout align-center justify-center row fill-height />
-                          <v-flex xs10>
+                          <v-flex xs12>
                             <v-card flat>
 
 
@@ -125,12 +124,11 @@
 
                                           <ul style="font-size: 15px; color:#616161; text-align: justify">
                                             <li> Messages are send
-                                              asynchronously.</li>
+                                              asynchronously from <b>publishers</b> to <b>subscribers</b></li>
                                             <li>The <b>publisher</b> send messages without stopping its execution </li>
-                                            <li> The <b>subscriber</b> can follow it execution even if a new message do
-                                              not arrives</li>
-                                            <li> The <b>subscriber</b> can execute a callback function each time a new
-                                              message arrives (<b>ROS</b> re-usable) </li>
+                                            <li> The <b>subscriber</b> can follow it execution even if message never
+                                              arrives</li>
+                                          
 
                                           </ul>
                                         </div>
@@ -170,8 +168,7 @@
 
                                           <ul style="font-size: 15px; color:#616161; text-align: justify">
 
-                                            <li> A <b>client</b> (node 1) sends
-                                              a request for some data to a <b>server</b> (node 1) </li>
+                                            
                                             <li> The <b>server</b> waits until it receives a request of
                                               some <b>client</b></li>
                                             <li> The <b>server</b> process the request and send a response to the
@@ -286,7 +283,7 @@
 
                                 <v-container fluid grid-list-md v-show="use_ps">
                                   <v-layout wrap>
-                                   
+
 
                                     <v-flex xs6>
 
@@ -411,7 +408,7 @@
                   </v-container>
                   <div>&nbsp;</div>
                   <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
-                    target="_blank">Select</v-btn>
+                    >Select</v-btn>
                   <div>&nbsp;</div>
                   <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
                     Endpoints (IP and
@@ -441,7 +438,7 @@
                   </v-container>
                   <div>&nbsp;</div>
                   <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/discovery"
-                    target="_blank">Select</v-btn>
+                   >Select</v-btn>
                   <div>&nbsp;</div>
 
                   <v-alert icon="mdi-school" prominent text type="success">
@@ -529,6 +526,7 @@
 
         onUpdatePatternPS() {
           this.e1 = 2
+          this.use_ps = true
           this.sender_title = "Publisher code"
           this.receiver_title = "Subscriber code"
           this.image = "images/pub.png"
@@ -552,7 +550,7 @@
 
         },
 
- 
+
 
 
         onUpdate() {
