@@ -38,7 +38,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          
+
           <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
             target="_blank" text>Docs <v-icon right dark>
               description</v-icon>
@@ -48,10 +48,11 @@
           </v-btn>
           <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
           </v-btn>
-          <v-btn text color="grey darken-3"  href="https://scholar.google.com/scholar?cluster=16111844774488887854&hl=es&as_sdt=2005"
-          target="_blank"  text>Reference <v-icon right dark>school</v-icon>
+          <v-btn text color="grey darken-3"
+            href="https://scholar.google.com/scholar?cluster=16111844774488887854&hl=es&as_sdt=2005" target="_blank"
+            text>Reference <v-icon right dark>school</v-icon>
           </v-btn>
-         
+
 
 
         </v-toolbar-items>
@@ -264,7 +265,7 @@
           </v-card-title>
           <v-stepper v-model="e5" vertical>
             <v-stepper-step :complete="e5 > 1" step="1" editable>
-              If you use Python 2 run in a terminal
+              Install using pip
             </v-stepper-step>
 
             <v-stepper-content step="1">
@@ -274,38 +275,15 @@
                 <v-flex xs12>
 
 
-                  <v-tabs vertical>
-                    <v-tab>
-
-                      Windows
-                    </v-tab>
-                    <v-tab>
-
-                      OSX/Linux
-                    </v-tab>
-
-
-                    <v-tab-item>
-                      <v-card flat>
+                    <v-card flat>
                         <v-card-text>
                           <p style="color:black;">
-                            py -2 -m pip install -U nep <br>
+                            pip install -U nep <br>
                           </p>
                         </v-card-text>
                       </v-card>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <v-card flat>
-                        <v-card-text>
-                          <p style="color:black;">
-                            python2 -m pip install -U nep <br>
-                          </p>
 
-                        </v-card-text>
-                      </v-card>
-                    </v-tab-item>
-
-                  </v-tabs>
+                    
                 </v-flex>
               </v-layout>
               <v-btn color="primary" @click="e5 = 2">Continue</v-btn>
@@ -315,73 +293,22 @@
 
 
 
-            <v-stepper-step :complete="e5 > 2" step="2" editable>
-              If you use Python 3 run in a terminal
-            </v-stepper-step>
-
+            <v-stepper-step editable :complete="e5 > 2" step="2"> Install NEP Discovery Server</v-stepper-step>
 
             <v-stepper-content step="2">
-
-
-              <v-layout justify-center>
-                <v-flex xs12>
-
-
-                  <v-tabs vertical>
-                    <v-tab>
-
-                      Windows
-                    </v-tab>
-                    <v-tab>
-
-                      OSX/Linux
-                    </v-tab>
-
-
-                    <v-tab-item>
-                      <v-card flat>
-                        <v-card-text>
-                          <p style="color:black;">
-                            py -3 -m pip install -U nep <br>
-                          </p>
-                        </v-card-text>
-                      </v-card>
-                    </v-tab-item>
-                    <v-tab-item>
-                      <v-card flat>
-                        <v-card-text>
-                          <p style="color:black;">
-                            python3 -m pip install -U nep <br>
-                          </p>
-
-                        </v-card-text>
-                      </v-card>
-                    </v-tab-item>
-
-                  </v-tabs>
-                </v-flex>
-              </v-layout>
-              <v-btn color="primary" @click="e5 = 3">Continue</v-btn>
-
-
-            </v-stepper-content>
-
-
-
-            <v-stepper-step editable :complete="e5 > 3" step="3"> NEP Discovery Server (Recomended) </v-stepper-step>
-
-            <v-stepper-content step="3">
               <v-layout justify-center>
 
                 <v-btn color="indigo" outlined
                   href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
-                  target="_blank" color="primary">Install Windows</v-btn>
+                  target="_blank" color="primary">Windows installer</v-btn>
 
               </v-layout>
               <div>&nbsp;</div>
               <v-layout justify-center>
 
-                <v-btn outlined color="grey lighten-1" target="_blank" color="primary">Install OSX</v-btn>
+                <v-btn outlined color="indigo" target="_blank"
+                  href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep-0.2.0.dmg"
+                  color="primary">OSX installer</v-btn>
 
               </v-layout>
 
@@ -389,7 +316,7 @@
               <div>&nbsp;</div>
               <v-layout justify-center>
 
-                <v-btn outlined color="grey lighten-1" target="_blank" color="primary">Install Linux</v-btn>
+                <v-btn outlined color="grey lighten-1" target="_blank" color="primary">Linux installer</v-btn>
 
               </v-layout>
             </v-stepper-content>
