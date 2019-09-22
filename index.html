@@ -160,7 +160,7 @@
                     <v-btn outlined @click="dialog_matlab = true" color="blue darken-1" dark>MATLAB</v-btn>
                     <v-btn outlined color="grey lighten-1" dark>C#</v-btn>
                     <v-btn outlined color="grey lighten-1" dark>Java</v-btn>
-                    <v-btn outlined color="grey lighten-1" dark>Javascript</v-btn>
+                    <v-btn outlined color="blue darken-1" href="https://www.npmjs.com/package/nep-js" target="_blank"  dark>Javascript</v-btn>
                   </v-flex>
                 </v-card>
               </v-flex>
@@ -275,15 +275,15 @@
                 <v-flex xs12>
 
 
-                    <v-card flat>
-                        <v-card-text>
-                          <p style="color:black;">
-                            pip install -U nep <br>
-                          </p>
-                        </v-card-text>
-                      </v-card>
+                  <v-card flat>
+                    <v-card-text>
+                      <p style="color:black;">
+                        pip install -U nep <br>
+                      </p>
+                    </v-card-text>
+                  </v-card>
 
-                    
+
                 </v-flex>
               </v-layout>
               <v-btn color="primary" @click="e5 = 2">Continue</v-btn>
@@ -344,6 +344,9 @@
             <v-stepper-step :complete="e6 > 1" step="1" editable>
               Download lastest release version of NEP-matlab
             </v-stepper-step>
+
+
+
 
 
             <v-stepper-content step="1">
