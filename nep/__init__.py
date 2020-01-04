@@ -6,7 +6,6 @@ from .subscriber import*
 from .master import* 
 from .node import*
 from .broker import*
-from .robot import*
 
 import platform
 if platform.system() == 'Linux' :

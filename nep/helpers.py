@@ -18,6 +18,16 @@ import time
 import sys, os
 from subprocess import Popen, call
 
+def logError(e):
+    exc_type, exc_obj, exc_tb = sys.exc_info()
+    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    print(exc_type, fname, exc_tb.tb_lineno)
+
+def printError(e):
+    try:
+        print ("NEP ERROR: "  + str(e))
+    except:
+        pass
 
 def nepmaster(version="2", param =""):
     """
@@ -135,7 +145,7 @@ def neprun(module, script, parameters, version="2"):
         return False
  
 
-def masterRegister(node, topic, master_ip = '127.0.0.1', master_port = 7000, socket = "subscriber", mode = "many2many", pid = "none"):
+def masterRegister(node, topic, master_ip = '127.0.0.1', master_port = 7000, socket = "subscriber", mode = "many2many", pid = "none", data_type = "json"):
     """ Register topic in master node
             
     Parameters
@@ -158,6 +168,12 @@ def masterRegister(node, topic, master_ip = '127.0.0.1', master_port = 7000, soc
 
     mode: string
         Parameter only for Publish/Subscriber pattern. Options are "one2many", "many2one" and "many2many".
+    
+    mode: pid
+        PID identifier
+
+    data_type: json
+        message type
 
     Returns
     ----------
@@ -180,7 +196,8 @@ def masterRegister(node, topic, master_ip = '127.0.0.1', master_port = 7000, soc
             'topic':topic,
             'mode':mode,
             'socket':socket,
-            'pid':pid
+            'pid':pid,
+            'msg_type':data_type
               }
     
     client.send_info(message)

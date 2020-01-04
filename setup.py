@@ -1,8 +1,10 @@
 from setuptools import setup
 
+#from distutils.core import setup
+
 setup(
     name='nep',
-    version='0.5.2.1',
+    version='0.5.3.4',
     author='Enrique Coronado',
     author_email='enriquecoronadozu@gmail.mx',
     url='http://enriquecoronadozu.github.io',
@@ -10,7 +12,7 @@ setup(
     packages=["nep"],
     install_requires=[
           'pyzmq','simplejson'
-      ],
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",

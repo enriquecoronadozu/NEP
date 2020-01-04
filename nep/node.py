@@ -14,6 +14,7 @@ import os
 import sys
 import signal
 import threading
+import simplejson
 import nep
 import zmq
 import atexit
@@ -211,12 +212,15 @@ class node:
 
 
 
-    def broker(self, mode = "many2many"):
+    def hybrid(self, master_ip = "127.0.0.1", mode = "many2many", transport = "ZMQ"):
         """ 
-        Publisher-Subscriber broker configuration
+        Publisher-Subscriber Hybrid P2P configuration
        
         Parameters
         ----------
+
+        master_ip : string
+           IP of master    
 
         mode : string
             Only for ZeroMQ and Nanomsg. It can be "one2many" (one publisher and many subscribers in a topic), "many2one" (one publisher and many subscribers in a topic), "many2many" (many publishers and many subscribers in a topic).    
@@ -228,11 +232,11 @@ class node:
             Dictionary with the specifications of the publisher
 
         """
-        conf = {'transport': self.transport, 'network': "broker", 'mode':mode}
+        conf = {'transport': transport, 'network': "broker", 'mode':mode, 'master_ip': master_ip}
         return conf
 
 
-    def direct(self, ip = "127.0.0.1", port = "9000", mode = "one2many"):
+    def direct(self, ip = "127.0.0.1", port = "9000", mode = "one2many", transport = ""):
 
         """
         Publisher-Subscriber direct network configuration
@@ -256,8 +260,11 @@ class node:
             Dictionary with the specifications of the publisher
 
         """
-        
-        conf = {'transport': self.transport, 'network': "direct", 'port': port, 'ip': ip, 'mode':mode}
+        if transport == "":
+            transport = "ZMQ"
+        else:
+            transport = self.transport
+        conf = {'transport': transport, 'network': "direct", 'port': port, 'ip': ip, 'mode':mode}
         return conf
 
     def new_client(self, topic):
@@ -278,7 +285,7 @@ class node:
         """
 
         print("CLIENT: " + topic + ", waiting NEP master ...")
-        s, port, ip  = nep.masterRegister(self.node_name, topic, master_ip = '127.0.0.1', master_port = 7000, socket = "client", pid = self.pid)
+        s, port, ip  = nep.masterRegister(self.node_name, topic, master_ip = '127.0.0.1', master_port = 7000, socket = "client", pid = self.pid, data_type="json")
 
         if s:
             print ("CLIENT: " + topic + ", in " + ip + ":" + str(port))
@@ -306,7 +313,7 @@ class node:
         """
 
         print("SERVER: " + topic + ", waiting NEP master ...")
-        s, port, ip  = nep.masterRegister(self.node_name, topic, master_ip = '127.0.0.1', master_port = 7000, socket = "server", pid = self.pid)
+        s, port, ip  = nep.masterRegister(self.node_name, topic, master_ip = '127.0.0.1', master_port = 7000, socket = "server", pid = self.pid, data_type="json")
         if s:
             print ("SERVER: " + topic + ", in " + ip + ":" + str(port))
             server = nep.server(ip,port, debug = False) #Create a new server instance
@@ -316,7 +323,7 @@ class node:
             print ("NEP ERROR: " + topic + ", server socket not connected")
  
 
-    def new_pub(self,topic, msg_type = "json", configuration =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many"}):
+    def new_pub(self,topic, msg_type = "json", configuration =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many", "master_ip":"127.0.0.1" }):
         """
         Function used to generate a new publisher in the current node
 
@@ -348,7 +355,7 @@ class node:
         pub = nep.publisher(topic, self.node_name, msg_type, configuration)
         return pub
 
-    def new_callback(self, topic , msg_type , callback, conf = {'transport': 'ZMQ', 'network': "broker", 'mode':"many2many"}):
+    def new_callback(self, topic , msg_type , callback, conf = {'transport': 'ZMQ', 'network': "broker", 'mode':"many2many", "master_ip":"127.0.0.1"}):
         """
         Function used to generate a new subscriber callback. Only for ZMQ and ROS.
 
@@ -377,18 +384,59 @@ class node:
             self.sub = nep.subscriber(topic, self.node_name, msg_type, conf)
             self.sub_socket = self.sub.sock
             self.sub_callback = callback
+            self.sub_msg_type = msg_type
         else:
             print("NEP ERROR: middleware " + self.transport + " do not support callback subscribers")
 
         return self.sub
 
     def __process_message(self,msg):
-        """Get message only"""
-        info = msg[0]
-        index = info.find(' ')
-        topic = info[0:index].strip()
-        message = info[index+1:]
-        self.sub_callback(message)
+
+        if self.sub_msg_type == 'string':
+            info = msg[0]
+            index = info.find(' ')
+            topic = info[0:index].strip()
+            message = info[index+1:]
+            self.sub_callback(message)
+        
+        else:
+            s, message = self.__deserialization(msg[0])
+            if s:
+                self.sub_callback(message)
+
+
+    def __loads(self, s, **kwargs):
+        """Load object from JSON bytes (utf-8). See jsonapi.jsonmod.loads for details on kwargs.
+        """
+        if sys.version_info[0] == 2:
+            if str is unicode and isinstance(s, bytes):
+                s = s.decode('utf8')
+        return simplejson.loads(s, **kwargs)
+        
+    def __deserialization(self, info):
+        """ Separate the topic and the json message from the data received from the ZeroMQ socket. If the deserialization was successful and the message as a python dictionary
+            
+            Parameters
+            ----------
+            info : string
+                topic + message received by the ZQM socket 
+
+            Returns
+            -------
+            msg : string
+                String message as a python dictionary
+        """
+        try:
+            json0 = info.find('{')
+            topic = info[0:json0].strip()
+            msg = self.__loads(info[json0:])
+            success = True
+        except:
+            print("NEP Serialization Error: \n" + str(info) + "\n" + "Is not JSON serializable")
+            msg = {}
+            success = False
+        return success, msg
+
 
     def spin(self):
         """ Start event loop"""
@@ -458,7 +506,7 @@ class node:
         return res
 
 
-    def new_sub(self, topic, msg_type = "json", configuration =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many" }):
+    def new_sub(self, topic, msg_type = "json", configuration =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many", "master_ip":"127.0.0.1" }):
 
         """
         Function used to generate a new subscriber in the current node

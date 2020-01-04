@@ -84,7 +84,7 @@ class master:
             msg_type = "json"         # Message type to listen. "string" or "dict"
             node = nep.node("master_node")                                                                   # Create a new node
             pub_port = 7777
-            conf = node.direct(ip = "127.0.0.1", port =  pub_port, mode ="one2many")                # Select the configuration of the publisher
+            conf = node.direct(ip = IP, port =  pub_port, mode ="one2many")                # Select the configuration of the publisher
             self.master_pub = node.new_pub("master",msg_type,conf)
             time.sleep(1)
             self.master_pub.publish(self.topic_register)
@@ -107,34 +107,56 @@ class master:
 
         if node_request["socket"] == "publisher" or node_request["socket"] == "subscriber":
             if node_request["mode"] == "many2many":
-                proxy = nep.broker(self.IP, self.current_port+1, self.current_port)
+                
+                try:
+                    proxy = nep.broker(self.IP, self.current_port+1, self.current_port)
+                except:
+                    print("NEP ERROR: ports " + str(self.current_port) + " and " + str(self.current_port+1) + " not avaliable")
+                    print("NEP MESSAGE: Trying with: " + str(self.current_port+2) + " and " + str(self.current_port+3))
+                    ti = 0
+                    while ti < 10:
+                        self.current_port = self.current_port + 2
+                        try:
+                            proxy = nep.broker(self.IP, self.current_port+1, self.current_port)
+                            ports_ok = True
+                            break
+                        except:
+                            print("NEP ERROR: ports" + str(self.current_port) + " and " + str(self.current_port+1) + " not avaliable ----")
+                        ti = ti+2
+                        
+                        
+                        
+                    
                 self.brokers.append(proxy)
                 th = thread.start_new_thread (proxy.start, ())
                 self.threads_id.append(th)
                 time.sleep(.5)
-            
-            self.topic_register.update({topic:{"port":self.current_port,"socket":node_request["socket"], "mode":node_request["mode"]}})
+            if "msg_type" in node_request:
+                self.topic_register.update({topic:{"port":self.current_port,"socket":node_request["socket"], 'ip': self.IP, "mode":node_request["mode"], "msg_type":node_request["msg_type"] }})
+            else:
+                 self.topic_register.update({topic:{"port":self.current_port,"socket":node_request["socket"], 'ip': self.IP, "mode":node_request["mode"], "msg_type":"json" }})
+
             msg = {'topic':topic, 'port': self.current_port, 'mode':node_request["mode"],  'ip': self.IP, 'socket':node_request["socket"], "state":"success"}
 
         elif node_request["socket"] == "surveyor" or node_request["socket"] == "respondent":
-            self.topic_register.update({topic:{"port":self.current_port,"socket":node_request["socket"]}})
+            self.topic_register.update({topic:{"port":self.current_port,"socket":node_request["socket"], 'ip': self.IP}})
             msg = {'topic':topic, 'port': self.current_port,  'ip': self.IP, 'socket':node_request["socket"], "state":"success"}
             pass
 
         elif node_request["socket"] == "client" or node_request["socket"] == "server":
-            self.topic_register.update({topic:{"port":self.current_port,"socket":node_request["socket"]}})
+            self.topic_register.update({topic:{"port":self.current_port,"socket":node_request["socket"]}, 'ip': self.IP})
             msg = {'topic':topic, 'port': self.current_port,  'ip': self.IP, 'socket':node_request["socket"],"state":"success"}
             pass
         
         self.server.send_info(msg)
-        self.topic_register[topic]["nodes"] = {node_request['node']:{'socket':node_request["socket"], 'pid':"n.a."}}
+        self.topic_register[topic]["nodes"] = {node_request['node']:{'socket':node_request["socket"], 'pid':"n.a.",'ip': self.IP}}
         
         if "pid" in node_request:
-            self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}
+            self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"], 'ip': self.IP}
             #data = {node_request['node']:{'socket':node_request["socket"], 'pid':node_request["pid"]}}
             #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':node_request["pid"]}
-        #else:
-            #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':"n.a."}
+        else:
+            self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':"n.a."}
             #data = {node_request['node']:{'socket':node_request["socket"], 'pid':"n.a."}}
             #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':"n.a."} 
         #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}}
@@ -171,21 +193,10 @@ class master:
             self.server.send_info(msg)
 
             if "pid" in node_request:
-                self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}
+                self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"], 'ip': self.IP}
+            else:
+                self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':"n.a", 'ip': self.IP}
 
-            #if "pid" in node_request:
-                #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':node_request["pid"]}
-                #data = {node_request['node']:{'socket':node_request["socket"], 'pid':node_request["pid"]}}
-                #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':node_request["pid"]}
-            #else:
-                #self.topic_register[topic]["nodes"][node_request['node']] = {'socket':node_request["socket"], 'pid':"n.a."}
-
-            #if "pid" in node_request:
-                #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':node_request["pid"], 'port': port, 'ip': self.IP,}
-            #else:
-                #data =  {'node':node_request['node'],'socket':node_request["socket"], 'pid':"n.a.", 'port': port, 'ip': self.IP,} 
-
-            #self.topic_register[topic]["nodes"].append(data)
             self.master_pub.publish(self.topic_register)
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()

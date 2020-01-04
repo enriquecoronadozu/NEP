@@ -16,9 +16,21 @@ import zmq
 import simplejson
 import sys
 import nep
+import base64
+
+
+try:
+    import numpy as np
+except ImportError:
+    pass
 
 try:
     import nanomsg
+except ImportError:
+    pass
+
+try:
+    import cv2
 except ImportError:
     pass
 
@@ -47,7 +59,7 @@ class subscriber:
             If True some additional information of the subscriber is shown
 
     """
-    def __init__(self, topic, node = "default", msg_type = "dict", conf =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many"}, callback = "", debug = False):
+    def __init__(self, topic, node = "default", msg_type = "dict", conf =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many", "master_ip":"127.0.0.1"}, callback = "", debug = False):
 
         self.callback = callback
         self.topic = topic
@@ -59,6 +71,17 @@ class subscriber:
         self.ip = ""
         self.port = ""
         self.debug = debug
+
+        self.master_ip = "127.0.0.1"
+
+        try:
+            self.master_ip = conf["master_ip"]
+            if self.master_ip == "127.0.0.1":
+                print ("SUB: " + topic + " in local-host")
+            else:
+                print ("SUB: " + topic + " in " +  str(self.master_ip))
+        except:
+            pass
 
         if self.transport ==  "ROS":
             print ("SUB: " + topic + " using ROS 1.0")                                        #Use ROS
@@ -111,7 +134,7 @@ class subscriber:
             if self.topic != "/nep_node":
                 print("SUB: " + self.topic + " waiting NEP master ...")
             # Register the topic in the NEP Master and get the port and ip
-            success, port, ip  = nep.masterRegister(self.node, self.topic, master_ip = '127.0.0.1', master_port = 7000, socket = "subscriber", mode = self.mode, pid = self.pid)
+            success, port, ip  = nep.masterRegister(self.node, self.topic, master_ip = self.master_ip, master_port = 7000, socket = "subscriber", mode = self.mode, pid = self.pid, data_type = self.msg_type)
             if self.topic != "/nep_node":
                 print("SUB: " + self.topic + " socket ready")
         return success, port, ip
@@ -315,7 +338,8 @@ class subscriber:
             msg = self.__loads(info[json0:])
             success = True
         except:
-            msg = ""
+            print("NEP Serialization Error: \n" + str(info) + "\n" + "Is not JSON serializable")
+            msg = {}
             success = False
         return success, msg
 
@@ -332,10 +356,36 @@ class subscriber:
             return self.listen_string(block_mode)
         elif self.msg_type == "json":
             return self.listen_json(block_mode)
+        elif self.msg_type == "image":
+            return self.listen_image(block_mode)
         else:
             msg = "NEP ERROR: msg_type selected '" + str(self.msg_type) + "' non compatible"
             raise ValueError(msg)
 
+    def listen_image(self, block_mode = False):
+        """ Function used to read string data from the sokect. The operation is by default in non blocking mode
+
+            Parameters
+            ----------
+            block_mode : bool
+                If True, the socket will set in blocking mode, otherwise the socket will be in non blocking mode
+                
+            Returns
+            -------
+            success : bool
+                If True the information was obtained inside the timeline in non blocking mode  
+
+            message : image 
+                OpenCV Image.      
+        """
+
+        s, imageraw = self.listen_string(False)
+        if s:
+            jpg = base64.b64decode(imageraw)
+            jpg = np.frombuffer(jpg, dtype=np.uint8)
+            img = cv2.imdecode(jpg, 1)
+            return s, img
+        return s, imageraw
 
 
     def listen_string(self, block_mode = False):
@@ -379,7 +429,6 @@ class subscriber:
                         info = self.sock.recv_string(flags = zmq.NOBLOCK)
                 elif self.transport ==  "NN" or self.transport ==  "nanomsg":
                     info = self.sock.recv(flags=nanomsg.DONTWAIT)
-                    print(info)
                       
                 # Split the message
                 index = info.find(' ')
@@ -425,7 +474,11 @@ class subscriber:
         try:
             #Blocking mode
             if block_mode:
-                success, info = self.__deserialization(self.sock.recv())
+                if sys.version_info[0] == 2:
+                    success, info = self.__deserialization(self.sock.recv())
+                else:
+                    success,info = self.__deserialization(self.sock.recv_string())
+
                 #time.sleep(.001)
             #Non blocking mode
             else:

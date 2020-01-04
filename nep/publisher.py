@@ -16,6 +16,19 @@ import zmq
 import simplejson
 import sys
 import nep
+import base64
+
+
+
+try:
+    import nanomsg
+except ImportError:
+    pass
+    
+try:
+    import cv2
+except ImportError:
+    pass
 
 
 
@@ -42,7 +55,7 @@ class publisher:
 
     """
 
-    def __init__(self, topic, node = "default", msg_type = "json", conf =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many"}, debug = False):
+    def __init__(self, topic, node = "default", msg_type = "json", conf =  {'transport': "ZMQ", 'network': "broker", 'mode':"many2many", "master_ip":"127.0.01"}, debug = False):
 
         self.conf = conf
         self.network = self.conf['network']
@@ -54,6 +67,16 @@ class publisher:
         self.port = ""
         self.connected = False
         self.debug = debug
+        self.master_ip = "127.0.0.1"
+
+        try:
+            self.master_ip = conf["master_ip"]
+            if self.master_ip == "127.0.0.1":
+                print ("PUB: " + topic + " in local-host")
+            else:
+                print ("PUB: " + topic + " in " +  str(self.master_ip))
+        except:
+            pass
 
         if self.transport ==  "ROS":                                                    #Use ROS
             print ("PUB: " + self.topic + " using ROS 1.0")
@@ -131,7 +154,7 @@ class publisher:
             if self.topic != "/nep_node":
                 print("PUB: " + self.topic + " waiting NEP master ...")
             # Register the topic in the NEP Master and get the port and ip
-            success, port, ip  = nep.masterRegister(self.node, self.topic, master_ip = '127.0.0.1', master_port = 7000, socket = "publisher", mode = self.mode, pid = self.pid)
+            success, port, ip  = nep.masterRegister(self.node, self.topic, master_ip = self.master_ip, master_port = 7000, socket = "publisher", mode = self.mode, pid = self.pid, data_type = self.msg_type)
             if self.topic != "/nep_node":
                 print("PUB: " + self.topic + " socket ready")
                 
@@ -300,9 +323,30 @@ class publisher:
             self.send_string(message)
         elif self.msg_type == "json":
             self.send_json(message)
+        elif self.msg_type == "image":
+            self.send_image(message)
         else:
             msg = "NEP ERROR: msg_type selected '" + str(self.msg_type) + "' non compatible"
             raise ValueError(msg)
+
+    def send_image(self,message):
+        """ Publish a opencv image. 
+            
+            Parameters
+            ----------
+            message : image 
+                Image to be sended 
+        """
+
+        ret, jpg = cv2.imencode('.jpg', message)
+        encoded = base64.b64encode(jpg.tostring())
+        if sys.version_info[0] == 2:
+            self.sock.send(self.topic + ' ' + str(encoded))
+        else:
+            self.sock.send_string(self.topic + ' ' + encoded.decode("utf-8"))
+            
+
+        
     
     def send_string(self,message):
         """ Publish a string value. 

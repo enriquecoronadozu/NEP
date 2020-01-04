@@ -41,7 +41,7 @@ class respondent():
             print("RESP: " + self.topic + " waiting for NEP master ...")
 
             self.pid = os.getpid()
-            success, port, ip  = nep.masterRegister(node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000, socket = "respondent", pid = self.pid)
+            success, port, ip  = nep.masterRegister(node_name, self.topic, master_ip = '127.0.0.1', master_port = 7000, socket = "respondent", pid = self.pid, data_type = "json")
             print("RESP: " + self.topic + " socket ready")
             self.debug = debug
            
