@@ -26,7 +26,7 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar app dense color="white">
+      <v-app-bar app dense color="white" flat>
 
         <v-avatar size="35">
           <img src="images/nep.png" alt="avatar">
@@ -38,15 +38,22 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn outlined href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
+          <v-btn href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
               home
             </v-icon>
           </v-btn>
-          <v-btn outlined @click="dialog_template = true" text color="grey darken-3" text text color="grey darken-3"
-            text>Code Templates <v-icon right dark>code</v-icon>
+          <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
+            target="_blank" text>API Docs <v-icon right dark>
+              description</v-icon>
           </v-btn>
-          <v-btn outlined text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
+          <v-btn @click="dialog_template = true" text color="grey darken-3" text text color="grey darken-3" text>Code
+            Templates <v-icon right dark>code</v-icon>
           </v-btn>
+          <v-btn text color="grey darken-3"
+          href="https://scholar.google.com/scholar?cluster=16111844774488887854&hl=es&as_sdt=2005" target="_blank"
+          text>Reference NEP <v-icon right dark>school</v-icon>
+        </v-btn>
+
         </v-toolbar-items>
         <div>&nbsp;</div>
 
@@ -78,12 +85,16 @@
                   <v-card-text>
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify"> Node Primitives <b>(NEP)</b> is a
-                        user-friendly, reusable and cross-platform robotic framework for building software architectures
-                        able to support Human-Robot Interaction (HRI) and robot End-User Development (EUD). It was
-                        designed to be easy-to-install, easy-to-use and easy-to-learn. <b>NEP</b> also enables easy
-                        re-use of
-                        module robot software modules on different robot
-                        middlewares and programming languages
+                        user-friendly, reusable and cross-platform communication framework for
+                        building robot software architectures. <b>NEP</b> is mainly focused (but not limited) in
+                        enabling the
+                        integration of Human-Robot Interaction (HRI) applications. <b>NEP</b> can be used for connecting
+                        independent software modules (many written in different programming languages) that are
+                        executed in the same local network.
+                        <b>NEP</b> was designed to be
+                        simple, easy-to-install, easy-to-use and easy-to-learn.
+
+
                       </p>
                     </div>
 
@@ -93,10 +104,10 @@
 
                         <b>NEP</b> is mainly an inter-process communication library using sockets. <b>NEP</b> is
                         back-ended by
-                        <b>ROS</b> 1 and 2, ZeroMQ and nanomsg. The default back-end implementation of <b>NEP</b> is
-                        ZeroMQ. This
-                        enable more user-friendly installation and provides better support for newer and older versions
-                        of most used desktop operating systems (Windows and MacOSX) </p>
+                        <b>ROS</b> 1 and 2, ZeroMQ and nanomsg. However, the default back-end implementation of
+                        <b>NEP</b> is
+                        ZeroMQ. This approach enables user-friendly installation and provides better support for newer
+                        and older versions of most used desktop operating systems. </p>
                     </div>
                   </v-card-text>
                 </v-card>
@@ -116,18 +127,16 @@
                   <div>&nbsp;</div>
                   <v-card-text>
                     <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> To use <b>NEP</b> you mainly need
-                        Python
-                        2 or 3. To use all features of <b>NEP</b> and many robots (e.g. Nao and Papper) it is highly
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> We highly
                         recommended to use the <b>official Python installers</b> from the <a
                           href="https://www.python.org/" target="_blank">Python
-                          website</a> rather than <b>PyCharm</b> or <b>Anaconda</b>.
+                          website</a> rather than <b>PyCharm</b> or <b>Anaconda</b> distributions.
                       </p>
                     </div>
 
                     <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
                       You can use <b>NEP</b> in <b>PyCharm</b> but you will need still to install an
-                      official Python version for use the <b>NEP Service Discovery Server</b>
+                      official Python version for use the <b>NEP Service Discovery Node</b>
                     </v-alert>
 
                     <v-alert icon="mdi-school" prominent text type="success">
@@ -188,11 +197,11 @@
 
                       <div>&nbsp;</div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        In order to support subscribers as callbacks you also need to install tornado: </p>
+                        In order to support subscribers as callbacks you also need to install tornado as follows: </p>
                       <pre>pip install -U tornado </pre>
                       <div>&nbsp;</div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        and asyncio (only Pyhton 3) or trollius (only Pyhton 2):</p>
+                        Asyncio (only Pyhton 3) or trollius (only Pyhton 2) are also needed:</p>
 
                       <pre>pip install -U asyncio</pre> or
                       <pre>pip install -U trollius</pre>
@@ -298,9 +307,7 @@
                         messages
                         without the knowledge of what or if any receiver, called <b>subscribers</b>. Unlike typical
                         Client/Server model, the communication is asynchronous. This pattern is generally considered
-                        more robust and better suited for data streaming of sensors. It uses is also better suited when
-                        the node that sends the control command to the robot does not require feedback from the node
-                        controling the robot. </p>
+                        more robust and better suited for data streaming of sensors.</p>
                     </div>
                     <div>&nbsp;</div>
                     <img src="images/ps.png" alt="Paris" class="center" style="width: 70%;">
@@ -335,26 +342,38 @@
                       <p style="font-size: 15px; color:#616161; text-align: justify">
                         When using a <b>Hybrid P2P </b> architecture, all the nodes in the network are implicitly
                         connected to
-                        some process often denoted as master or Discovery Service Server, which performs the management
+                        some process often denoted as master or Service Discovery node, which performs the management
                         of endpoints using a set of identifiers called <b>topics</b>. </p>
                     </div>
 
 
                     <div>&nbsp;</div>
 
+                    <p style=" color:#424242; font-size: 20px"> NEP Discovery</p>
+                    <div>&nbsp;</div>
+
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        When the master node detects a topic registration request from some node, it assigns to the
-                        requested topic an endpoint direction (i.e., an IP address and a port). This endpoint
-                        information is
-                        saved and sent to the instances which have performed the registration request of the topic
-                        (e.g., a
-                        publisher or a subscriber). In this approach, communication starts when at least one producer
-                        (e.g.,
-                        a publisher) and one receiver (e.g., a subscriber) have requested the registration of the same
-                        topic. </p>
+                        The <b>NEP Discovery</b> is a Hybrid P2P Broker and interface which performs the
+                        management of
+                        <b>endpoints</b>
+                        using only a set of identifiers called <b>topics</b>
                     </div>
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                        When a publisher and a subscriber required to communicate between them are defined to work in a
+                        hybrid P2P network, they require the registration of a common topic value (or communication
+                        filter) in the <b> NEP Discovery </b> node (NEP Master). <b>NEP Discovery </b> node is in charge
+                        to return the
+                        port number enabling communication between modules publishing or subscribing to the same topic.
+                      </p>
+                    </div>
+
+
+                    <img src="images/master.png" alt="master" class="center" style="width: 100%;">
 
                     <div>&nbsp;</div>
 
@@ -363,35 +382,25 @@
 
                         This approach reduces manageability problems but is considered a single-point-of-failure due
                         that if the master node accidentally crashes or stops, new communication between nodes will be
-                        not possible. This approach is used in <b>ROS 1.0</b> (when running the roscore command to run
+                        not possible. This approach is also used in <b>ROS 1.0</b> when running the roscore command to
+                        execute
                         the
-                        <b>ROS Master</b> node) and by using the <b>NEP Discovery Server</b> </p>
+                        <b>ROS Master</b> </p>
                     </div>
 
                     <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
                       When using a <b>Hybrid P2P </b> architecture it is required to run <b>first</b> the <b>NEP Service
-                        Discovery Server</b> before executing other nodes
+                        Discovery node</b> before executing other nodes
                     </v-alert>
 
                     <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
-                      Don't close the <b>NEP Service Discovery Server</b> until the execution of all nodes is finished
+                      Don't close the <b>NET Service Discovery node</b> until the execution of all nodes in the
+                      architecture have finished
                     </v-alert>
 
 
                     <div>&nbsp;</div>
-                    <p style=" color:#424242; font-size: 20px"> NEP Discovery Sever </p>
-                    <div>&nbsp;</div>
 
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        The <b>NEP Discovery Server</b> is a Hybrid P2P Broker and interface which performs the
-                        management of
-                        <b>endpoints</b>
-                        using only a set of identifiers called <b>topics</b>. It functionality is similar
-                        that
-                        the <b>ROS Master</b> node in <b>ROS 1.0</b></p>
-                    </div>
                   </v-card-text>
 
 
@@ -461,63 +470,44 @@
                       <div>&nbsp;</div>
 
                       <div>&nbsp;</div>
-                      <p style=" color:#424242; font-size: 20px"> Images (only Python) </p>
+                      <p style=" color:#424242; font-size: 20px"> Images</p>
 
                       <div>&nbsp;</div>
 
                       <div>
-                          <p style="font-size: 15px; color:#616161; text-align: justify">
-  
-                              You can send <b>OpenCV</b> images directly between Python nodes using this type of message.
-                              Supposing you are following the example presented <a href=" https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                          In Python, you can send <b>OpenCV</b> images.
+                          Supposing you are following the example presented <a href=" https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
                               " target="_blank">
-                                here</a>. The message as OpenCV Image can be defined as:: </p>
-  
-                          <pre>  message = cv2.imread('messi5.jpg',0) </pre>
-  
-                          </p>
-  
-                        </div>
+                            here</a>. The message as OpenCV Image can be defined as:</p>
+
+                        <pre>  message = cv2.imread('messi5.jpg',0) </pre>
+
+                        </p>
+
+                      </div>
 
 
                       <div>
-                 
-
-                      <div>&nbsp;</div>
 
 
+                        <div>&nbsp;</div>
 
 
-                      <v-card-title>
-                        <p style=" color:#424242; font-size: 25px"> Create Python scripts re-usables with ROS 1.0 and
-                          ROS
-                          2.0 </p>
-                      </v-card-title>
-                      <v-divider></v-divider>
-                      <div>&nbsp;</div>
-                      <v-card-text>
-                        <div>
-                          <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                            NEP ...
-                        </div>
 
-                      </v-card-text>
+                        <v-card-title>
+                          <p style=" color:#424242; font-size: 25px"> Tutorials </p>
+                        </v-card-title>
+                        <v-divider></v-divider>
+                        <div>&nbsp;</div>
+                        <v-card-text>
 
-                      <v-card-title>
-                        <p style=" color:#424242; font-size: 25px"> Use normal POSIX sockets
-                          2.0 </p>
-                      </v-card-title>
-                      <v-divider></v-divider>
-                      <div>&nbsp;</div>
-                      <v-card-text>
-                        <div>
-                          <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                            NEP ...
-                        </div>
 
-                      </v-card-text>
+
+
 
                 </v-card>
               </v-flex>
@@ -785,10 +775,7 @@
       </v-dialog>
 
 
-      <v-footer color="teal" app>
-        <v-spacer></v-spacer>
-        <span class="white--text">&copy; 2019</span>
-      </v-footer>
+
 
 
     </v-app>

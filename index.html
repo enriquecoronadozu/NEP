@@ -40,17 +40,15 @@
         <v-toolbar-items>
 
           <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
-            target="_blank" text>Docs <v-icon right dark>
+            target="_blank" text>API Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
           <v-btn @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
             </v-icon>
           </v-btn>
-          <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
-          </v-btn>
           <v-btn text color="grey darken-3"
             href="https://scholar.google.com/scholar?cluster=16111844774488887854&hl=es&as_sdt=2005" target="_blank"
-            text>Reference <v-icon right dark>school</v-icon>
+            text>Reference NEP <v-icon right dark>school</v-icon>
           </v-btn>
 
 
@@ -87,7 +85,7 @@
                       software architectures </span></div>
                   <div>&nbsp;</div>
 
-                  <v-btn @click="dialog = true" color="blue darken-1" dark>Install in Python</v-btn>
+                  <v-btn @click="dialog = true" color="blue darken-1" dark>Install NEP</v-btn>
                   <v-btn outlined color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
                     target="_blank" dark>Get Started</v-btn>
 
@@ -154,13 +152,18 @@
                 <v-card color="white" flat>
                   <v-flex xs12 md12>
 
-                    <div><span style="font-size: 20px; color:#616161;">Install in other Programming Languages </span>
+                    <div><span style="font-size: 20px; color:#616161;">Install for the next programming languages:
+                      </span>
                     </div>
                     <div>&nbsp;</div>
-                    <v-btn outlined @click="dialog_matlab = true" color="blue darken-1" dark>MATLAB</v-btn>
-                    <v-btn outlined color="blue darken-1" href="https://github.com/enriquecoronadozu/NEP/releases/download/NEP-sharp/Nep.dll"  dark>C#</v-btn>
-                    <v-btn outlined color="grey lighten-1" dark>Java</v-btn>
-                    <v-btn outlined color="blue darken-1" href="https://www.npmjs.com/package/nep-js" target="_blank"  dark>Javascript</v-btn>
+                    <v-btn @click="dialog_python = true" color="blue darken-1" dark>Python</v-btn>
+                    <v-btn outlined @click="onMATLAB()" color="blue darken-1" dark>MATLAB</v-btn>
+                    <v-btn outlined color="blue darken-1"
+                      href="https://www.nuget.org/packages/Nep/" target="_blank" dark>C#
+                    </v-btn>
+                    <v-btn outlined color="blue darken-1" dark>Java</v-btn>
+                    <v-btn outlined color="blue darken-1" href="https://www.npmjs.com/package/nep-js" target="_blank"
+                      dark>Javascript</v-btn>
                   </v-flex>
                 </v-card>
               </v-flex>
@@ -169,17 +172,13 @@
             <div>&nbsp;</div>
             <div>&nbsp;</div>
 
-          
+
 
 
           </v-container>
       </v-content>
 
 
-      <v-footer color="teal" app>
-        <v-spacer></v-spacer>
-        <span class="white--text">&copy; 2019</span>
-      </v-footer>
 
 
       <v-dialog v-model="dialog_template" max-width="1000px">
@@ -261,76 +260,77 @@
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
-            Installation:
+            Install NEP Discovery
           </v-card-title>
-          <v-stepper v-model="e5" vertical>
-            <v-stepper-step :complete="e5 > 1" step="1" editable>
-              Install using pip
-            </v-stepper-step>
 
-            <v-stepper-content step="1">
+          <v-layout justify-center>
 
+            <img src="/images/windows2.png" alt="Smiley face" height="42" width="42">
+            <v-btn color="indigo" outlined
+              href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
+              target="_blank" color="primary">Installer</v-btn>
 
-              <v-layout justify-center>
-                <v-flex xs12>
+          </v-layout>
+          <div>&nbsp;</div>
+          <v-layout justify-center>
+            <img src="/images/mac2.png" alt="Smiley face" height="42" width="42">
+            <v-btn outlined color="cyan" target="_blank"
+              href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep-0.2.0.dmg"
+              color="primary">Installer</v-btn>
 
+          </v-layout>
 
-                  <v-card flat>
-                    <v-card-text>
-                      <p style="color:black;">
-                        pip install -U nep <br>
-                      </p>
-                    </v-card-text>
-                  </v-card>
+          </v-layout>
+          <div>&nbsp;</div>
+          <v-layout justify-center>
+            <img src="/images/linux2.png" alt="Smiley face" height="42" width="42">
+            <v-btn outlined color="green" target="_blank" color="primary">Compile from source</v-btn>
 
+          </v-layout>
 
-                </v-flex>
-              </v-layout>
-              <v-btn color="primary" @click="e5 = 2">Continue</v-btn>
-
-
-            </v-stepper-content>
-
-
-
-            <v-stepper-step editable :complete="e5 > 2" step="2"> Install NEP Discovery Server</v-stepper-step>
-
-            <v-stepper-content step="2">
-              <v-layout justify-center>
-
-                <v-btn color="indigo" outlined
-                  href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep.Setup.0.2.0.exe"
-                  target="_blank" color="primary">Windows installer</v-btn>
-
-              </v-layout>
-              <div>&nbsp;</div>
-              <v-layout justify-center>
-
-                <v-btn outlined color="indigo" target="_blank"
-                  href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep-0.2.0.dmg"
-                  color="primary">OSX installer</v-btn>
-
-              </v-layout>
-
-              </v-layout>
-              <div>&nbsp;</div>
-              <v-layout justify-center>
-
-                <v-btn outlined color="grey lighten-1" target="_blank" color="primary">Linux installer</v-btn>
-
-              </v-layout>
-            </v-stepper-content>
-
-
-
-
-
-
-          </v-stepper>
           <v-card-actions>
             <v-btn color="primary" text @click="dialog = false">
               Close
             </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
+      <v-dialog v-model="dialog_python" max-width="500px">
+        <v-card>
+          <v-card-title>
+            Installation Python:
+          </v-card-title>
+
+          <v-card-subtitle>Using pip:</v-card-subtitle>
+
+          <div>&nbsp;</div>
+          <v-layout justify-center>
+
+            <v-flex xs4>
+              <pre> pip install -U nep</pre>
+            </v-flex>
+          </v-layout>
+
+          </v-flex>
+          </v-layout>
+          <div>&nbsp;</div>
+
+          <v-card-actions>
+            <v-btn color="primary" text @click="dialog_python = false">
+              Close
+            </v-btn>
+
+            <v-spacer></v-spacer>
+
+
+            <v-btn color="primary" href="https://pypi.org/project/nep/" target="_blank">
+              More details
+            </v-btn>
+
+
+
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -383,7 +383,7 @@
                   <v-layout justify-left>
 
                     <v-flex xs12>
-                      We need to save the java binaries in some locations where matlab can always find it. In windows we
+                      We need to save the java binaries in a location where matlab can always find them. In windows we
                       recommend to create a new folder in <i>C:\nep-matlab</i>
                     </v-flex>
                   </v-layout>
@@ -416,18 +416,13 @@
 
                     <v-flex xs12>
                       Run the command <b>prefdir</b> in MATLAB. Navigate to the folder shown in the MATLAB console and
-                      check is a file <b>javaclasspath.txt</b> exist. If the <b>javaclasspath.txt</b> file is not in the
+                      check if the file <b>javaclasspath.txt</b> exist. If the <b>javaclasspath.txt</b> file is not in
+                      the
                       folder,
                       then create it as a new text file
                     </v-flex>
                   </v-layout>
-                  <div>&nbsp;</div>
-                  <v-layout justify-left>
 
-                    <v-flex xs12>
-                      Copy and paste the java binaries inside <b>NEP-matlab.zip</b> to <i>C:\nep-matlab</i>
-                    </v-flex>
-                  </v-layout>
 
                 </v-flex>
               </v-layout>
@@ -445,18 +440,11 @@
                   <v-layout justify-left>
 
                     <v-flex xs12>
-                      Open the file <b>javaclasspath.txt</b> with a text editor. It is needed to write the full path of
-                      the jar files <b>jeromq-0.4.3.jar</b>, <b>gson-2.8.4.jar</b> <b>and nep.jar</b> described this
-                      file.
+                      Open the file <b>javaclasspath.txt</b> with a text editor. We needed to write the full path of the
+                      jar files <b>jeromq-0.4.3.jar</b>, <b>gson-2.8.4.jar</b> <b>and nep.jar</b>
                     </v-flex>
                   </v-layout>
-                  <div>&nbsp;</div>
-                  <v-layout justify-left>
 
-                    <v-flex xs12>
-                      Copy and paste the java binaries inside <b>NEP-matlab.zip</b> to <i>C:\nep-matlab</i>
-                    </v-flex>
-                  </v-layout>
                   <div>&nbsp;</div>
                   <v-layout justify-left>
 
@@ -525,6 +513,7 @@
         dialog: false,
         dialog_matlab: false,
         dialog_template: false,
+        dialog_python: false,
         e6: 1,
         e5: 1,
         row: "radio-1",
@@ -551,6 +540,13 @@
         onUpdate() {
 
         },
+
+
+        onMATLAB()
+        {
+          this.e6 = 1
+          this.dialog_matlab = true
+        }
       }
 
     })
