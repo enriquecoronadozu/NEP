@@ -46,6 +46,11 @@
           <v-btn @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
             </v-icon>
           </v-btn>
+
+          <v-btn href="https://github.com/enriquecoronadozu/NEP_samples"
+            target="_blank" text color="grey darken-3" text>Code Samples <v-icon right dark>mdi-folder-outline</v-icon>
+          </v-btn>
+
           <v-btn text color="grey darken-3"
             href="https://scholar.google.com/scholar?cluster=16111844774488887854&hl=es&as_sdt=2005" target="_blank"
             text>Reference NEP <v-icon right dark>school</v-icon>
@@ -158,8 +163,8 @@
                     <div>&nbsp;</div>
                     <v-btn @click="dialog_python = true" color="blue darken-1" dark>Python</v-btn>
                     <v-btn outlined @click="onMATLAB()" color="blue darken-1" dark>MATLAB</v-btn>
-                    <v-btn outlined color="blue darken-1"
-                      href="https://www.nuget.org/packages/Nep/" target="_blank" dark>C#
+                    <v-btn outlined color="blue darken-1" href="https://www.nuget.org/packages/Nep/" target="_blank"
+                      dark>C#
                     </v-btn>
                     <v-btn outlined color="blue darken-1" dark>Java</v-btn>
                     <v-btn outlined color="blue darken-1" href="https://www.npmjs.com/package/nep-js" target="_blank"
@@ -180,7 +185,6 @@
 
 
 
-
       <v-dialog v-model="dialog_template" max-width="1000px">
 
         <v-card>
@@ -198,14 +202,14 @@
 
                   <v-container>
 
-                    <p style=" color:#424242; font-size: 25px"> Set sockets manually </p>
+                    <p style=" color:#424242; font-size: 25px"> Set sockets parameters manually </p>
                     <div>&nbsp;</div>
 
-                    <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
+                    <p style="font-size: 15px; color:#616161; text-align: justify"> In this option: </p>
 
                     <ul style="font-size: 15px; color:#616161; text-align: justify">
-                      <li>The creation of simple software architectures</li>
-                      <li>Connect two or more nodes that runs in different computer</li>
+                      <li>You can create simple and robust software architectures</li>
+                      <li>Do not require NEP Discovery</li>
 
                     </ul>
                   </v-container>
@@ -229,14 +233,14 @@
 
                   <v-container>
 
-                    <p style=" color:#424242; font-size: 25px"> Use NEP Discovery Server </p>
+                    <p style=" color:#424242; font-size: 25px"> Sockets are defined by topics </p>
                     <div>&nbsp;</div>
 
-                    <p style="font-size: 15px; color:#616161; text-align: justify"> This options enables: </p>
+                    <p style="font-size: 15px; color:#616161; text-align: justify"> In this options: </p>
 
                     <ul style="font-size: 15px; color:#616161; text-align: justify">
-                      <li>The creation of complex and scalable software architectures</li>
-                      <li>Reuse code in ROS and ROS 2.0</li>
+                      <li>You can create complex and scalable software architectures</li>
+                      <li>NEP Discovery must be installed and always executed</li>
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
@@ -255,6 +259,7 @@
           </v-container>
         </v-card>
       </v-dialog>
+
 
 
       <v-dialog v-model="dialog" max-width="500px">
@@ -323,11 +328,6 @@
             </v-btn>
 
             <v-spacer></v-spacer>
-
-
-            <v-btn color="primary" href="https://pypi.org/project/nep/" target="_blank">
-              More details
-            </v-btn>
 
 
 
@@ -542,8 +542,7 @@
         },
 
 
-        onMATLAB()
-        {
+        onMATLAB() {
           this.e6 = 1
           this.dialog_matlab = true
         }

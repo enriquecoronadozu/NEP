@@ -42,14 +42,14 @@
             </v-icon>
           </v-btn>
           <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
-            target="_blank" text>Docs <v-icon right dark>
+            target="_blank" text>API Docs <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
-            </v-icon>
-          </v-btn>
-          <v-btn text color="grey darken-3" text>Software <v-icon right dark>get_app</v-icon>
-          </v-btn>
+          <v-btn text color="grey darken-3"
+          href="https://scholar.google.com/scholar?cluster=16111844774488887854&hl=es&as_sdt=2005" target="_blank"
+          text>Reference NEP <v-icon right dark>school</v-icon>
+        </v-btn>
+
         </v-toolbar-items>
         <div>&nbsp;</div>
 
@@ -123,12 +123,10 @@
 
 
                                           <ul style="font-size: 15px; color:#616161; text-align: justify">
-                                            <li> Messages are send
-                                              asynchronously from <b>publishers</b> to <b>subscribers</b></li>
+                                            <li> For sensory or perceptual data streamming </li>
+                                            <li> Messages are send  asynchronously without feedback </li>
                                             <li>The <b>publisher</b> send messages without stopping its execution </li>
-                                            <li> The <b>subscriber</b> can follow it execution even if message never
-                                              arrives</li>
-                                          
+
 
                                           </ul>
                                         </div>
@@ -168,11 +166,9 @@
 
                                           <ul style="font-size: 15px; color:#616161; text-align: justify">
 
-                                            
+                                            <li> For requesting feedback information synchronously </li>
                                             <li> The <b>server</b> waits until it receives a request of
                                               some <b>client</b></li>
-                                            <li> The <b>server</b> process the request and send a response to the
-                                              <b>client</b></li>
                                             <li> The <b>client</b> waits until it receives some response
                                               of the <b>server</b> </li>
 
@@ -373,10 +369,7 @@
 
 
 
-      <v-footer color="teal" app>
-        <v-spacer></v-spacer>
-        <span class="white--text">&copy; 2019</span>
-      </v-footer>
+
 
       <v-dialog v-model="dialog_template" max-width="1000px">
 
@@ -407,8 +400,7 @@
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
-                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
-                    >Select</v-btn>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates">Select</v-btn>
                   <div>&nbsp;</div>
                   <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
                     Endpoints (IP and
@@ -437,8 +429,7 @@
                     </ul>
                   </v-container>
                   <div>&nbsp;</div>
-                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/discovery"
-                   >Select</v-btn>
+                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/discovery">Select</v-btn>
                   <div>&nbsp;</div>
 
                   <v-alert icon="mdi-school" prominent text type="success">
