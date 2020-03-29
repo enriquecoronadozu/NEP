@@ -47,12 +47,12 @@
             </v-icon>
           </v-btn>
 
-          <v-btn href="https://github.com/enriquecoronadozu/NEP_samples"
-            target="_blank" text color="grey darken-3" text>Code Samples <v-icon right dark>mdi-folder-outline</v-icon>
+          <v-btn href="https://github.com/enriquecoronadozu/NEP_samples" target="_blank" text color="grey darken-3"
+            text>Code Samples <v-icon right dark>mdi-folder-outline</v-icon>
           </v-btn>
 
           <v-btn text color="grey darken-3"
-            href="https://scholar.google.com/scholar?cluster=16111844774488887854&hl=es&as_sdt=2005" target="_blank"
+            href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank"
             text>Reference NEP <v-icon right dark>school</v-icon>
           </v-btn>
 
@@ -90,7 +90,7 @@
                       software architectures </span></div>
                   <div>&nbsp;</div>
 
-                  <v-btn @click="dialog = true" color="blue darken-1" dark>Install NEP</v-btn>
+                  <v-btn @click="dialog = true" color="blue darken-1" dark>Install NEP App</v-btn>
                   <v-btn outlined color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
                     target="_blank" dark>Get Started</v-btn>
 
@@ -120,7 +120,7 @@
                           <p style="color:#1E88E5; font-size:23px">
                             Usable
                           </p>
-                          <v-card-text<p style="font-size:16px;">Lightweight and easy-to-install using pip (Python)</p>
+                          <v-card-text<p style="font-size:16px;">Lightweight and easy-to-install using pip, nuget and npm</p>
                             </v-card-text>
                         </v-card>
                       </v-flex>
@@ -157,7 +157,7 @@
                 <v-card color="white" flat>
                   <v-flex xs12 md12>
 
-                    <div><span style="font-size: 20px; color:#616161;">Install for the next programming languages:
+                    <div><span style="font-size: 20px; color:#616161;">Install NEP for the next programming languages:
                       </span>
                     </div>
                     <div>&nbsp;</div>
@@ -265,33 +265,39 @@
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
-            Install NEP Discovery
+            Install NEP Discovery App
           </v-card-title>
+          <div>
+            &nbsp;&nbsp;
+          </div>
 
           <v-layout justify-center>
 
-            <img src="images/windows.png" alt="Smiley face" height="42" width="42">
+            <img src="images/windows.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
             <v-btn color="indigo" outlined
               href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.3-beta/Nep.Setup.0.3.0.exe"
-              target="_blank" color="primary">Installer</v-btn>
+              target="_blank" color="primary">Download for Windows</v-btn>
 
           </v-layout>
           <div>&nbsp;</div>
           <v-layout justify-center>
-            <img src="images/mac.png" alt="Smiley face" height="42" width="42">
+            <img src="images/mac.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
             <v-btn outlined color="cyan" target="_blank"
               href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep-0.2.0.dmg"
-              color="primary">Installer</v-btn>
+              color="primary">Download for Mac OSX</v-btn>
 
           </v-layout>
 
           </v-layout>
           <div>&nbsp;</div>
           <v-layout justify-center>
-            <img src="images/linux.png" alt="Smiley face" height="42" width="42">
-            <v-btn outlined color="green" target="_blank" color="primary">Compile from source</v-btn>
+            <img src="images/linux.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+            <v-btn outlined color="green" target="_blank" color="primary">Download source code</v-btn>
 
           </v-layout>
+          <div>
+            &nbsp;&nbsp;
+          </div>
 
           <v-card-actions>
             <v-btn color="primary" text @click="dialog = false">
@@ -305,10 +311,10 @@
       <v-dialog v-model="dialog_python" max-width="500px">
         <v-card>
           <v-card-title>
-            Installation Python:
+            Installation Python
           </v-card-title>
-
-          <v-card-subtitle>Using pip:</v-card-subtitle>
+          <div>&nbsp;</div>
+          <v-card-subtitle>The basic installation of NEP in Python 2 and 3 can be performed using the next command:</v-card-subtitle>
 
           <div>&nbsp;</div>
           <v-layout justify-center>
@@ -317,8 +323,16 @@
               <pre> pip install -U nep</pre>
             </v-flex>
           </v-layout>
+          <div>&nbsp;</div>
+          <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
+            See the <a  href="https://enriquecoronadozu.github.io/NEP/start" target="_blank">documentation page</a> to know how to perform a complete installation of NEP in Python
+          </v-alert>
 
+
+    
           </v-flex>
+
+
           </v-layout>
           <div>&nbsp;</div>
 

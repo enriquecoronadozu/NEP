@@ -71,7 +71,7 @@
 
             <v-container fluid grid-list-xl>
               <v-flex xs12>
-                <v-card color="white" flat>
+                <v-card color="white" flat  outlined>
                   <v-stepper v-model="e1">
                     <v-stepper-header>
                       <v-stepper-step :complete="e1 > 1" step="1">Problem to solve</v-stepper-step>
@@ -594,7 +594,7 @@
           else if (this.midleware === "ROS2") {
             this.nep_node_pub = "node = nep.node('" + this.pub_node_name + "', 'ROS2')\n"
           }
-          this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + ")\n"
+          this.nep_pub = "pub = node.new_pub('" + this.pub_topic_name + "','json')\n"
           this.code = this.nep_head + this.nep_node_pub + this.nep_pub + this.nep_while + this.nep_your_code + this.nep_code
         },
 
