@@ -51,9 +51,8 @@
             text>Code Samples <v-icon right dark>mdi-folder-outline</v-icon>
           </v-btn>
 
-          <v-btn text color="grey darken-3"
-            href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank"
-            text>Reference NEP <v-icon right dark>school</v-icon>
+          <v-btn text color="grey darken-3" href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank" text>
+            Reference NEP <v-icon right dark>school</v-icon>
           </v-btn>
 
 
@@ -120,7 +119,8 @@
                           <p style="color:#1E88E5; font-size:23px">
                             Usable
                           </p>
-                          <v-card-text<p style="font-size:16px;">Lightweight and easy-to-install using pip, nuget and npm</p>
+                          <v-card-text<p style="font-size:16px;">Lightweight and easy-to-install using pip, nuget and
+                            npm</p>
                             </v-card-text>
                         </v-card>
                       </v-flex>
@@ -165,6 +165,9 @@
                     <v-btn outlined @click="onMATLAB()" color="blue darken-1" dark>MATLAB</v-btn>
                     <v-btn outlined color="blue darken-1" href="https://www.nuget.org/packages/Nep/" target="_blank"
                       dark>C#
+                    </v-btn>
+                    <v-btn outlined color="blue darken-1" @click="dialog_unity = true" target="_blank"
+                      dark>Unity
                     </v-btn>
                     <v-btn outlined color="blue darken-1" dark>Java</v-btn>
                     <v-btn outlined color="blue darken-1" href="https://www.npmjs.com/package/nep-js" target="_blank"
@@ -314,7 +317,8 @@
             Installation Python
           </v-card-title>
           <div>&nbsp;</div>
-          <v-card-subtitle>The basic installation of NEP in Python 2 and 3 can be performed using the next command:</v-card-subtitle>
+          <v-card-subtitle>The basic installation of NEP in Python 2 and 3 can be performed using the next command:
+          </v-card-subtitle>
 
           <div>&nbsp;</div>
           <v-layout justify-center>
@@ -325,11 +329,12 @@
           </v-layout>
           <div>&nbsp;</div>
           <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
-            See the <a  href="https://enriquecoronadozu.github.io/NEP/start" target="_blank">documentation page</a> to know how to perform a complete installation of NEP in Python
+            See the <a href="https://enriquecoronadozu.github.io/NEP/start" target="_blank">documentation page</a> to
+            know how to perform a complete installation of NEP in Python
           </v-alert>
 
 
-    
+
           </v-flex>
 
 
@@ -366,7 +371,7 @@
             <v-stepper-content step="1">
               <v-layout justify-center>
                 <v-flex xs10>
-                  <v-btn href="https://github.com/enriquecoronadozu/NEP/releases/download/NEP-java/nep-matlab.zip"
+                  <v-btn href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.2-beta/nep-matlab.zip"
                     target="_blank" color="primary">Download NEP-matlab.zip</v-btn>
                 </v-flex>
               </v-layout>
@@ -374,7 +379,7 @@
               <v-layout justify-left>
 
                 <v-flex xs12>
-                  Unzip this file which contain <b>jeromq-0.4.3.jar</b>, <b>gson-2.8.4.jar</b> and <b>nep.jar</b> java
+                  Unzip this file which contains  <b>jeromq-0.4.3.jar</b>, <b>gson-2.8.4.jar</b> and <b>nep.jar</b> java
                   binaries.
                 </v-flex>
               </v-layout>
@@ -506,6 +511,84 @@
         </v-card>
       </v-dialog>
 
+
+      
+      <v-dialog v-model="dialog_unity" max-width="500px">
+        <v-card>
+          <v-card-title>
+            Installation Unity:
+          </v-card-title>
+          <v-stepper v-model="e6" vertical>
+            <v-stepper-step :complete="e6 > 1" step="1" editable>
+              Download lastest release version of NEP Unity
+            </v-stepper-step>
+
+
+
+
+
+            <v-stepper-content step="1">
+              <v-layout justify-center>
+                <v-flex xs10>
+                  <v-btn href="https://github.com/enriquecoronadozu/NEP/releases/download/Nep-Unity/Unity.zip"
+                    target="_blank" color="primary">Download Unity.zip</v-btn>
+                </v-flex>
+              </v-layout>
+              <div>&nbsp;</div>
+              <v-layout justify-left>
+
+                <v-flex xs12>
+                  Unzip this file which contains  <b>AsyncIO.dll</b>, <b>Nep.dll</b>, <b>Newtonsoft.Json.dll</b>  and <b>NetMQ.dll</b> C#
+                  binaries.
+                </v-flex>
+              </v-layout>
+            </v-stepper-content>
+
+
+
+            <v-stepper-step :complete="e6 > 2" step="2" editable>
+              Copy and paste C# binaries in Assets folder
+            </v-stepper-step>
+
+
+            <v-stepper-content step="2">
+
+
+              <v-layout justify-center>
+                <v-flex xs12>
+
+
+                  <v-layout justify-left>
+
+                    <v-flex xs12>
+                      Copy and save these C# binaries in the folder Assets of your Unity project
+                    </v-flex>
+                  </v-layout>
+                  <div>&nbsp;</div>
+                  <v-layout justify-left>
+
+                </v-flex>
+              </v-layout>
+              <div>&nbsp;</div>
+            
+
+
+            </v-stepper-content>
+
+
+
+
+          </v-stepper>
+          <v-card-actions>
+            <v-btn color="primary" text @click="dialog_matlab = false">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+
+
     </v-app>
   </div>
 
@@ -528,6 +611,7 @@
         dialog_matlab: false,
         dialog_template: false,
         dialog_python: false,
+        dialog_unity:false,
         e6: 1,
         e5: 1,
         row: "radio-1",
