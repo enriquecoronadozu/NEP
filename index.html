@@ -166,7 +166,7 @@
                     <v-btn outlined color="blue darken-1" href="https://www.nuget.org/packages/Nep/" target="_blank"
                       dark>C#
                     </v-btn>
-                    <v-btn outlined color="blue darken-1" @click="dialog_unity = true" target="_blank"
+                    <v-btn outlined color="blue darken-1" @click="onUnity()" target="_blank"
                       dark>Unity
                     </v-btn>
                     <v-btn outlined color="blue darken-1" dark>Java</v-btn>
@@ -640,8 +640,16 @@
         },
 
 
+        onUnity() {
+          this.e6 = 1
+          this.e5 = 1
+          this.dialog_unity = true
+        },
+
+
         onMATLAB() {
           this.e6 = 1
+          this.e5 = 1
           this.dialog_matlab = true
         }
       }
