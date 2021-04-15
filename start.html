@@ -11,6 +11,11 @@
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+
+  <link rel="stylesheet" href="web/prism.css" data-noprefix />
+
+
   <!--   #################### Material Icons  ################### -->
   <link rel="stylesheet" href="web/material-icons/material-design-icons.css">
   </script>
@@ -42,9 +47,6 @@
               home
             </v-icon>
           </v-btn>
-          <v-btn @click="dialog_template = true" text color="grey darken-3" text text color="grey darken-3" text>Code
-            Templates <v-icon right dark>code</v-icon>
-          </v-btn>
           <v-btn href="https://github.com/enriquecoronadozu/NEP_samples" target="_blank" text color="grey darken-3"
             text>Code Samples <v-icon right dark>mdi-folder-outline</v-icon>
           </v-btn>
@@ -61,9 +63,6 @@
 
 
       <v-content>
-        </v-container>
-
-
         <v-container>
 
           <v-container grid-list-md text-center>
@@ -71,10 +70,7 @@
 
               <v-flex xs8 md8>
                 <v-card color="white" flat>
-                  <v-card-title>
-                    <div><span style=" color:#424242; font-size: 32px"> Getting Started
-                    </div>
-                  </v-card-title>
+
                   <v-card-title>
                     <p style=" color:#424242; font-size: 25px"> What is nep? </p>
                   </v-card-title>
@@ -84,36 +80,76 @@
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        Node Primitives <b>(NEP)</b> is a user-friendly, reusable and cross-platform communication
-                        framework
-                        for building robot software architectures. <b>NEP</b> is mainly focused (but not limited) in
-                        enabling
-                        the integration of Human-Robot Interaction (HRI) applications. <b>NEP</b> can be used for
-                        connecting
-                        independent software modules (many written in different programming languages) that are executed
-                        in the same local network. <b>NEP</b> was designed to be simple, easy-to-install, easy-to-use
-                        and
-                        easy-to-learn.
+                        <b>NEP</b> is a user-friendly and cross-platform communication framework
+                        for building distributed applications. <b>NEP</b> acts as an intermediary
+                        between two or more software modules to facilitate communication between them using sockets.
+                        These modules or nodes can be written in different
+                        programming languages and be executed from different operating systems.
 
                       </p>
                     </div>
-
-                    <div>&nbsp;</div>
                     <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        <b>NEP</b> is a distributed robotics framework that enables inter-process communication using
-                        sockets.
-                        <b>NEP</b> is back-ended in Python by ROS 1, ROS 2, ZeroMQ, nanomsg and POSIX sockets. Other
-                        programming languages only uses ZeroMQ. The default implementation
-                        of <b>NEP</b> is ZeroMQ, which enables user-friendly installation and provides better support
-                        for newer
-                        and older versions of most used desktop operating systems.
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        <b>NEP</b> was designed to be simple, easy-to-install, easy-to-use
+                        and easy-to-learn. <b>NEP</b> is mainly based on high-performance and usable ZeroMQ sockets.
                     </div>
                   </v-card-text>
                 </v-card>
               </v-flex>
 
+            </v-layout>
+            <v-layout wrap align-center justify-center>
+
+              <v-flex xs8 md8>
+                <v-card color="white" flat>
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> Installation</p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> The easiest way to try out NEP is
+                        using the <b>NEP App</b>. Feel free to install <b>NEP App</b> for your preferred operating
+                        system
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+
+
+
+                    <v-layout justify-center>
+
+                      <img src="images/windows.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn color="indigo" outlined
+                        href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.3-beta/Nep.Setup.0.3.0.exe"
+                        target="_blank" color="primary">Download for Windows</v-btn>
+
+                    </v-layout>
+                    <div>&nbsp;</div>
+                    <v-layout justify-center>
+                      <img src="images/mac.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn outlined color="cyan" target="_blank"
+                        href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep-0.2.0.dmg"
+                        color="primary">Download for Mac OSX</v-btn>
+
+                    </v-layout>
+                    <div>&nbsp;</div>
+                    <v-layout justify-center>
+                      <img src="images/ubuntu.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn outlined color="green" target="_blank" color="primary">Download for Ubuntu</v-btn>
+
+                    </v-layout>
+
+                </v-card>
+              </v-flex>
             </v-layout>
 
             <v-layout wrap align-center justify-center>
@@ -122,720 +158,265 @@
                 <v-card color="white" flat>
 
                   <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> Install NEP</p>
+                    <p style=" color:#424242; font-size: 25px"> A simple example </p>
                   </v-card-title>
                   <v-divider></v-divider>
                   <div>&nbsp;</div>
                   <v-card-text>
                     <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b> NEP require the installation
-                          of
-                          Python from the official <a href="https://www.python.org/" target="_blank">Python
-                            website</a> and the NEP Discovery App. </b>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                        Let try to send information from a <b>Program A</b> written in Python 3 to a <b>Program B</b>
+                        written in Python 2. In this example both programs will be executed in a <b>Computer A</b> as
+                        shown in the next image:
                       </p>
-                    </div>
-                    <div>&nbsp;</div>
 
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> We highly recommend to install
-                        <b>Python
-                          2</b> in Windows following the next steps:
-                      </p>
-                    </div>
+                      <img src="images/ex1.png" alt="Paris" class="center" style="width: 40%;">
 
-                    <div class="my-2">
-                      <v-btn @click="dialog = true" outlined small color="primary">See tutorial (Python 2)</v-btn>
-                    </div>
-                    <div>&nbsp;</div>
-
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> We highly recommend to install
-                        <b>Python
-                          3</b> in Windows following the next steps:
-                      </p>
-                    </div>
-
-                    <div class="my-2">
-                      <v-btn @click="dialog3 = true" outlined small color="primary">See tutorial (Python 3)</v-btn>
-                    </div>
-
-                    <div>&nbsp;</div>
-                    <div>
-
-                      <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
-                        If <b>python.exe</b> is not defined in the <b>PATH</b> then you can not use <b>pip</b> command
-                        to install Python libraries and launch Python scripts from a terminal
-
-                        </b>
+                      <v-alert icon="mdi-school" prominent text type="info">
+                        This example tries to show how to communicate programs in different Python versions. However,
+                        the same approach can be used to communicate two programs written in Python 2 or two programs
+                        written in Python 3.
                       </v-alert>
-                      <div>&nbsp;</div>
-                      <v-alert icon="mdi-school" prominent text type="success">
-                        For programming in Python and Javascript, it is recommended to install and use:
 
-                        <div>&nbsp;</div>
-                        <v-btn outlined small color="indigo" href="https://code.visualstudio.com/" target="_blank">
-                          Visual Studio Code
-                        </v-btn>
+
+
+                    </div>
+                    <div>
+
+
+                      <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
+                        This tutorial suppose that you have installed a version of Python 2 or Python 3 (or both) in
+                        your
+                        computer. This tutorial also suppose you know how to install a python package using pip.To
+                        know what is pip and how to use it, see
+                        <a href="https://pip.pypa.io/en/stable/user_guide/
+                         " target="_blank"> this user guide of pip</a>
                       </v-alert>
                       <div>&nbsp;</div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
+                        Use the next pip command to install nep (in some terminal):
+                      </p>
 
+                      <pre style="font-size: 15px; color:#616161;"> pip install nep </pre>
+                      <div>&nbsp;</div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        In Windows if you have both Python 2 and Python 3 installed use the next command to install nep
+                        in Python 2:
+                      </p>
 
+                      <pre style="font-size: 15px; color:#616161;"> py -2 -m pip install nep </pre>
 
-                        <b>NEP</b> can be installed using <b>pip</b> (in a terminal) in Windows, Linux and OSX as
-                        follow:</p>
-                      <b>
-                        <pre>pip install -U nep</pre></b>
-
-
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        Then install nep in Python 3 use the next command:
+                      </p>
+                      <pre style="font-size: 15px; color:#616161;"> py -3 -m pip install nep </pre>
 
                       <div>&nbsp;</div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        In order to support subscribers as callbacks you also need to install tornado as follows: </p>
-                      <div>&nbsp;</div>
-                      <b>
-                        <pre>pip install -U tornado </pre></b>
-                      <div>&nbsp;</div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        Install Asyncio (only Python 3):</p>
-                      <b>
-                        <pre>pip install -U asyncio</pre></b>
-                      <div>&nbsp;</div>
-
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        Install trollius (only Python 2):</p>
-                      <b>
-                        <pre>pip install -U trollius</pre></b>
-                      <div>&nbsp;</div>
-
-                      <div>
-                        <p style="font-size: 15px; color:#616161; text-align: justify"> <b> Install NEP Discovery App:
-                          </b>
+                        Code for<b>Program A</b> or sender will be:
+                      <div class="line-numbers">
                         </p>
+                        <pre
+                          class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_pub}}</code></pre>
                       </div>
-                      <div>&nbsp;</div>
-
-
-
-
-                      <v-layout justify-center>
-
-                        <img src="images/windows.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
-                        <v-btn color="indigo" outlined
-                          href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.3-beta/Nep.Setup.0.3.0.exe"
-                          target="_blank" color="primary">Download for Windows</v-btn>
-
-                      </v-layout>
-                      <div>&nbsp;</div>
-                      <v-layout justify-center>
-                        <img src="images/mac.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
-                        <v-btn outlined color="cyan" target="_blank"
-                          href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.2-alpha/Nep-0.2.0.dmg"
-                          color="primary">Download for Mac OSX</v-btn>
-
-                      </v-layout>
-
-
-                      <div>&nbsp;</div>
-                      <v-layout justify-center>
-                        <img src="images/linux.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
-                        <v-btn outlined color="green" target="_blank" color="primary">Download source code</v-btn>
-
-                      </v-layout>
-
-
-
-
-                    </div>
-
-                  </v-card-text>
-
-                  <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> Terminology </p>
-                  </v-card-title>
-                  <v-divider></v-divider>
-                  <div>&nbsp;</div>
-                  <v-card-text>
-
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        Before using <b>NEP</b> is highly recommended to understand the next concepts.
-
-                    </div>
-
-                    <div>&nbsp;</div>
-                    <p style=" color:#424242; font-size: 20px"> Nodes </p>
-
-                    <div>&nbsp;</div>
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        <b>Nodes</b> are simple, loosely coupled, independent and re-usable building blocks of robot
-                        applications. They usually run in parallel in one or different machines and can be written in
-                        different programming languages. Communication between nodes is often done using sockets </p>
-                    </div>
-
-                    <div>&nbsp;</div>
-                    <p style=" color:#424242; font-size: 20px"> Sockets and endpoints </p>
-
-                    <div>&nbsp;</div>
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        A network <b>socket</b> is an inter-process communication method for sending or receiving
-                        data
-                        between nodes on a computer network. A socket is mainly defined by an <b>endpoint</b>, which
-                        is composed of a <b>protocol</b>, an <b>IP address</b> , and a <b>port value</b>. </p>
-                    </div>
-
-                    <div>&nbsp;</div>
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        An example of endpoint definition is: <code>tcp://127.0.0.1:5000</code> where
-                        <code>tcp</code> indicates the protocol,
-                        <code>127.0.0.1</code> indicates the IP address, and <code>5000</code> indicates the port of
-                        the connection. </p>
-
-                    </div>
-
-                    <div>&nbsp;</div>
-
-                    <p style=" color:#424242; font-size: 20px"> Patterns </p>
-
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        Messaging patterns are generally used to describes the flow of communication between a process
-                        in distributed systems. Two widely used messaging patterns in robotics are
-                        <b>Request/Process/Reply</b>
-                        and <b>Publish/Subscribe</b>. </p>
-                    </div>
-
-                    <div>&nbsp;</div>
-
-                    <p style=" color:#424242; font-size: 20px"> Client/Server </p>
-                    <div>&nbsp;</div>
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        In the <b>Request/Process/Reply</b> pattern, also denoted as <b>Client/Server</b>, a process
-                        sends a request
-                        for some data and then waits for the response to this request. This pattern is suitable for the
-                        cases where synchronization between two tasks is needed. However, if a reply never comes, a
-                        <b>deadlock </b>can occur (i.e., a read operation cannot be performed when a write operation is
-                        in
-                        progress, and vice versa). This pattern is better suited for sending robot control commands that
-                        require some feedback information after its execution. </p>
-                    </div>
-                    <div>&nbsp;</div>
-                    <img src="images/cs.png" alt="Paris" class="center" style="width: 50%;">
-
-
-                    <div>&nbsp;</div>
-                    <p style=" color:#424242; font-size: 20px"> Publish/Subscribe </p>
-                    <div>&nbsp;</div>
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        In the <b>Publish/Subscribe</b> model the producers of messages, called <b>publishers</b>, send
-                        messages
-                        without the knowledge of what or if any receiver, called <b>subscribers</b>. Unlike
-                        Client/Server, communication is asynchronous. This pattern is generally considered
-                        more robust and better suited for data streaming of sensors.</p>
-                    </div>
-                    <div>&nbsp;</div>
-                    <img src="images/ps.png" alt="Paris" class="center" style="width: 70%;">
-
-                    <v-alert icon="mdi-school" prominent text type="success">
-                      Network architectures are characterized by a number of trade-offs that involve scalability and
-                      robustness. NEP
-                      supports two types of network architectures: i) manual endpoint configurations; and ii) Automatic
-                      configuration of endpoints using a Hybrid Peer
-                      to Peer master node.
-                    </v-alert>
-
-                    <div>&nbsp;</div>
-                    <p style=" color:#424242; font-size: 20px"> Set endpoints manually </p>
-
-                    <div>&nbsp;</div>
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        In <b>NEP </b> developers can be set manually <b>endpoints</b> (IP and port). However, this
-                        approach
-                        must be
-                        avoided when many nodes require to be connected between them or when it is expected to scale
-                        the number of nodes in the future. This is due that the manageability of the system gets worse
-                        when the number of nodes increases. </p>
-                    </div>
-
-
-                    <div>&nbsp;</div>
-                    <p style=" color:#424242; font-size: 20px"> Hybrid P2P (Master node as a Service Discovery) </p>
-                    <div>&nbsp;</div>
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        When using a <b>Hybrid P2P </b> architecture, all the nodes in the network are implicitly
-                        connected to
-                        some process often denoted as master or Service Discovery node, which performs the management
-                        of endpoints using a set of identifiers called <b>topics</b>. </p>
-                    </div>
-
-
-                    <div>&nbsp;</div>
-
-                    <p style=" color:#424242; font-size: 20px"> NEP Discovery</p>
-                    <div>&nbsp;</div>
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        The <b>NEP Discovery</b> is a Hybrid P2P Broker and interface which performs the
-                        management of
-                        <b>endpoints</b>
-                        using only a set of identifiers called <b>topics</b>
-                    </div>
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        When a publisher and a subscriber required to communicate between them are defined to work in a
-                        hybrid P2P network, they require the registration of a common topic value (or communication
-                        filter) in the <b> NEP Discovery </b> node (NEP Master). <b>NEP Discovery </b> node is in charge
-                        to return the
-                        port number enabling communication between modules publishing or subscribing to the same topic.
-                      </p>
-                    </div>
-
-
-                    <img src="images/master.png" alt="master" class="center" style="width: 100%;">
-
-                    <div>&nbsp;</div>
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        This approach reduces manageability problems but is considered a single-point-of-failure due
-                        that if the master node accidentally crashes or stops, new communication between nodes will be
-                        not possible. This approach is also used in <b>ROS 1.0</b> when running the roscore command to
-                        execute
-                        the
-                        <b>ROS Master</b> </p>
-                    </div>
-
-                    <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
-                      When using a <b>Hybrid P2P </b> architecture it is required to run <b>first</b> the <b>NEP Service
-                        Discovery node</b> before executing other nodes
-                    </v-alert>
-
-                    <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
-                      Don't close the <b>NET Service Discovery node</b> until the execution of all nodes in the
-                      architecture have finished
-                    </v-alert>
-
-
-                    <div>&nbsp;</div>
-
-                  </v-card-text>
-
-
-                  <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> Message types </p>
-                  </v-card-title>
-                  <v-divider></v-divider>
-                  <div>&nbsp;</div>
-                  <v-card-text>
-
-
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        In <b>NEP</b>, messages are defined as: </p>
-
-
-
-                    </div>
-
-                    <div>&nbsp;</div>
-                    <p style=" color:#424242; font-size: 20px"> JSON </p>
-
-                    <div>&nbsp;</div>
-                    <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                        This is the recommended way to define messages in <b>NEP</b>. JSON (JavaScript Object Notation)
-                        is an open-standard file format that uses human-readable text to transmit data objects
-                        consisting of attribute-value pairs. </p>
-
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        In Python, a JSON value can be defined as a Python <a href=" https://www.w3schools.com/python/python_dictionaries.asp
-                        " target="_blank">
-                          dictionary</a>. An example of a dictionary defined in the variable <b> message </b> is:
-                      </p>
-
-                      <pre>messsage = {"robot":"pepper", "temperature":"20"} </pre>
-                      <div>&nbsp;</div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify">
-                        To access the value of <b> robot </b> and <b> temperature </b> you can use:
-                      </p>
-
-                      <pre> value_robot = message["robot"] </pre>
-
-                      <pre> value_temperature = message["temperature"]  </pre>
-
-
-                      </p>
-
-                      <div>&nbsp;</div>
-                      <p style=" color:#424242; font-size: 20px"> Strings </p>
-
-                      <div>&nbsp;</div>
                       <div>
+                        <div>&nbsp;</div>
                         <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                          Messages in <b>NEP</b> can also be defined as string. An examples is:</p>
-
-                        <pre> message = "hello world" </pre>
-
+                          In lines 2 and 3 we are adding the required <b>nep</b> and <b>time</b> libraries. Line 4
+                          creates a new <b>nep
+                            node</b> which is used as an identifier of Program A. This identifier is defined as
+                          <b>sender</b>. The method <b> new_pub </b> of the object <b> node </b> (line 5) is used to
+                          define the
+                          name of the topic (i.e., a communication channel) and the type of message we would like to
+                          send.
+                          In this case, we define <b>test_topic</b> as the name of the topic and <b>json
+                          </b> as the type of message to send.
                         </p>
 
-                      </div>
+                        <v-alert icon="mdi-school" prominent text type="info">
+                          JSON messages in Python can be defined as python dictionaries. If you dont know what is a
+                          python
+                          dictionary, please <a href="https://www.w3schools.com/python/python_dictionaries.asp
+                        " target="_blank"> visit this link</a>
+                        </v-alert>
+                        <v-alert icon="mdi-school" prominent text type="info">
+                          With NEP you can send any combination of data that is JSON serializable, such as int, float,
+                          string, and lists.
+                        </v-alert>
 
-                      <div>&nbsp;</div>
-
-                      <div>&nbsp;</div>
-                      <p style=" color:#424242; font-size: 20px"> Images</p>
-
-                      <div>&nbsp;</div>
-
-                      <div>
                         <p style="font-size: 15px; color:#616161; text-align: justify">
-
-                          In Python, you can send <b>OpenCV</b> images.
-                          Supposing you are following the example presented <a href=" https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
-                              " target="_blank">
-                            here</a>. The message as OpenCV Image can be defined as:</p>
-
-                        <pre>  message = cv2.imread('messi5.jpg',0) </pre>
-
+                          In this program, we are sending a JSON message (python dictionary) each second in an infinite
+                          loop.
+                          Inside while loop you can add your code. Line 12 defines the message to send to Program B.
+                          Line
+                          14 uses the method <b>publish</b> of the object <b>pub</b> to send the JSON message.
                         </p>
-
-                      </div>
-
-
-                      <div>
-
 
                         <div>&nbsp;</div>
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          Code for <b>Program B</b> or receiver will be:
+                        <div class="line-numbers">
+                          </p>
+                          <pre
+                            class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_sub}}</code></pre>
+                        </div>
 
-
-
+                        <div>&nbsp;</div>
 
                         <v-card-title>
-                          <p style=" color:#424242; font-size: 25px"> Tutorials </p>
+                          <p style=" color:#424242; font-size: 25px"> Some useful and basic terminology </p>
                         </v-card-title>
                         <v-divider></v-divider>
+
                         <div>&nbsp;</div>
-                        <v-card-text>
+
+                        <p style=" color:#424242; font-size: 20px"> Nodes </p>
+
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            <b>Nodes</b> are simple, loosely coupled, independent and re-usable building blocks
+                            applications. They usually run in parallel in one or different machines and can be written
+                            in
+                            different programming languages. In NEP communication between nodes is done using sockets
+                          </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+                        <p style=" color:#424242; font-size: 20px"> Sockets and endpoints </p>
+
+                        <div>&nbsp;</div>
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                            A network <b>socket</b> is an inter-process communication method for sending or receiving
+                            data
+                            between nodes on a computer network. A socket is mainly defined by an <b>endpoint</b>, which
+                            is composed of a <b>protocol</b>, an <b>IP address</b> , and a <b>port value</b>. </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                            An example of endpoint definition is: <code>tcp://127.0.0.1:5000</code> where
+                            <code>tcp</code> indicates the protocol,
+                            <code>127.0.0.1</code> indicates the IP address, and <code>5000</code> indicates the port of
+                            the connection.
+                          </p>
+
+                        </div>
+
+                        <div>&nbsp;</div>
+
+                        <p style=" color:#424242; font-size: 20px"> Topics </p>
+
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            <b>Topics</b> are used in NEP to manage sockets endpoints. In this way, you don't need to
+                            care about defining <b>port</b> and <b>IP</b> values in large and complex applications.
+                            Those nodes where a specific topic has been defined can only communicate with others where
+                            the same topic is defined.
+                          </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+
+
+
+                        <div>&nbsp;</div>
+                        <p style=" color:#424242; font-size: 20px"> Publish/Subscribe pattern</p>
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            In the Publish/Subscribe pattern the producers of messages, called publishers, send messages
+                            without the knowledge of the receivers denoted subscribers. This communication method is
+                            asynchronous. Therefore, the subscriber node will not block its execution when trying to read a message.</p> 
+                        </div>
+                        <div>&nbsp;</div>
+                        <img src="images/ps.png" alt="Paris" class="center" style="width: 50%;">
 
 
 
 
+                        <v-alert icon="mdi-school" prominent text type="info">
+                          Using the NEP App you can create N publishers using the same topic to send messages to N subscribers.
+                        </v-alert>
+                        
+
+                        
+                   
 
 
+                  </v-card-text>
                 </v-card>
               </v-flex>
 
             </v-layout>
 
-            <v-container fluid grid-list-xl>
-              <v-flex xs12>
-                <v-card color="white" flat>
-                  &emsp;
-                </v-card>
-              </v-flex>
-
-
-
-
-            </v-container>
-            <div>&nbsp;</div>
-
-            <div>&nbsp;</div>
-            <div>&nbsp;</div>
-
-
 
           </v-container>
+
+        </v-container>
       </v-content>
-
-      <v-dialog v-model="dialog" max-width="700px">
-        <v-card>
-          <v-card-title>
-            Install Python 2 in Windows:
-          </v-card-title>
-          <v-stepper v-model="e5" vertical>
-            <v-stepper-step :complete="e5 > 1" step="1" editable>
-              Download Python 2.7.16 installer (x86)
-            </v-stepper-step>
-            <v-stepper-content step="1">
-
-
-              <v-layout justify-center>
-                <v-flex xs12>
-
-                  <a href="https://www.python.org/ftp/python/2.7.16/python-2.7.16.msi" target="_blank">Link to
-                    Python
-                    2.7.16 x86
-                    official installer </a>
-                  <div>&nbsp;</div>
-
-                  <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
-                    NEP can also work in x86-64 version but most robot software works only in x86
-                  </v-alert>
-                  <div>&nbsp;</div>
-
-                </v-flex>
-              </v-layout>
-              <v-btn color="primary" @click="e5 = 2">Continue</v-btn>
-
-
-            </v-stepper-content>
-
-
-
-            <v-stepper-step :complete="e5 > 2" step="2" editable>
-              Check the very important note and then execute the installer (click here for details)
-            </v-stepper-step>
-
-
-            <v-stepper-content step="2">
-
-
-              <v-layout justify-center>
-                <v-flex xs12>
-
-
-                  <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
-                    <b> VERY IMPORTANT </b> when reaching the interface shown below, be sure of activate <b>Add
-                      python.exe to Path - Will be installed on local hard drive.</b>
-                  </v-alert>
-                  <div>&nbsp;</div>
-                  <img src="images/yes.png" alt="python 2" class="center" style="width: 70%;">
-                  <div>&nbsp;</div>
-
-                </v-flex>
-              </v-layout>
-              <v-btn color="primary" @click="e5 = 3">Continue</v-btn>
-
-
-            </v-stepper-content>
-
-
-
-            <v-stepper-step editable :complete="e5 > 3" step="3"> Finish the installation </v-stepper-step>
-
-            <v-stepper-content step="3">
-
-
-            </v-stepper-content>
-
-
-
-
-
-
-          </v-stepper>
-          <v-card-actions>
-            <v-btn color="primary" text @click="dialog = false">
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-
-      <v-dialog v-model="dialog_template" max-width="1000px">
-
-        <v-card>
-          <v-card-title>
-            <div><span style=" color:#424242; font-size: 32px"> Select type of architecture
-            </div>
-          </v-card-title>
-
-          <v-container grid-list-md text-center>
-
-            <v-layout wrap>
-
-              <v-flex xs6>
-                <v-card>
-
-                  <v-container>
-
-                    <p style=" color:#424242; font-size: 25px"> Set sockets parameters manually </p>
-                    <div>&nbsp;</div>
-
-                    <p style="font-size: 15px; color:#616161; text-align: justify"> In this option: </p>
-
-                    <ul style="font-size: 15px; color:#616161; text-align: justify">
-                      <li>You can create simple and robust software architectures</li>
-                      <li>Do not require NEP Discovery</li>
-
-                    </ul>
-                  </v-container>
-                  <div>&nbsp;</div>
-                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/templates"
-                    target="_blank">Select</v-btn>
-                  <div>&nbsp;</div>
-                  <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
-                    Endpoints (IP and
-                    ports)
-                    must be
-                    assigned manually</b>
-                  </v-alert>
-
-                </v-card>
-              </v-flex>
-
-
-              <v-flex xs6>
-                <v-card>
-
-                  <v-container>
-
-                    <p style=" color:#424242; font-size: 25px"> Sockets are defined by topics </p>
-                    <div>&nbsp;</div>
-
-                    <p style="font-size: 15px; color:#616161; text-align: justify"> In this options: </p>
-
-                    <ul style="font-size: 15px; color:#616161; text-align: justify">
-                      <li>You can create complex and scalable software architectures</li>
-                      <li>NEP Discovery must be installed and always executed</li>
-                    </ul>
-                  </v-container>
-                  <div>&nbsp;</div>
-                  <v-btn outlined color="indigo" href="https://enriquecoronadozu.github.io/NEP/discovery"
-                    target="_blank">Select</v-btn>
-                  <div>&nbsp;</div>
-
-                  <v-alert icon="mdi-school" prominent text type="success">
-                    NEP Discovery Server assign endpoints automatically</b>
-                  </v-alert>
-
-                </v-card>
-              </v-flex>
-            </v-layout>
-
-          </v-container>
-        </v-card>
-      </v-dialog>
-
-
-
-      <v-dialog v-model="dialog3" max-width="700px">
-        <v-card>
-          <v-card-title>
-            Install Python 3 in Windows:
-          </v-card-title>
-          <v-stepper v-model="e5" vertical>
-            <v-stepper-step :complete="e5 > 1" step="1" editable>
-              Download Latest Python 3 version from Python official web page
-            </v-stepper-step>
-            <v-stepper-content step="1">
-
-
-              <v-layout justify-center>
-                <v-flex xs12>
-
-                  <a href="https://www.python.org/" target="_blank">Link to Python
-                    official web </a>
-                  <div>&nbsp;</div>
-
-                </v-flex>
-              </v-layout>
-              <v-btn color="primary" @click="e5 = 2">Continue</v-btn>
-
-
-            </v-stepper-content>
-
-
-
-            <v-stepper-step :complete="e5 > 2" step="2" editable>
-              Check the very important note and then execute the installer (click here for details)
-            </v-stepper-step>
-
-
-            <v-stepper-content step="2">
-
-
-              <v-layout justify-center>
-                <v-flex xs12>
-
-
-                  <v-alert icon="mdi-alert-circle-outline" prominent text type="red">
-                    <b> VERY IMPORTANT </b> be sure of activate <b>Add
-                      Pyhton 3.7 to PATH </b>
-                  </v-alert>
-                  <div>&nbsp;</div>
-                  <img src="images/python3.png" alt="Paris" class="center" style="width: 70%;">
-                  <div>&nbsp;</div>
-
-                </v-flex>
-              </v-layout>
-              <v-btn color="primary" @click="e5 = 3">Continue</v-btn>
-
-
-            </v-stepper-content>
-
-
-
-            <v-stepper-step editable :complete="e5 > 3" step="3"> Finish the installation </v-stepper-step>
-
-            <v-stepper-content step="3">
-
-
-            </v-stepper-content>
-
-
-
-
-
-
-          </v-stepper>
-          <v-card-actions>
-            <v-btn color="primary" text @click="dialog3 = false">
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-
-
-
 
     </v-app>
   </div>
 
 
+
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="web/prism.js"></script>
 
   <script>
+
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+    });
+
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
       data: () => ({
 
+        code_pub: `# Sender example
+import nep                                # Add nep library
+import time                               # Add time library
+node = nep.node('sender')                 # Define node name
+pub = node.new_pub('test_topic','json')   # Define topic and type of message
+                        
+while True:
+  # Here is your code doing something ...
+  # ...
 
+  # An example of message to send, which can be the result of your code
+  msg = {'msg':'hello'}	  
+                                          
+  pub.publish(msg)		                    # Send message each second
+  time.sleep(1)`,
+        code_sub: `# Receiver example
+import nep
+import time
+node = nep.node("receiver")             # Create a new nep node
+sub = node.new_sub("test_topic", "json")    # Set the topic and message type 
+while True:
+  is_message, msg = sub.listen()    # Non blocking socket
+  if is_message:                    # Message avaliable only if is_message == True
+    print (msg)
+  time.sleep(.0001)
+`,
         path_matlab: "C:\\nep-matlab\\jeromq-0.4.3.jar\nC:\\nep-matlab\\gson-2.8.4.jar\nC:\\nep-matlab\\nep.jar",
         labelMode: "Here writes the IP of the publisher",
         code: "",
-        code_sub: "",
         dialog: false,
         dialog_app: false,
         dialog3: false,
