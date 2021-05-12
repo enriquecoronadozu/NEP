@@ -471,7 +471,7 @@ robot_port = "9559"
 robot_ip = '192.168.11.30'
 
 
-tablet = Tablet(robot_ip, robot_port)
+tablet = nep_aldebaran.Tablet(robot_ip, robot_port)
 
 # Image from web
 tablet.showWebImage("http://vignette.wikia.nocookie.net/animevice/images/d/d3/GochiUsa_2_End_Card_12.png")
@@ -496,7 +496,7 @@ robot_port = "9559"
 robot_ip = '192.168.11.30'
 
 
-SpeechEventListener = FaceTracking(robot_ip,pip)
+SpeechEventListener = nep_aldebaran.FaceTracking(robot_ip,pip)
 # Track face with head
 SpeechEventListener.onRun("enable", {"use_body":"Head", "use_arms":"LArm"})
 time.sleep(15)
