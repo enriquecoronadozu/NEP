@@ -302,6 +302,28 @@
                     <div>&nbsp;</div>
 
 
+                    
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Track people/face</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_face}}</code></pre>
+                    </div>
+
+            
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+
+                    code_face
+
 
 
 
@@ -459,6 +481,34 @@ tablet.showWeb("https://www.google.com/")
 time.sleep(10)
 # Reset tablet
 tablet.onReset()
+
+        `,
+
+        code_face: `
+# DESCRIPTION:  
+# Example of how to use tablet functions
+
+import nep_aldebaran
+import time
+# Define NAO/Pepper parameters, port is often 9559
+robot_port = "9559"
+# Change this value for the IP of your robot, for the simulator is 127.0.0.1
+robot_ip = '192.168.11.30'
+
+
+SpeechEventListener = FaceTracking(robot_ip,pip)
+# Track face with head
+SpeechEventListener.onRun("enable", {"use_body":"Head", "use_arms":"LArm"})
+time.sleep(15)
+# Track face with full body
+SpeechEventListener.onRun("enable", {"use_body":"WholeBody", "use_arms":"RArms"})
+time.sleep(15)
+# Move towards people
+SpeechEventListener.onRun("enable", {"use_body":"Move", "use_arms":"Arms"})
+time.sleep(15)
+
+# use_body: "WholeBody", "Move", "Head" 
+# use_arms: "None", "Arms", "LArms", "RArms"
 
         `,
 
