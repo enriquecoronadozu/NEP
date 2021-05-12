@@ -259,7 +259,48 @@
                         </b>
                       </p>
                     </div>
+             
+
+
                     <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Use tablet</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_tablet}}</code></pre>
+                    </div>
+
+            
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Use Leds</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_leds}}</code></pre>
+                    </div>
+
+            
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
 
 
 
@@ -310,6 +351,12 @@ robot_ip = '192.168.11.30'
 
 # This object can be used to make Pepper/NAO speak
 say = nep_aldebaran.SayText(robot_ip, robot_port) 
+# This object can be used to change the volume
+volume = nep_aldebaran.Volume(robot_ip, robot_port) 
+
+# Set robot volume
+volume.onSet(50) # From 0 to 100
+
 # This function will perform text to speech in NAO/Pepper
 say.onRun("I am a robot", parameters = {"contextual": True}) 
 #  Other parameters can be:
@@ -317,6 +364,27 @@ say.onRun("I am a robot", parameters = {"contextual": True})
 # "contextual": bool(True or False)}
 
         `,
+
+        code_leds: `
+# DESCRIPTION: 
+# This example will enable NAO/Pepper to say something
+
+import nep_aldebaran
+# Define NAO/Pepper parameters, port is often 9559
+robot_port = "9559"
+# Change this value for the IP of your robot, for the simulator is 127.0.0.1
+robot_ip = '192.168.11.30'
+
+# Example changing colors of leds
+leds = nep_aldebaran.Leds(robot_ip, robot_port)
+leds.onSetColor("eyes", {"R":0,"G":0,"B":255}) # eyes or all
+time.sleep(4)
+leds.onSetColor("all", {"R":255,"G":0,"B":255}) # eyes or all
+time.sleep(4)
+leds.onReset("all") # eyes or all
+
+        `,
+
         code_stop_autonomus: `
 
 # DESCRIPTION:  
@@ -365,6 +433,32 @@ move.onCloseHand("both") # Close hands - can be "right", "left" or "both"
 move.onWalk("position", parameters={"x":0.3,"y":0.1, "angle":0})
 time.sleep(5) # Wait to complete the motion
 move.onRunMode("rest")
+
+        `,
+
+
+        code_tablet: `
+# DESCRIPTION:  
+# Example of how to use tablet functions
+
+import nep_aldebaran
+import time
+# Define NAO/Pepper parameters, port is often 9559
+robot_port = "9559"
+# Change this value for the IP of your robot, for the simulator is 127.0.0.1
+robot_ip = '192.168.11.30'
+
+
+tablet = Tablet(robot_ip, robot_port)
+
+# Image from web
+tablet.showWebImage("http://vignette.wikia.nocookie.net/animevice/images/d/d3/GochiUsa_2_End_Card_12.png")
+time.sleep(4)
+# See webpage
+tablet.showWeb("https://www.google.com/")
+time.sleep(10)
+# Reset tablet
+tablet.onReset()
 
         `,
 
