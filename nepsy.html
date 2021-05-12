@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="author" content="Enrique Coronado" />
+  <title>nepsy docs</title>
+  <link rel="shortcut icon" type="image/png" href="images/nep.png" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+
+  <link rel="stylesheet" href="web/prism.css" data-noprefix />
+
+
+  <!--   #################### Material Icons  ################### -->
+  <link rel="stylesheet" href="web/material-icons/material-design-icons.css">
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <div id="app">
+    <v-app id="inspire" style="
+        background: rgb(255, 255, 255);">
+
+
+      <v-app-bar app dense color="white" flat>
+
+        <v-avatar size="35">
+          <img src="images/nep.png" alt="avatar">
+        </v-avatar> &nbsp; &nbsp;
+        <v-toolbar-title>
+          NEP
+        </v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-toolbar-items>
+          <v-btn href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
+              home
+            </v-icon>
+          </v-btn>
+          <v-btn text color="grey darken-3" href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank" text>
+            Reference NEP <v-icon right dark>school</v-icon>
+          </v-btn>
+
+        </v-toolbar-items>
+        <div>&nbsp;</div>
+
+
+
+      </v-app-bar>
+
+
+      <v-content>
+        <v-container>
+
+          <v-container grid-list-md text-center>
+            <v-layout wrap align-center justify-center>
+
+              <v-flex xs8 md8>
+                <v-card color="white" flat>
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> What is nepsy? </p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        <b>nepsy</b> is an experimental and high-level python library that offers a set of robot-related
+                        utilities and that uses <b>NEP</b> for inter-process communication. <b>nepsy</b> is composed of
+                        the next modules:
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-left">
+                                  Name
+                                </th>
+                                <th class="text-left">
+                                  Description
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="item in modules_nep" :key="item.name">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.descriptio }}</td>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+
+                      </p>
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+
+            </v-layout>
+            <v-layout wrap align-center justify-center>
+
+              <v-flex xs8 md8>
+                <v-card color="white" flat>
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> nep_aldebaran</p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> To use <b>nep_aldebaran</b>
+                        classes it is required to install the
+                        NAO/Pepper SDK. For Windows, you can use the installer of NAO SDK 2.4.3.2 from the next link:
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+
+
+
+                    <v-layout justify-center>
+
+                      <img src="images/windows.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn color="indigo" outlined
+                        href="https://bitbucket.org/enriquecoronadozu/nep-installers/downloads/pynaoqi-2.4.3.2.win32.exe"
+                        target="_blank" color="primary">NAO SDK 2.4.3.2</v-btn>
+
+                    </v-layout>
+
+
+                    <div>&nbsp;</div>
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> For other platforms or versions of
+                        NAO/Pepper SDK, please visit the SoftBank Robotics <a
+                          href=" https://www.softbankrobotics.com/emea/en/support/pepper-naoqi-2-9/downloads-softwares">
+                          official web page</a>
+                        </b>
+                      </p>
+                    </div>
+                  
+
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Stop Autonomous Life and default behaviors</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_stop_autonomus}}</code></pre>
+                    </div>
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Text to Speech</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_say}}</code></pre>
+                    </div>
+
+          
+                    
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Move robot</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_move}}</code></pre>
+                    </div>
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> *Check ALMotionProxy::moveToward and ALMotionProxy::moveToward <a
+                        href="http://doc.aldebaran.com/2-1/naoqi/motion/control-walk-api.html">
+                        here</a> 
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                   
+
+
+
+
+                </v-card>
+              </v-flex>
+            </v-layout>
+
+
+          </v-container>
+
+        </v-container>
+      </v-content>
+
+    </v-app>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="web/prism.js"></script>
+
+  <script>
+
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+    });
+
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: () => ({
+
+        code_say: `
+# DESCRIPTION: 
+# This example will enable NAO/Pepper to say something
+
+import nep_aldebaran
+# Define NAO/Pepper parameters, port is often 9559
+robot_port = "9559"
+# Change this value for the IP of your robot, for the simulator is 127.0.0.1
+robot_ip = '192.168.11.30'
+
+# This object can be used to make Pepper/NAO speak
+say = nep_aldebaran.SayText(robot_ip, robot_port) 
+# This function will perform text to speech in NAO/Pepper
+say.onRun("I am a robot", parameters = {"contextual": True}) 
+#  Other parameters can be:
+# "velocity":int(0 to 350) "pitch":int(0 to 100)
+# "contextual": bool(True or False)}
+
+        `,
+        code_stop_autonomus: `
+
+# DESCRIPTION:  
+# Use this lines to stop default behavior of Pepper and Autonomus life
+# These lines will solve many issues when using Pepper
+
+import nep_aldebaran
+# Define NAO/Pepper parameters, port is often 9559
+robot_port = "9559"
+# Change this value for the IP of your robot, for the simulator is 127.0.0.1
+robot_ip = '192.168.11.30'
+
+behavior = nep_aldebaran.BehaviorManager(robot_ip, robot_port)
+behavior.onStop()
+autonomus = nep_aldebaran.AutonomusLife(robot_ip, robot_port)
+autonomus.onStop()
+        `,
+
+        code_move: `
+# DESCRIPTION:  
+# Example of how to use move functions
+
+import nep_aldebaran
+import time
+# Define NAO/Pepper parameters, port is often 9559
+robot_port = "9559"
+# Change this value for the IP of your robot, for the simulator is 127.0.0.1
+robot_ip = '192.168.11.30'
+
+# Set path of animations and type of robot
+path_animations = ""   # Not used in this example
+type_robot = "pepper"  # or nao
+
+# Class used to move Pepper/NAO
+move = nep_aldebaran.BodyMove(robot_ip, robot_port, type_robot, path_animations)
+# Examples
+move.onRunMode("wake_up") #Wake up or rest NAO/Pepper - "rest" or "wake_up"
+move.onBreathe("on") # Enable Pepper/NAO will Breathe - "on" or "off"
+move.onOpenHand("both", parameters = {all:True}) # Open hands - can be "right", "left" or "both"
+move.onCloseHand("both") # Close hands - can be "right", "left" or "both"
+# Walk function
+# argument 1 - can be position or velocity (be careful when using velocity, 
+#              start with small values such as 0.1)
+# argument 2 - values in position (meters, radians) or velocity  
+#              (*see ALMotionProxy::moveToward and ALMotionProxy::moveToward)
+move.onWalk("position", parameters={"x":0.3,"y":0.1, "angle":0})
+time.sleep(5) # Wait to complete the motion
+move.onRunMode("rest")
+
+        `,
+
+        code: "",
+
+        modules_nep: [
+          {
+            name: 'nep_adebaran',
+            descriptio: "Set of classes that use NAO/Pepper SDK for robot control and perception",
+          },
+        ],
+
+      }),
+
+      created() {
+        this.initialize()
+
+      },
+
+      methods: {
+        initialize() {
+
+        },
+
+        onUpdate() {
+
+        },
+      }
+
+    })
+  </script>
+</body>
+
+</html>
