@@ -391,6 +391,7 @@ say.onRun("I am a robot", parameters = {"contextual": True})
 # DESCRIPTION: 
 # This example will enable NAO/Pepper to change colors of leds
 
+import time
 import nep_aldebaran
 # Define NAO/Pepper parameters, port is often 9559
 robot_port = "9559"
@@ -444,20 +445,26 @@ type_robot = "pepper"  # or nao
 move = nep_aldebaran.BodyMove(robot_ip, robot_port, type_robot, path_animations)
 # Examples
 move.onRunMode("wake_up") #Wake up or rest NAO/Pepper - "rest" or "wake_up"
-move.onBreathe("on") # Enable Pepper/NAO will Breathe - "on" or "off"
 move.onOpenHand("both", parameters = {all:True}) # Open hands - can be "right", "left" or "both"
 move.onCloseHand("both") # Close hands - can be "right", "left" or "both"
+
 # Walk function
 # argument 1 - can be position or velocity (be careful when using velocity, 
 #              start with small values such as 0.1)
 # argument 2 - values in position (meters, radians) or velocity  
 #              (*see ALMotionProxy::moveToward and ALMotionProxy::moveToward)
+
+# Walk position
 move.onWalk("position", parameters={"x":0.3,"y":0.1, "angle":0})
 time.sleep(5) # Wait to complete the motion
+
+# Walk velocity
+move.onWalk("velocity", parameters={"x":0.1,"y":0.0, "angle":0})
+time.sleep(3) # Walk for 3 second
+move.onWalk("velocity", parameters={"x":0.0,"y":0.0, "angle":0})
 move.onRunMode("rest")
 
         `,
-
 
         code_tablet: `
 # DESCRIPTION:  
@@ -485,7 +492,7 @@ tablet.onReset()
         `,
 
         code_face: `
-# DESCRIPTION:  
+# DESCRIPTION:
 # Example of how to use face/people tracking
 
 import nep_aldebaran
@@ -493,22 +500,31 @@ import time
 # Define NAO/Pepper parameters, port is often 9559
 robot_port = "9559"
 # Change this value for the IP of your robot, for the simulator is 127.0.0.1
-robot_ip = '192.168.11.30'
+robot_ip = '192.168.11.36'
+type_robot = "pepper"
 
+# To wake up the robot
+move = nep_aldebaran.BodyMove(robot_ip, robot_port, type_robot)
+move.onRunMode("wake_up") #Wake up or rest NAO/Pepper - "rest" or "wake_up"
 
-SpeechEventListener = nep_aldebaran.FaceTracking(robot_ip,pip)
+SpeechEventListener = nep_aldebaran.FaceTracking(robot_ip,robot_port)
 # Track face with head
+print("Tracking using head by 15 seconds")
 SpeechEventListener.onRun("enable", {"use_body":"Head", "use_arms":"LArm"})
 time.sleep(15)
-# Track face with full body
-SpeechEventListener.onRun("enable", {"use_body":"WholeBody", "use_arms":"RArms"})
-time.sleep(15)
+SpeechEventListener.onRun("disable") # Disable before using other tracking mode
+time.sleep(2)
 # Move towards people
+print("Go to people by 15 second")
 SpeechEventListener.onRun("enable", {"use_body":"Move", "use_arms":"Arms"})
 time.sleep(15)
+print("stop tracking")
+SpeechEventListener.onRun("disable")  # Disable before using other tracking mode
 
-# use_body: "WholeBody", "Move", "Head" 
-# use_arms: "None", "Arms", "LArms", "RArms"
+
+# use_body: "Move", "Head"
+# use_arms: "None", "Arms", "LArm", "RArm"
+
 
         `,
 
