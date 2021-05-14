@@ -69,45 +69,15 @@
                 <v-card color="white" flat>
 
                   <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> What is nepsy? </p>
+                    <p style=" color:#424242; font-size: 25px"> What is nep_aldebaran? </p>
                   </v-card-title>
                   <v-divider></v-divider>
                   <div>&nbsp;</div>
                   <v-card-text>
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        <b>nepsy</b> is an experimental and high-level python library that offers a set of robot-related
-                        utilities and that uses <b>NEP</b> for inter-process communication. <b>nepsy</b> is composed of
-                        the next modules:
+                        <b>nep_aldebaran</b> is an high-level implementation of the NAO/Pepper SDK
                         <v-simple-table>
-                          <template v-slot:default>
-                            <thead>
-                              <tr>
-                                <th class="text-left">
-                                  Name
-                                </th>
-                                <th class="text-left">
-                                  Description
-                                </th>
-                                <th class="text-left">
-                                  Documentation
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr v-for="item in modules_nep" :key="item.name">
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.descriptio }}</td>
-                                <td>
-                                  <v-btn small outlined :href="item.html"
-                                  target="_blank"  color="primary">
-                                    Press here
-                                  </v-btn>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </template>
-                        </v-simple-table>
 
                       </p>
                     </div>
@@ -117,11 +87,12 @@
 
             </v-layout>
             <v-layout wrap align-center justify-center>
+
               <v-flex xs8 md8>
                 <v-card color="white" flat>
 
                   <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> How to install nepsy using pip?</p>
+                    <p style=" color:#424242; font-size: 25px"> Requirements:</p>
                   </v-card-title>
                   <v-divider></v-divider>
                   <div>&nbsp;</div>
@@ -130,9 +101,201 @@
 
 
                     <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> pip install nepsy </b>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> To use <b>nep_aldebaran</b>
+                        classes it is required to install the
+                        NAO/Pepper SDK. For Windows, you can use the installer of NAO SDK 2.4.3.2 from the next link:
+                        </b>
                       </p>
                     </div>
+                    <div>&nbsp;</div>
+
+
+                    <v-layout justify-center>
+
+                      <img src="images/windows.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn color="indigo" outlined
+                        href="https://bitbucket.org/enriquecoronadozu/nep-installers/downloads/pynaoqi-2.4.3.2.win32.exe"
+                        target="_blank" color="primary">NAO SDK 2.4.3.2</v-btn>
+
+                    </v-layout>
+
+
+                    <div>&nbsp;</div>
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> For other platforms or versions of
+                        NAO/Pepper SDK, please visit the SoftBank Robotics <a
+                          href=" https://www.softbankrobotics.com/emea/en/support/pepper-naoqi-2-9/downloads-softwares">
+                          official web page</a>
+                        </b>
+                      </p>
+                    </div>
+
+                    <div>&nbsp;</div>
+
+
+                    <v-alert icon="mdi-school" prominent text type="info">
+                      NAO/Pepper SDK can only be executed in <b> Python 2 </b> <a
+                        href=" http://doc.aldebaran.com/2-1/dev/python/install_guide.html">
+                        see NAO SDK documentation for each platform</a>
+
+
+                    </v-alert>
+
+
+                </v-card>
+
+
+
+
+
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+
+
+                <v-card color="white" flat>
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> Examples:</p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Stop Autonomous Life
+                          and default behaviors</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_stop_autonomus}}</code></pre>
+                    </div>
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Text to Speech</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_say}}</code></pre>
+                    </div>
+
+
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Move robot</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_move}}</code></pre>
+                    </div>
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> *Check ALMotionProxy::moveToward
+                        and ALMotionProxy::moveToward <a
+                          href="http://doc.aldebaran.com/2-1/naoqi/motion/control-walk-api.html">
+                          here</a>
+                        </b>
+                      </p>
+                    </div>
+
+
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Use tablet</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_tablet}}</code></pre>
+                    </div>
+
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Use Leds</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_leds}}</code></pre>
+                    </div>
+
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Track people/face</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_face}}</code></pre>
+                    </div>
+
+
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Get data from sensors</b>
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div class="line-numbers">
+                      </p>
+                      <pre
+                        class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_sensors}}</code></pre>
+                    </div>
+
+
+                    <div>&nbsp;</div>
                     <div>&nbsp;</div>
 
 
@@ -142,15 +305,6 @@
 
 
 
-
-
-
-                </v-card>
-              </v-flex>
-
-              <v-flex xs8 md8>
-
-                <v-card color="white" flat>
 
                 </v-card>
               </v-flex>
@@ -351,13 +505,42 @@ SpeechEventListener.onRun("disable")  # Disable before using other tracking mode
 
         `,
 
+        code_sensors: `
+# DESCRIPTION:
+# Example of how get data from sensors
+
+import nep_aldebaran
+import time
+
+
+# Define NAO/Pepper parameters, port is often 9559
+robot_port = "9559"
+# Change this value for the IP of your robot
+robot_ip = '192.168.11.36'
+
+# Define robot sensors
+sensors = nep_aldebaran.SensorEvents(robot_ip, robot_port)
+
+# Read sensor each .1 seconds
+while True:
+    print(sensors.getValue("Device/SubDeviceList/LHand/Touch/Back/Sensor/Value"))
+    time.sleep(.1)
+
+# Check the list of sensors for Pepper and NAO in:
+# http://doc.aldebaran.com/2-0/family/juliette_technical/juliette_dcm/actuator_sensor_names.html
+# http://doc.aldebaran.com/2-1/family/nao_dcm/actuator_sensor_names.html
+
+
+        
+        `,
+        
+
         code: "",
 
         modules_nep: [
           {
             name: 'nep_adebaran',
             descriptio: "Set of classes that use NAO/Pepper SDK for robot control and perception",
-            html:"https://enriquecoronadozu.github.io/NEP/nep_aldebaran/"
           },
         ],
 
