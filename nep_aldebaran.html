@@ -31,7 +31,7 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar app dense color="white" flat>
+      <v-app-bar color="white" app dense flat clipped-right>
 
         <v-avatar size="35">
           <img src="images/nep.png" alt="avatar">
@@ -58,6 +58,85 @@
 
       </v-app-bar>
 
+      <v-navigation-drawer width="350" left v-model="drawer" app>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Menu
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-check">
+          <template v-slot:activator>
+            <v-list-item-title>NEP</v-list-item-title>
+          </template>
+
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/start">
+              <v-list-item-title>Get started</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+
+
+        <v-list-group :value="false" prepend-icon="mdi-code-tags">
+          <template v-slot:activator>
+            <v-list-item-title>Libraries</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Nepsy</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="([title, icon, link], i) in nepsy_" :key="i" :href="link">
+              <v-list-item-title v-text="title"></v-list-item-title>
+
+              <v-list-item-icon>
+                <v-icon v-text="icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+
+        <v-list-group :value="false" prepend-icon="mdi-robot-industrial">
+          <template v-slot:activator>
+            <v-list-item-title>Robots</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Pepper</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+
+          </v-list-group>
+        </v-list-group>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-cube-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Simulators</v-list-item-title>
+          </template>
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/choregraphe">
+              <v-list-item-title>Choregraphe</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+      </v-navigation-drawer>
 
       <v-content>
         <v-container>
@@ -65,7 +144,7 @@
           <v-container grid-list-md text-center>
             <v-layout wrap align-center justify-center>
 
-              <v-flex xs8 md8>
+              <v-flex xs10 md10>
                 <v-card color="white" flat>
 
                   <v-card-title>
@@ -76,7 +155,7 @@
                   <v-card-text>
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        <b>nep_aldebaran</b> is an high-level implementation of the NAO/Pepper SDK
+                        <b>nep_aldebaran</b> is a high-level implementation of the NAO/Pepper SDK
                         <v-simple-table>
 
                       </p>
@@ -88,7 +167,7 @@
             </v-layout>
             <v-layout wrap align-center justify-center>
 
-              <v-flex xs8 md8>
+              <v-flex xs10 md10>
                 <v-card color="white" flat>
 
                   <v-card-title>
@@ -282,7 +361,8 @@
 
 
                     <div>
-                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Get data from sensors</b>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> <b>Example: Get data from
+                          sensors</b>
                         </b>
                       </p>
                     </div>
@@ -337,6 +417,12 @@
       el: '#app',
       vuetify: new Vuetify(),
       data: () => ({
+
+        nepsy_: [
+          ['nep_aldebaran', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_aldebaran"],
+          ['nep_speech', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_speech"],
+        ],
+        right: null,
 
         code_say: `
 # DESCRIPTION: 
@@ -533,7 +619,8 @@ while True:
 
         
         `,
-        
+
+
 
         code: "",
 
