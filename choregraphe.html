@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="author" content="Enrique Coronado" />
+  <title>Documentation</title>
+  <link rel="shortcut icon" type="image/png" href="images/nep.png" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+
+  <link rel="stylesheet" href="web/prism.css" data-noprefix />
+
+
+  <!--   #################### Material Icons  ################### -->
+  <link rel="stylesheet" href="web/material-icons/material-design-icons.css">
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <div id="app">
+    <v-app id="inspire" style="
+        background: rgb(255, 255, 255);">
+
+
+      <v-app-bar color="white" app dense flat clipped-right>
+
+        <v-avatar size="35">
+          <img src="images/nep.png" alt="avatar">
+        </v-avatar> &nbsp; &nbsp;
+        <v-toolbar-title>
+          NEP
+        </v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-toolbar-items>
+          <v-btn href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
+              home
+            </v-icon>
+          </v-btn>
+          <v-btn text color="grey darken-3" href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank" text>
+            Reference NEP <v-icon right dark>school</v-icon>
+          </v-btn>
+
+        </v-toolbar-items>
+        <div>&nbsp;</div>
+
+
+
+      </v-app-bar>
+
+      <v-navigation-drawer width="400" left v-model="drawer" app>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Menu
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+
+        <v-list-group :value="true" prepend-icon="mdi-check">
+          <template v-slot:activator>
+            <v-list-item-title>NEP</v-list-item-title>
+          </template>
+          <v-list-item-group>
+            <v-list-item color="primary">
+              <v-list-item-title>Get started</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+
+        <v-list-group :value="true" prepend-icon="mdi-code-tags">
+          <template v-slot:activator>
+            <v-list-item-title>Libraries</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Nepsy</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="([title, icon], i) in nepsy_" :key="i" link>
+              <v-list-item-title v-text="title"></v-list-item-title>
+
+              <v-list-item-icon>
+                <v-icon v-text="icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+
+        <v-list-group :value="true" prepend-icon="mdi-robot-industrial">
+          <template v-slot:activator>
+            <v-list-item-title>Robots</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Pepper</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+
+          </v-list-group>
+        </v-list-group>
+
+
+        <v-list-group :value="true" prepend-icon="mdi-cube-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Simulators</v-list-item-title>
+          </template>
+          <v-list-item-group>
+            <v-list-item color="primary">
+              <v-list-item-title>Choregraphe</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+      </v-navigation-drawer>
+
+      <!-- DOCUMENT  -->
+      <v-main>
+        <v-container grid-list-md text-left>
+          <v-layout wrap justify-left>
+
+            <v-flex xs10 md10>
+              <v-card color="white" flat>
+
+                <v-card-title>
+                  <p style=" color:#424242; font-size: 25px"> How to use Choregraphe for offline programming (Windows)
+                  </p>
+                </v-card-title>
+                <v-divider></v-divider>
+                <div>&nbsp;</div>
+                <v-card-text>
+                  <div>
+                    <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                      <b>Choregraphe</b> is the official Simulator for Pepper and NAO robots. This tutorial will show
+                      how to use Choregraphe for prototyping of application for Pepper and NAO when is not possible to
+                      have
+                      the robots physically.
+
+                    </p>
+                    <v-layout justify-center>
+                      <v-btn small
+                        href="https://bitbucket.org/enriquecoronadozu/nep-installers/downloads/choregraphe-suite-2.4.3.28-win32-setup.exe"
+                        target="_blank" outlined> Download choregraphe <v-icon right dark>
+                          mdi-download
+                        </v-icon>
+                      </v-btn>
+                    </v-layout>
+                  </div>
+                  &nbsp; &nbsp;
+                  <div>
+
+
+
+
+
+                    <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                      After installing Choregraphe search the <b>naoqi-bin.exe</b> file inside the bin folder in the
+                      installation path of Choregraphe (example C:\Program Files (x86)\Aldebaran\Choregraphe Suite
+                      2.4\bin) and create a shortcut in the Desktop.
+
+                    </p>
+
+                    &nbsp; &nbsp;
+
+                    <v-layout justify-center>
+                      <img src="images/shurcut.png" alt="Smiley face" height="80" width="80"> &nbsp;&nbsp;
+
+                    </v-layout>
+                    &nbsp; &nbsp;
+
+                    <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                      We can use this shortcut to run <b>naoqi-bin.exe</b>, which will be used to simulate the real
+                      robot.
+
+                    </p>
+
+                    <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                      Open Choregraphe and connect to the port "9559" and the IP "127.0.0.1", such as is shown in the
+                      next image.
+
+                    </p>
+
+
+                    &nbsp; &nbsp;
+                    <div>
+                    <v-layout justify-center>
+                      <img src="images/chr.png" alt="Smiley face" height="450" width="700"> &nbsp;&nbsp;
+
+                    </v-layout>
+                  </div>
+
+                    &nbsp; &nbsp;
+                    &nbsp; &nbsp;
+                    &nbsp; &nbsp;
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                        Then, you can use NAO SDK (naoqi) or nepsy (using nao_aldebaran methods) to programm Pepper or
+                        NAO.
+                      </p>
+                    </div>
+
+                    &nbsp; &nbsp;
+
+                    <v-alert dense outlined type="error">
+                      When using the simulator you can not be able to access to the sensors of the robot. However, you
+                      can
+                      use this approach for testing robot motions and text to speech. 
+                    </v-alert>
+
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+
+          </v-layout>
+        </v-container>
+      </v-main>
+
+
+
+
+    </v-app>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="web/prism.js"></script>
+
+  <script>
+
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+    });
+
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: () => ({
+
+        nepsy_: [
+          ['nep_aldebaran', 'mdi-plus-outline'],
+          ['nep_speech', 'mdi-file-outline'],
+        ],
+        right: null,
+
+
+
+        code: "",
+
+        modules_nep: [
+          {
+            name: 'nep_adebaran',
+            descriptio: "Set of classes that use NAO/Pepper SDK for robot control and perception",
+            html: "https://enriquecoronadozu.github.io/NEP/nep_aldebaran"
+          },
+        ],
+
+      }),
+
+      created() {
+        this.initialize()
+
+      },
+
+      methods: {
+        initialize() {
+
+        },
+
+        onUpdate() {
+
+        },
+      }
+
+    })
+  </script>
+</body>
+
+</html>

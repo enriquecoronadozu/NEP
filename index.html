@@ -40,15 +40,16 @@
         <v-toolbar-items>
 
           <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
-            target="_blank" text>API Docs <v-icon right dark>
+            target="_blank" text>Get Started <v-icon right dark>
               description</v-icon>
           </v-btn>
-          <v-btn @click="dialog_template = true" text color="grey darken-3" text>Code Templates <v-icon right dark>code
-            </v-icon>
+          <v-btn text color="grey darken-3" color="blue darken-1" href="https://enriquecoronadozu.github.io/NEP/start"
+            target="_blank" text>Tutorials <v-icon right dark>
+              mdi-format-list-bulleted-square</v-icon>
           </v-btn>
 
           <v-btn href="https://github.com/enriquecoronadozu/NEP_samples" target="_blank" text color="grey darken-3"
-            text>Code Samples <v-icon right dark>mdi-folder-outline</v-icon>
+            text>Code Samples <v-icon right dark>mdi-code</v-icon>
           </v-btn>
 
           <v-btn text color="grey darken-3" href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank" text>
@@ -58,7 +59,7 @@
 
 
         </v-toolbar-items>
-       
+
 
 
       </v-app-bar>
@@ -75,14 +76,14 @@
 
               <v-flex xs6 md5>
                 <v-card color="white" flat>
-                
+
                   <v-container>
                     <v-avatar size="70">
                       <img src="images/nep.png" alt="avatar">
                     </v-avatar>
                   </v-container>
 
-                 
+
                   <div><span style="font-size: 20px; color:#616161;"><b>NEP</b> is a high-level library for building
                       robot
                       software architectures </span></div>
@@ -110,7 +111,7 @@
 
 
               <v-layout justify-center>
-                <v-flex xs10>
+                <v-flex xs12>
                   <v-card color="white" flat>
                     <v-layout justify-center>
                       <v-flex xs4 md3>
@@ -149,7 +150,7 @@
               </v-layout>
 
             </v-container>
-    
+
 
             <v-layout justify-center>
               <v-flex xs10 md12>
@@ -165,10 +166,9 @@
                     <v-btn outlined color="blue darken-1" href="https://www.nuget.org/packages/Nep/" target="_blank"
                       dark>C#
                     </v-btn>
-                    <v-btn outlined color="blue darken-1" @click="onUnity()" target="_blank"
-                      dark>Unity
+                    <v-btn outlined color="blue darken-1" @click="onUnity()" target="_blank" dark>Unity
                     </v-btn>
-             
+
                     <v-btn outlined color="blue darken-1" href="https://www.npmjs.com/package/nep-js" target="_blank"
                       dark>Javascript</v-btn>
                   </v-flex>
@@ -177,7 +177,7 @@
             </v-layout>
 
             <div>&nbsp;</div>
-        
+
 
             <v-layout justify-center>
               <v-flex xs10 md12>
@@ -310,7 +310,8 @@
           <v-layout justify-center>
             <img src="images/ubuntu.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
             <v-btn outlined color="green" target="_blank"
-            href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.4-beta/Nep-0.4.0.AppImage" target="_blank" color="primary">Download source code</v-btn>
+              href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.4-beta/Nep-0.4.0.AppImage"
+              target="_blank" color="primary">Download source code</v-btn>
 
           </v-layout>
           <div>
@@ -391,7 +392,7 @@
               <v-layout justify-left>
 
                 <v-flex xs12>
-                  Unzip this file which contains  <b>jeromq-0.5.2.jar</b>, <b>gson-2.8.4.jar</b> and <b>nep.jar</b> java
+                  Unzip this file which contains <b>jeromq-0.5.2.jar</b>, <b>gson-2.8.4.jar</b> and <b>nep.jar</b> java
                   binaries.
                 </v-flex>
               </v-layout>
@@ -524,7 +525,7 @@
       </v-dialog>
 
 
-      
+
       <v-dialog v-model="dialog_unity" max-width="500px">
         <v-card>
           <v-card-title>
@@ -550,7 +551,8 @@
               <v-layout justify-left>
 
                 <v-flex xs12>
-                  Unzip this file which contains  <b>AsyncIO.dll</b>, <b>Nep.dll</b>, <b>Newtonsoft.Json.dll</b>  and <b>NetMQ.dll</b> C#
+                  Unzip this file which contains <b>AsyncIO.dll</b>, <b>Nep.dll</b>, <b>Newtonsoft.Json.dll</b> and
+                  <b>NetMQ.dll</b> C#
                   binaries.
                 </v-flex>
               </v-layout>
@@ -582,7 +584,7 @@
                 </v-flex>
               </v-layout>
               <div>&nbsp;</div>
-            
+
 
 
             </v-stepper-content>
@@ -623,7 +625,7 @@
         dialog_matlab: false,
         dialog_template: false,
         dialog_python: false,
-        dialog_unity:false,
+        dialog_unity: false,
         e6: 1,
         e5: 1,
         row: "radio-1",
