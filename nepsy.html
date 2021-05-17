@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="author" content="Enrique Coronado" />
-  <title>nepsy docs</title>
+  <title>Documentation - nepsy</title>
   <link rel="shortcut icon" type="image/png" href="images/nep.png" />
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
@@ -31,7 +31,8 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar app dense color="white" flat>
+
+      <v-app-bar color="white" app dense flat clipped-right>
 
         <v-avatar size="35">
           <img src="images/nep.png" alt="avatar">
@@ -58,6 +59,86 @@
 
       </v-app-bar>
 
+      <v-navigation-drawer width="350" left v-model="drawer" app>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Menu
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-check">
+          <template v-slot:activator>
+            <v-list-item-title>NEP</v-list-item-title>
+          </template>
+
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/start">
+              <v-list-item-title>Get started</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+
+
+        <v-list-group :value="false" prepend-icon="mdi-code-tags">
+          <template v-slot:activator>
+            <v-list-item-title>Libraries</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Nepsy</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="([title, icon, link], i) in nepsy_" :key="i" :href="link">
+              <v-list-item-title  v-text="title"></v-list-item-title>
+
+              <v-list-item-icon>
+                <v-icon v-text="icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+
+        <v-list-group :value="false" prepend-icon="mdi-robot-industrial">
+          <template v-slot:activator>
+            <v-list-item-title>Robots</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Pepper</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+
+          </v-list-group>
+        </v-list-group>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-cube-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Simulators</v-list-item-title>
+          </template>
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/choregraphe">
+              <v-list-item-title>Choregraphe</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+      </v-navigation-drawer>
+
 
       <v-content>
         <v-container>
@@ -65,7 +146,7 @@
           <v-container grid-list-md text-center>
             <v-layout wrap align-center justify-center>
 
-              <v-flex xs8 md8>
+              <v-flex xs10 md10>
                 <v-card color="white" flat>
 
                   <v-card-title>
@@ -77,8 +158,9 @@
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
                         <b>nepsy</b> is an experimental and high-level python library that offers a set of robot-related
-                        utilities and that uses <b>NEP</b> for inter-process communication. <b>nepsy</b> is composed of
+                        utilities. <b>nepsy</b> is composed of
                         the next modules:
+                        &nbsp;
                         <v-simple-table>
                           <template v-slot:default>
                             <thead>
@@ -99,8 +181,7 @@
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.descriptio }}</td>
                                 <td>
-                                  <v-btn small outlined :href="item.html"
-                                  target="_blank"  color="primary">
+                                  <v-btn small outlined :href="item.html" target="_blank" color="primary">
                                     Press here
                                   </v-btn>
                                 </td>
@@ -117,7 +198,7 @@
 
             </v-layout>
             <v-layout wrap align-center justify-center>
-              <v-flex xs8 md8>
+              <v-flex xs10 md10>
                 <v-card color="white" flat>
 
                   <v-card-title>
@@ -183,6 +264,12 @@
       el: '#app',
       vuetify: new Vuetify(),
       data: () => ({
+
+        nepsy_: [
+          ['nep_aldebaran', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_aldebaran"],
+          ['nep_speech', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_speech"],
+        ],
+        right: null,
 
         code_say: `
 # DESCRIPTION: 
@@ -357,7 +444,7 @@ SpeechEventListener.onRun("disable")  # Disable before using other tracking mode
           {
             name: 'nep_adebaran',
             descriptio: "Set of classes that use NAO/Pepper SDK for robot control and perception",
-            html:"https://enriquecoronadozu.github.io/NEP/nep_aldebaran"
+            html: "https://enriquecoronadozu.github.io/NEP/nep_aldebaran"
           },
         ],
 

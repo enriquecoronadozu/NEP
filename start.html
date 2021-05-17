@@ -58,7 +58,7 @@
 
       </v-app-bar>
 
-      <v-navigation-drawer width="400" left v-model="drawer" app>
+      <v-navigation-drawer width="350" left v-model="drawer" app>
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="title">
@@ -97,7 +97,7 @@
               </v-list-item-content>
             </template>
 
-            <v-list-item v-for="([title, icon], i) in nepsy_" :key="i" link>
+            <v-list-item v-for="([title, icon, link], i) in nepsy_" :key="i" :href="link">
               <v-list-item-title v-text="title"></v-list-item-title>
 
               <v-list-item-icon>
@@ -518,8 +518,8 @@
       data: () => ({
 
         nepsy_: [
-          ['nep_aldebaran', 'mdi-plus-outline'],
-          ['nep_speech', 'mdi-file-outline'],
+          ['nep_aldebaran', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_aldebaran"],
+          ['nep_speech', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_speech"],
         ],
         right: null,
 
