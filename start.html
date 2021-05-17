@@ -31,7 +31,7 @@
         background: rgb(255, 255, 255);">
 
 
-      <v-app-bar app dense color="white" flat>
+      <v-app-bar color="white" app dense flat clipped-right>
 
         <v-avatar size="35">
           <img src="images/nep.png" alt="avatar">
@@ -47,9 +47,6 @@
               home
             </v-icon>
           </v-btn>
-          <v-btn href="https://github.com/enriquecoronadozu/NEP_samples" target="_blank" text color="grey darken-3"
-            text>Code Samples <v-icon right dark>mdi-folder-outline</v-icon>
-          </v-btn>
           <v-btn text color="grey darken-3" href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank" text>
             Reference NEP <v-icon right dark>school</v-icon>
           </v-btn>
@@ -61,6 +58,85 @@
 
       </v-app-bar>
 
+      <v-navigation-drawer width="400" left v-model="drawer" app>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Menu
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-check">
+          <template v-slot:activator>
+            <v-list-item-title>NEP</v-list-item-title>
+          </template>
+
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/start">
+              <v-list-item-title>Get started</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+
+
+        <v-list-group :value="false" prepend-icon="mdi-code-tags">
+          <template v-slot:activator>
+            <v-list-item-title>Libraries</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Nepsy</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="([title, icon], i) in nepsy_" :key="i" link>
+              <v-list-item-title v-text="title"></v-list-item-title>
+
+              <v-list-item-icon>
+                <v-icon v-text="icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+
+        <v-list-group :value="false" prepend-icon="mdi-robot-industrial">
+          <template v-slot:activator>
+            <v-list-item-title>Robots</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Pepper</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+
+          </v-list-group>
+        </v-list-group>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-cube-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Simulators</v-list-item-title>
+          </template>
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/choregraphe">
+              <v-list-item-title>Choregraphe</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+      </v-navigation-drawer>
 
       <v-content>
         <v-container>
@@ -68,7 +144,7 @@
           <v-container grid-list-md text-center>
             <v-layout wrap align-center justify-center>
 
-              <v-flex xs8 md8>
+              <v-flex xs10 md10>
                 <v-card color="white" flat>
 
                   <v-card-title>
@@ -143,9 +219,10 @@
                     </v-layout>
                     <div>&nbsp;</div>
                     <v-layout justify-center>
-                      <img src="images/ubuntu.png"   height="42" width="42"> &nbsp;&nbsp;
+                      <img src="images/ubuntu.png" height="42" width="42"> &nbsp;&nbsp;
                       <v-btn target="_blank"
-                      href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.4-beta/Nep-0.4.0.AppImage" outlined color="green" target="_blank" color="primary">Download for Ubuntu</v-btn>
+                        href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.4-beta/Nep-0.4.0.AppImage"
+                        outlined color="green" target="_blank" color="primary">Download for Ubuntu</v-btn>
 
                     </v-layout>
 
@@ -282,8 +359,9 @@
                           have a unique node name.
                         </v-alert>
                         <p style="font-size: 15px; color:#616161; text-align: justify">
-                        Before running these two script we need to start NEP App. You will see the name of the topic in the table of this interface, such as the next image.
-                       </p>
+                          Before running these two script we need to start NEP App. You will see the name of the topic
+                          in the table of this interface, such as the next image.
+                        </p>
 
                         <img src="images/int.png" alt="Paris" class="center" style="width: 80%;">
 
@@ -395,9 +473,8 @@
                         <v-layout justify-center>
 
 
-                          <v-btn color="indigo" outlined
-                            href=""
-                            target="_blank" color="primary">Advanced documentation page</v-btn>
+                          <v-btn color="indigo" outlined href="" target="_blank" color="primary">Advanced documentation
+                            page</v-btn>
 
                         </v-layout>
 
@@ -439,6 +516,12 @@
       el: '#app',
       vuetify: new Vuetify(),
       data: () => ({
+
+        nepsy_: [
+          ['nep_aldebaran', 'mdi-plus-outline'],
+          ['nep_speech', 'mdi-file-outline'],
+        ],
+        right: null,
 
         code_pub: `# Sender example
 import nep                                # Add nep library
