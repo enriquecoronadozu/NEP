@@ -177,7 +177,7 @@
             </v-layout>
             <v-layout wrap align-center justify-center>
 
-              <v-flex xs8 md8>
+              <v-flex xs10 md10>
                 <v-card color="white" flat>
 
                   <v-card-title>
@@ -232,13 +232,13 @@
 
             <v-layout wrap align-center justify-center>
 
-              <v-flex xs8 md8>
+              <v-flex xs10 md10>
                 <v-card color="white" flat>
 
 
 
                   <v-card-title>
-                    <p style=" color:#424242; font-size: 25px"> A simple example </p>
+                    <p style=" color:#424242; font-size: 25px"> A simple publisher/subscriber communication example </p>
                   </v-card-title>
                   <v-divider></v-divider>
                   <div>&nbsp;</div>
@@ -246,13 +246,14 @@
                     <div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
 
-                        Let try to send information from a <b>Program A</b> written in Python 3 to a <b>Program B</b>
-                        written in Python 2. In this example both programs will be executed in a <b>Computer A</b> as
-                        shown in the next image:
+                        In this example we need to send information from a <b>Program A</b> written in Python 3 to a
+                        <b>Program B</b>
+                        written in Python 2. Both programs will be executed in the same device defined as <b>Computer
+                          A</b>.
                       </p>
-
+                      <div>&nbsp;</div>
                       <img src="images/ex1.png" alt="Paris" class="center" style="width: 40%;">
-
+                      <div>&nbsp;</div>
                       <v-alert icon="mdi-school" prominent text type="info">
                         This example tries to show how to communicate programs in different Python versions. However,
                         the same approach can be used to communicate two programs written in Python 2 or two programs
@@ -262,13 +263,14 @@
 
 
                     </div>
+                    <div>&nbsp;</div>
                     <div>
 
 
                       <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
                         This tutorial suppose that you have installed a version of Python 2 or Python 3 (or both) in
                         your
-                        computer. This tutorial also suppose you know how to install a python package using pip.To
+                        computer. This tutorial also suppose you know how to install a python package using pip. To
                         know what is pip and how to use it, see
                         <a href="https://pip.pypa.io/en/stable/user_guide/
                          " target="_blank"> this user guide of pip</a>
@@ -281,20 +283,26 @@
                       <pre style="font-size: 15px; color:#616161;"> pip install nep </pre>
                       <div>&nbsp;</div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        In Windows if you have both Python 2 and Python 3 installed use the next command to install nep
-                        in Python 2:
+                        If you have both Python 2 and Python 3 installed use the next command to install nep
+                        in Python 2 (in Windows):
                       </p>
 
                       <pre style="font-size: 15px; color:#616161;"> py -2 -m pip install nep </pre>
 
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        Then install nep in Python 3 use the next command:
+                        To install nep in Python 3 use the next command ((n Windows)):
                       </p>
                       <pre style="font-size: 15px; color:#616161;"> py -3 -m pip install nep </pre>
 
                       <div>&nbsp;</div>
+
+                      <p style="font-size: 18px; color:#616161; text-align: justify">
+                        <b> Defining a Publisher </b>
+                      </p>
+
+                      <div>&nbsp;</div>
                       <p style="font-size: 15px; color:#616161; text-align: justify">
-                        Code for<b>Program A</b> or sender will be:
+                        The code for <b>Program A</b> or publisher is:
                       <div class="line-numbers">
                         </p>
                         <pre
@@ -334,8 +342,16 @@
                         </p>
 
                         <div>&nbsp;</div>
+
+                        <p style="font-size: 18px; color:#616161; text-align: justify">
+                          <b> Defining a Subscriber without callbacks </b>
+                        </p>
+
+
+
+                        <div>&nbsp;</div>
                         <p style="font-size: 15px; color:#616161; text-align: justify">
-                          Code for <b>Program B</b> or receiver will be:
+                          The code for <b>Program B </b> or subscriber is:
                         <div class="line-numbers">
                           </p>
                           <pre
@@ -354,17 +370,106 @@
                           inside <b>if</b> statement (line 8). Otherwise, set a very small time before reading the next
                           message (line 12 and 13 ).
                         </p>
-
+                        <div>&nbsp;</div>
                         <v-alert icon="mdi-alert-circle-outline" prominent text type="info"> Each program must
                           have a unique node name.
                         </v-alert>
+                        <div>&nbsp;</div>
+
+
+                        <p style="font-size: 18px; color:#616161; text-align: justify">
+                          <b> Defining a Subscriber using callbacks </b>
+                        </p>
+
+                        <div>&nbsp;</div>
+
+                        <div>&nbsp;</div>
+
+
+
+
                         <p style="font-size: 15px; color:#616161; text-align: justify">
-                          Before running these two script we need to start NEP App. You will see the name of the topic
+                          Rather than using the <b> listen() </b> function to read the from the publisher as use query
+                          if a message is in the socket, you can create a special function (callback) that will be
+                          executed only when new messages arrive. The code for <b>Program B </b> can be changed to
+                          support callbacks as follow:
+                        </p>
+
+
+
+                        <div class="line-numbers">
+                          </p>
+                          <pre
+                            class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_subcallback}}</code></pre>
+                        </div>
+                        <div>&nbsp;</div>
+
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          In this case we need to use the method <b> new_callback() </b>. Similar to the previous
+                          example, we need to define the name of the topic (in this case "test") and the type of message to
+                          send (in this case "json"). Additionally, we need to set the function that will be executed each time a message arrives (in this case <b> callback </b>)
+                        </p>
+
+                        <div>&nbsp;</div>
+
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          To use callback in python you need to install <a href=" https://pypi.org/project/asyncio/
+                          " target="_blank"> asyncio </a> and <a href=" https://pypi.org/project/tornado/
+                          " target="_blank"> tornado  </a>  in <b> Python 3 </b>and
+                          
+                          <a href=" https://pypi.org/project/trollius/
+                          " target="_blank"> trollius </a> and <a href=" https://pypi.org/project/tornado/
+                          " target="_blank"> tornado </a> in <b> Python 2 </b>
+
+
+                          
+                        </p>
+  
+                    
+                      </v-alert>
+                      <div>&nbsp;</div>
+
+
+                      <p style="font-size: 18px; color:#616161; text-align: justify">
+                        <b> Running the code </b>
+                      </p>
+
+                      <div>&nbsp;</div>
+
+
+                   
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          Before running the publisher and the subscriber we need to start the NEP App. You will see
+                          the name of the topic
                           in the table of this interface, such as the next image.
                         </p>
 
+
+                        <div>&nbsp;</div>
+
                         <img src="images/int.png" alt="Paris" class="center" style="width: 80%;">
 
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            <b>Topics</b> are used in NEP to manage sockets endpoints. In this way, you don't need
+                            to
+                            care about defining <b>port</b> and <b>IP</b> values in large and complex applications.
+                          </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+
+                        <v-alert icon="mdi-alert-circle-outline" prominent text type="info"> 
+                          Publishers and Subscribers can only be communicated if they share the same topic name and message type.
+
+                        </v-alert>
+                      
 
                         <div>&nbsp;</div>
 
@@ -463,14 +568,6 @@
                           subscribers.
                         </v-alert>
 
-
-                
-
-
-
-
-
-
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -511,7 +608,7 @@
         ],
         right: null,
 
-        code_pub: `# Sender example
+        code_pub: `# Publisher example
 import nep                                # Add nep library
 import time                               # Add time library
 node = nep.node('sender')                 # Define node name
@@ -526,7 +623,7 @@ while True:
                                           
   pub.publish(msg)		                    # Send message each second
   time.sleep(1)`,
-        code_sub: `# Receiver example
+        code_sub: `# Subscriber example
 import nep
 import time
 node = nep.node("receiver")             # Create a new nep node
@@ -534,11 +631,24 @@ sub = node.new_sub("test_topic", "json")    # Set the topic and message type
 while True:
   is_message, msg = sub.listen()    # Non blocking socket
   if is_message:                    # Message avaliable only if is_message == True
-    # Here is your code processing the message
+    # Here put your code for processing the message
     # ...
     print (msg)
   else:
     time.sleep(.0001)
+`,
+        code_subcallback: `# Subscriber example
+import nep
+import time
+node = nep.node("receiver")             # Create a new nep node
+
+def callback(msg):
+    print ("Callback values") 
+    print (msg)                         # Print new message
+    # Here put your code for processing the message
+
+sub = node.new_callback("test", "json" , callback)
+node.spin()
 `,
         path_matlab: "C:\\nep-matlab\\jeromq-0.4.3.jar\nC:\\nep-matlab\\gson-2.8.4.jar\nC:\\nep-matlab\\nep.jar",
         labelMode: "Here writes the IP of the publisher",
