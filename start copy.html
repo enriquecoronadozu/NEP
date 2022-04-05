@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="author" content="Enrique Coronado" />
+  <title>NEP Docs</title>
+  <link rel="shortcut icon" type="image/png" href="images/nep.png" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+
+  <link rel="stylesheet" href="web/prism.css" data-noprefix />
+
+
+  <!--   #################### Material Icons  ################### -->
+  <link rel="stylesheet" href="web/material-icons/material-design-icons.css">
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <div id="app">
+    <v-app id="inspire" style="
+        background: rgb(255, 255, 255);">
+
+
+      <v-app-bar color="white" app dense flat clipped-right>
+
+        <v-avatar size="35">
+          <img src="images/nep.png" alt="avatar">
+        </v-avatar> &nbsp; &nbsp;
+        <v-toolbar-title>
+          NEP
+        </v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-toolbar-items>
+          <v-btn href="https://enriquecoronadozu.github.io/NEP" target="_blank" text>Home <v-icon right dark>
+              home
+            </v-icon>
+          </v-btn>
+          <v-btn text color="grey darken-3" href="https://www.mdpi.com/1424-8220/20/5/1500" target="_blank" text>
+            Reference NEP <v-icon right dark>school</v-icon>
+          </v-btn>
+
+        </v-toolbar-items>
+        <div>&nbsp;</div>
+
+
+
+      </v-app-bar>
+
+      <v-navigation-drawer width="320" left v-model="drawer" app permanent>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Menu
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-check">
+          <template v-slot:activator>
+            <v-list-item-title>NEP</v-list-item-title>
+          </template>
+
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/start">
+              <v-list-item-title>Get started</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+
+
+        <v-list-group :value="false" prepend-icon="mdi-code-tags">
+          <template v-slot:activator>
+            <v-list-item-title>Libraries</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Nepsy</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item v-for="([title, icon, link], i) in nepsy_" :key="i" :href="link">
+              <v-list-item-title v-text="title"></v-list-item-title>
+
+              <v-list-item-icon>
+                <v-icon v-text="icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+
+        <v-list-group :value="false" prepend-icon="mdi-robot-industrial">
+          <template v-slot:activator>
+            <v-list-item-title>Robots</v-list-item-title>
+          </template>
+
+
+          <v-list-group no-action sub-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Pepper</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+
+          </v-list-group>
+        </v-list-group>
+
+
+        <v-list-group :value="false" prepend-icon="mdi-cube-outline">
+          <template v-slot:activator>
+            <v-list-item-title>Simulators</v-list-item-title>
+          </template>
+          <v-list-item-group>
+            <v-list-item color="primary" href="https://enriquecoronadozu.github.io/NEP/choregraphe">
+              <v-list-item-title>Choregraphe</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list-group>
+
+      </v-navigation-drawer>
+
+      <v-content>
+        <v-container>
+
+          <v-container grid-list-md text-center>
+            <v-layout wrap align-center justify-center>
+
+              <v-flex xs10 md10>
+                <v-card color="white" flat>
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> What is nep? </p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                        <b>NEP</b> is a user-friendly and cross-platform communication framework
+                        for building distributed applications. <b>NEP</b> acts as an intermediary
+                        between two or more software modules to facilitate communication between them using sockets.
+                        These modules or nodes can be written in different
+                        programming languages and be executed from different operating systems.
+
+                      </p>
+                    </div>
+                    <div>
+
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        <b>NEP</b> was designed to be simple, easy-to-install, easy-to-use
+                        and easy-to-learn. <b>NEP</b> is mainly based on high-performance and usable ZeroMQ sockets.
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+
+            </v-layout>
+            <v-layout wrap align-center justify-center>
+
+              <v-flex xs10 md10>
+                <v-card color="white" flat>
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> Installation</p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+
+
+
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify"> The easiest way to try out NEP is
+                        using the <b>NEP App</b>. Feel free to install <b>NEP App</b> for your preferred operating
+                        system
+                        </b>
+                      </p>
+                    </div>
+                    <div>&nbsp;</div>
+
+
+
+
+                    <v-layout justify-center>
+
+                      <img src="images/windows.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn color="indigo" outlined
+                        href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.4-beta/Nep.Setup.0.4.0.exe"
+                        target="_blank" color="primary">Download for Windows</v-btn>
+
+                    </v-layout>
+                    <div>&nbsp;</div>
+                    <v-layout justify-center>
+                      <img src="images/mac.png" alt="Smiley face" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn outlined color="cyan" target="_blank"
+                        href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.4-beta/Nep-0.4.0.dmg"
+                        color="primary">Download for Mac OSX</v-btn>
+
+                    </v-layout>
+                    <div>&nbsp;</div>
+                    <v-layout justify-center>
+                      <img src="images/ubuntu.png" height="42" width="42"> &nbsp;&nbsp;
+                      <v-btn target="_blank"
+                        href="https://github.com/enriquecoronadozu/NEP/releases/download/v0.0.4-beta/Nep-0.4.0.AppImage"
+                        outlined color="green" target="_blank" color="primary">Download for Ubuntu</v-btn>
+
+                    </v-layout>
+
+                </v-card>
+              </v-flex>
+            </v-layout>
+
+            <v-layout wrap align-center justify-center>
+
+              <v-flex xs10 md10>
+                <v-card color="white" flat>
+
+
+
+                  <v-card-title>
+                    <p style=" color:#424242; font-size: 25px"> A simple publisher/subscriber communication example </p>
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <div>&nbsp;</div>
+                  <v-card-text>
+                    <div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                        In this example we need to send information from a <b>Program A</b> written in Python 3 to a
+                        <b>Program B</b>
+                        written in Python 2. Both programs will be executed in the same device defined as <b>Computer
+                          A</b>.
+                      </p>
+                      <div>&nbsp;</div>
+                      <img src="images/ex1.png" alt="Paris" class="center" style="width: 40%;">
+                      <div>&nbsp;</div>
+                      <v-alert icon="mdi-school" prominent text type="info">
+                        This example tries to show how to communicate programs in different Python versions. However,
+                        the same approach can be used to communicate two programs written in Python 2 or two programs
+                        written in Python 3.
+                      </v-alert>
+
+
+
+                    </div>
+                    <div>&nbsp;</div>
+                    <div>
+
+
+                      <v-alert icon="mdi-alert-circle-outline" prominent text type="info">
+                        This tutorial suppose that you have installed a version of Python 2 or Python 3 (or both) in
+                        your
+                        computer. This tutorial also suppose you know how to install a python package using pip. To
+                        know what is pip and how to use it, see
+                        <a href="https://pip.pypa.io/en/stable/user_guide/
+                         " target="_blank"> this user guide of pip</a>
+                      </v-alert>
+                      <div>&nbsp;</div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        Use the next pip command to install nep (in some terminal):
+                      </p>
+
+                      <pre style="font-size: 15px; color:#616161;"> pip install nep </pre>
+                      <div>&nbsp;</div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        If you have both Python 2 and Python 3 installed use the next command to install nep
+                        in Python 2 (in Windows):
+                      </p>
+
+                      <pre style="font-size: 15px; color:#616161;"> py -2 -m pip install nep </pre>
+
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        To install nep in Python 3 use the next command ((n Windows)):
+                      </p>
+                      <pre style="font-size: 15px; color:#616161;"> py -3 -m pip install nep </pre>
+
+                      <div>&nbsp;</div>
+
+                      <p style="font-size: 18px; color:#616161; text-align: justify">
+                        <b> Defining a Publisher </b>
+                      </p>
+
+                      <div>&nbsp;</div>
+                      <p style="font-size: 15px; color:#616161; text-align: justify">
+                        The code for <b>Program A</b> or publisher is:
+                      <div class="line-numbers">
+                        </p>
+                        <pre
+                          class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_pub}}</code></pre>
+                      </div>
+                      <div>
+                        <div>&nbsp;</div>
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          In lines 2 and 3 we are adding the required <b>nep</b> and <b>time</b> libraries. Line 4
+                          creates a new <b>nep
+                            node</b> which is used as an identifier of Program A. This identifier is defined as
+                          <b>sender</b>. The method <b> new_pub </b> of the object <b> node </b> (line 5) is used to
+                          define the
+                          name of the topic (i.e., a communication channel) and the type of message we would like to
+                          send.
+                          In this case, we define <b>test_topic</b> as the name of the topic and <b>json
+                          </b> as the type of message to send.
+                        </p>
+
+                        <v-alert icon="mdi-school" prominent text type="info">
+                          JSON messages in Python can be defined as python dictionaries. If you dont know what is a
+                          python
+                          dictionary, please <a href="https://www.w3schools.com/python/python_dictionaries.asp
+                        " target="_blank"> visit this link</a>
+                        </v-alert>
+                        <v-alert icon="mdi-school" prominent text type="info">
+                          With NEP you can send any combination of data that is JSON serializable, such as int, float,
+                          string, and lists.
+                        </v-alert>
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          In this program, we are sending a JSON message (python dictionary) each second in an infinite
+                          loop.
+                          Inside while loop you can add your code. Line 12 defines the message to send to Program B.
+                          Line
+                          14 uses the method <b>publish</b> of the object <b>pub</b> to send the JSON message.
+                        </p>
+
+                        <div>&nbsp;</div>
+
+                        <p style="font-size: 18px; color:#616161; text-align: justify">
+                          <b> Defining a Subscriber without callbacks </b>
+                        </p>
+
+
+
+                        <div>&nbsp;</div>
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          The code for <b>Program B </b> or subscriber is:
+                        <div class="line-numbers">
+                          </p>
+                          <pre
+                            class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_sub}}</code></pre>
+                        </div>
+                        <div>&nbsp;</div>
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          In this program we define a new node denoted as <b>receiver</b> (line 4). Then, we create a
+                          subscriber instance <b>sub</b> which will be used to listen to <b>json</b> messages from the
+                          topic <b>test_topic</b>. Method <b>listen</b> (line 7) is used to read messages. This function
+                          does not
+                          block even if there is no message received. Therefore, we need to query if a message was sent
+                          by the sender (publisher) using the value saved in <b>is_message</b>. If <b>is_message ==
+                            true</b> (line 8) then <b> msg </b> will contain a message send from Program A. Otherwise
+                          <b> msg = {} </b> (null dictionary). Therefore, your code processing the message must be
+                          inside <b>if</b> statement (line 8). Otherwise, set a very small time before reading the next
+                          message (line 12 and 13 ).
+                        </p>
+                        <div>&nbsp;</div>
+                        <v-alert icon="mdi-alert-circle-outline" prominent text type="info"> Each program must
+                          have a unique node name.
+                        </v-alert>
+                        <div>&nbsp;</div>
+
+
+                        <p style="font-size: 18px; color:#616161; text-align: justify">
+                          <b> Defining a Subscriber using callbacks </b>
+                        </p>
+
+                        <div>&nbsp;</div>
+
+                        <div>&nbsp;</div>
+
+
+
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          Rather than using the <b> listen() </b> function to read the from the publisher as use query
+                          if a message is in the socket, you can create a special function (callback) that will be
+                          executed only when new messages arrive. The code for <b>Program B </b> can be changed to
+                          support callbacks as follow:
+                        </p>
+
+
+
+                        <div class="line-numbers">
+                          </p>
+                          <pre
+                            class="keep-initial-line-feed"><code data-prismjs-copy="copy"  class="language-python">{{code_subcallback}}</code></pre>
+                        </div>
+                        <div>&nbsp;</div>
+
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          In this case we need to use the method <b> new_callback() </b>. Similar to the previous
+                          example, we need to define the name of the topic (in this case "test") and the type of message to
+                          send (in this case "json"). Additionally, we need to set the function that will be executed each time a message arrives (in this case <b> callback </b>)
+                        </p>
+
+                        <div>&nbsp;</div>
+
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          To use callback in python you need to install <a href=" https://pypi.org/project/asyncio/
+                          " target="_blank"> asyncio </a> and <a href=" https://pypi.org/project/tornado/
+                          " target="_blank"> tornado  </a>  in <b> Python 3 </b>and
+                          
+                          <a href=" https://pypi.org/project/trollius/
+                          " target="_blank"> trollius </a> and <a href=" https://pypi.org/project/tornado/
+                          " target="_blank"> tornado </a> in <b> Python 2 </b>
+
+
+                          
+                        </p>
+  
+                    
+                      </v-alert>
+                      <div>&nbsp;</div>
+
+
+                      <p style="font-size: 18px; color:#616161; text-align: justify">
+                        <b> Running the code </b>
+                      </p>
+
+                      <div>&nbsp;</div>
+
+
+                   
+
+                        <p style="font-size: 15px; color:#616161; text-align: justify">
+                          Before running the publisher and the subscriber we need to start the NEP App. You will see
+                          the name of the topic
+                          in the table of this interface, such as the next image.
+                        </p>
+
+
+                        <div>&nbsp;</div>
+
+                        <img src="images/int.png" alt="Paris" class="center" style="width: 80%;">
+
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            <b>Topics</b> are used in NEP to manage sockets endpoints. In this way, you don't need
+                            to
+                            care about defining <b>port</b> and <b>IP</b> values in large and complex applications.
+                          </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+
+                        <v-alert icon="mdi-alert-circle-outline" prominent text type="info"> 
+                          Publishers and Subscribers can only be communicated if they share the same topic name and message type.
+
+                        </v-alert>
+                      
+
+                        <div>&nbsp;</div>
+
+                        <v-card-title>
+                          <p style=" color:#424242; font-size: 25px"> Some useful and basic terminology </p>
+                        </v-card-title>
+                        <v-divider></v-divider>
+
+                        <div>&nbsp;</div>
+
+                        <p style=" color:#424242; font-size: 20px"> Nodes </p>
+
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            <b>Nodes</b> are simple, loosely coupled, independent and re-usable building blocks
+                            applications. They usually run in parallel in one or different machines and can be
+                            written
+                            in
+                            different programming languages. In NEP communication between nodes is done using
+                            sockets
+                          </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+                        <p style=" color:#424242; font-size: 20px"> Sockets and endpoints </p>
+
+                        <div>&nbsp;</div>
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                            A network <b>socket</b> is an inter-process communication method for sending or
+                            receiving
+                            data
+                            between nodes on a computer network. A socket is mainly defined by an <b>endpoint</b>,
+                            which
+                            is composed of a <b>protocol</b>, an <b>IP address</b> , and a <b>port value</b>. </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+                            An example of endpoint definition is: <code>tcp://127.0.0.1:5000</code> where
+                            <code>tcp</code> indicates the protocol,
+                            <code>127.0.0.1</code> indicates the IP address, and <code>5000</code> indicates the
+                            port of
+                            the connection.
+                          </p>
+
+                        </div>
+
+                        <div>&nbsp;</div>
+
+                        <p style=" color:#424242; font-size: 20px"> Topics </p>
+
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            <b>Topics</b> are used in NEP to manage sockets endpoints. In this way, you don't need
+                            to
+                            care about defining <b>port</b> and <b>IP</b> values in large and complex applications.
+                            Those nodes where a specific topic has been defined can only communicate with others
+                            where
+                            the same topic is defined.
+                          </p>
+                        </div>
+
+                        <div>&nbsp;</div>
+
+
+
+                        <div>&nbsp;</div>
+                        <p style=" color:#424242; font-size: 20px"> Publish/Subscribe pattern</p>
+                        <div>&nbsp;</div>
+
+                        <div>
+                          <p style="font-size: 15px; color:#616161; text-align: justify">
+
+                            In the Publish/Subscribe pattern the producers of messages, called publishers, send
+                            messages
+                            without the knowledge of the receivers denoted subscribers. This communication method is
+                            asynchronous. Therefore, the subscriber node will not block its execution when trying to
+                            read a message.</p>
+                        </div>
+                        <div>&nbsp;</div>
+                        <img src="images/ps.png" alt="Paris" class="center" style="width: 50%;">
+
+
+
+
+                        <v-alert icon="mdi-school" prominent text type="info">
+                          Using the NEP App you can create N publishers using the same topic to send messages to N
+                          subscribers.
+                        </v-alert>
+
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+
+            </v-layout>
+
+
+          </v-container>
+
+        </v-container>
+      </v-content>
+
+    </v-app>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="web/prism.js"></script>
+
+  <script>
+
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+    });
+
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: () => ({
+
+        nepsy_: [
+          ['nep_aldebaran', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_aldebaran"],
+          ['nep_speech', 'mdi-file-outline', "https://enriquecoronadozu.github.io/NEP/nep_speech"],
+        ],
+        right: null,
+
+        code_pub: `# Publisher example
+import nep                                # Add nep library
+import time                               # Add time library
+node = nep.node('sender')                 # Define node name
+pub = node.new_pub('test_topic','json')   # Define topic and type of message
+                        
+while True:
+  # Here is your code doing something ...
+  # ...
+
+  # An example of message to send, which can be the result of your code
+  msg = {'msg':'hello'}	  
+                                          
+  pub.publish(msg)		                    # Send message each second
+  time.sleep(1)`,
+        code_sub: `# Subscriber example
+import nep
+import time
+node = nep.node("receiver")             # Create a new nep node
+sub = node.new_sub("test_topic", "json")    # Set the topic and message type 
+while True:
+  is_message, msg = sub.listen()    # Non blocking socket
+  if is_message:                    # Message avaliable only if is_message == True
+    # Here put your code for processing the message
+    # ...
+    print (msg)
+  else:
+    time.sleep(.0001)
+`,
+        code_subcallback: `# Subscriber example
+import nep
+import time
+node = nep.node("receiver")             # Create a new nep node
+
+def callback(msg):
+    print ("Callback values") 
+    print (msg)                         # Print new message
+    # Here put your code for processing the message
+
+sub = node.new_callback("test", "json" , callback)
+node.spin()
+`,
+        path_matlab: "C:\\nep-matlab\\jeromq-0.4.3.jar\nC:\\nep-matlab\\gson-2.8.4.jar\nC:\\nep-matlab\\nep.jar",
+        labelMode: "Here writes the IP of the publisher",
+        code: "",
+        dialog: false,
+        dialog_app: false,
+        dialog3: false,
+        e5: 1,
+        dialog_template: false,
+        row: "radio-1",
+        items: ['Python 2', 'Python 3'],
+        colors: [
+          'indigo',
+          'warning',
+          'pink darken-2',
+          'red lighten-1',
+          'deep-purple accent-4',
+        ],
+        slides: [
+          'First',
+          'Second',
+          'Third',
+          'Fourth',
+          'Fifth',
+        ],
+
+      }),
+
+      created() {
+        this.initialize()
+
+
+
+      },
+
+      methods: {
+        initialize() {
+
+        },
+
+        onUpdate() {
+
+        },
+      }
+
+    })
+  </script>
+</body>
+
+</html>
